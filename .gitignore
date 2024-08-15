@@ -1,9 +1,9 @@
-#folders
-/node_modules
-/db
-
 #files
 *.json
 *.js
 package-lock.json
 package.json
+
+#folders
+/node_modules
+/db
