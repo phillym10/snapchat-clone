@@ -5,3 +5,5 @@
 #files
 *.json
 *.js
+package-lock.json
+package.json
