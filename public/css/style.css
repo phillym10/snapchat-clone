@@ -101,11 +101,11 @@ img { -webkit-user-drag: none; }
     height: 15vh;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 25px;
     padding: 10px 25px;
     overflow-x: scroll;
     overflow-y: hidden;
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid #444444;
 }
 
 .story {
@@ -118,6 +118,7 @@ img { -webkit-user-drag: none; }
     gap: 8px;
     user-select: none;
     cursor: pointer;
+    position: relative;
 }
 
 .story img {
@@ -128,7 +129,7 @@ img { -webkit-user-drag: none; }
     border-radius: 50%;
     border: 3px solid var(--story-ring-color);
 }
-
+.story.add { width: 25%; }
 .story.add img {
     height: 75%;
     aspect-ratio: 1;
@@ -136,7 +137,9 @@ img { -webkit-user-drag: none; }
     object-position: center;
     border-radius: 50%;
     border: 3px solid white;
+    opacity: 0.7;
 }
+.story.add:hover img { opacity: 0.9; }
 
 .story .span {
     width: 100%;
@@ -147,12 +150,23 @@ img { -webkit-user-drag: none; }
     text-align: center;
 }
 
+.story .refresh {
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    font-size: 1.6rem;
+    left: -5px;
+    height: calc(75% + 3px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
 .col3 {
     width: 100%;
     height: 78vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -160,15 +174,16 @@ img { -webkit-user-drag: none; }
 .chat {
     width: 100%;
     height: 10vh;
-    padding: 10px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
     gap: 8px;
+    user-select: none;
     cursor: pointer;
 }
 
 .chat:hover { background-color: #3f3f3f; }
-.chat:not(:last-child) { border-bottom: 1px solid #eeeeee; }
+.chat:not(:last-child) { border-bottom: 1px solid #444444; }
 
 .chat .profile {
     height: fit-content;
@@ -196,25 +211,35 @@ img { -webkit-user-drag: none; }
     height: fit-content;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 2px;
+    color: #707070;
 }
 
 .chat .chatinfo > div:not(:last-child) {
     font-size: 1.4rem;
-    font-weight: 700;
+    font-weight: 500;
+    color: white;
 }
 
-.chatinfo .chat-status .dc { color: var(--chatcolor); font-weight: 800; font-size: 0.95rem; }
-.chatinfo .chat-status .ds { color: var(--snapcolor); font-weight: 800; font-size: 0.95rem; }
+.chatinfo .chat-status > div {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.chatinfo .chat-status .dc { color: #707070; font-weight: normal; font-size: 0.95rem; }
+.chatinfo .chat-status .ds { color: #707070; font-weight: normal; font-size: 0.95rem; }
+.chatinfo .chat-status .dc i { color: var(--chatcolor); }
+.chatinfo .chat-status .ds i { color: var(--snapcolor); }
 .chatinfo .chat-status .nc { color: var(--chatcolor); font-weight: 800; font-size: 0.95rem; }
 .chatinfo .chat-status .ns { color: var(--snapcolor); font-weight: 800; font-size: 0.95rem; }
 
 .chat .snap {
-    width: 10%;
+    width: 15%;
     height: 100%;
     display: flex;
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
