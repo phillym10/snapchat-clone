@@ -12,6 +12,74 @@
 </head>
 <body>
     <div class="body-container" theme="dark">
+        <div class="modal" id="modal">
+            <!-- <div class="modalbox yesornomodal">
+                <div class="title">Remove Friend</div>
+                <div class="text">Are you sure you want to remove user as a friend?</div>
+                <div class="buttons">
+                    <button class="danger">Yes</button>
+                    <button class="default">Yes</button>
+                    <button class="regular">No</button>
+                </div>
+            </div> -->
+            <!-- <div class="modalbox inputmodal">
+                <div class="title">Insert Name</div>
+                <div class="input">
+                    <input type="text" name="modalinput" id="modalinput" autocomplete="off" placeholder="Name">
+                </div>
+                <div class="buttons">
+                    <button class="default">Yes</button>
+                    <button class="regular">No</button>
+                </div>
+            </div> -->
+            <div class="modalbox colorslider">
+                <div class="title">Choose a color</div>
+                <div class="cslider">
+                    <div class="bar">
+                        <div class="thumb" style="--thumb: 20px;"></div>
+                    </div>
+                    <div class="chosen" style="--color: #2869f5;"></div>
+                </div>
+                <div class="buttons">
+                    <button class="default">Yes</button>
+                    <button class="regular">No</button>
+                </div>
+            </div>
+        </div>
+        <div class="slideui show" id="chat">
+            <div class="cprofile">
+                <i class="fa-solid fa-chevron-left"></i>
+                <div class="usericon"><i class="fa-solid fa-user"></i></div>
+                <div class="profilename">User</div>
+            </div>
+            <div class="chatspace">
+                <div class="chatmsg" style="--profcolor: #288bf5;">
+                    <div class="user">user</div>
+                    <div class="chats">
+                        <div class="saved">ur so gay bro</div>
+                        <div class="reactions">
+                            <div class="reaction">🤣</div>
+                        </div>
+                        <div class="saved">u liike dick 🍆 </div>
+                    </div>
+                </div>
+                <div class="chatmsg" style="--profcolor: #28f532;">
+                    <div class="user">me</div>
+                    <div class="chats">
+                        <div>shut the front door</div>
+                    </div>
+                </div>
+            </div>
+            <div class="messagebox">
+                <form>
+                    <input type="text" name="message" id="message" class="message" placeholder="Chat">
+                    <label for="picture">
+                        <input type="file" name="picture" id="picture" accept="images/*">
+                        <div class="attach"><i class="fa-regular fa-image"></i></div>
+                    </label>
+                </form>
+            </div>
+        </div>
         <div class="col1">
             <div class="user-profile"><i class="fa-solid fa-user"></i></div>
             <div class="span">Chat</div>
@@ -23,7 +91,7 @@
         <!-- Stories -->
         <div class="col2" id="stories">
             <div class="story add">
-                <img src="imgs/add.png" alt="">
+                <div class="img"><i class="fa-solid fa-plus"></i></div>
                 <div class="span">Add to Story</div>
             </div>
             <div class="story watched">

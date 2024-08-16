@@ -9,3 +9,9 @@ exports.pagesRoute = express_1.default.Router();
 exports.pagesRoute.get("/", (request, response) => {
     response.render("index");
 });
+exports.pagesRoute.get("/login", (request, response) => {
+    response.render("login");
+});
+exports.pagesRoute.get("/signup", (request, response) => {
+    response.render("signup");
+});

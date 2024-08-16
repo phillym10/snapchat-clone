@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+    --darktheme-bg: #262626;
+    --lighttheme-bg: #fff;
+    --darktheme-color: #fff;
+    --lighttheme-color: #000;
+    --story-ring-color: #2b8bff;
+
+    --chatcolor: #4d9dff;
+    --snapcolor: #df2323;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+a { color: #2b8bff; }
+* { box-sizing: border-box; transition: all 0.2s; font-family: 'Inter'; }
+img { -webkit-user-drag: none; }
+::-webkit-scrollbar { width: 1px; height: 1px; }
+::-webkit-scrollbar-thumb { width: 1px; height: 1px; background-color: transparent; }
+::-webkit-scrollbar-thumb:hover { width: 1px; height: 1px; background-color: transparent; }
+::-webkit-scrollbar-track { width: 1px; height: 1px; background-color: transparent; }
+
+.login-container {
+    width: 24vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container[theme="dark"] {
+    background-color: var(--darktheme-bg);
+    color: var(--darktheme-color);
+}
+
+.login-container[theme="light"] {
+    background-color: var(--lighttheme-bg);
+    color: var(--lighttheme-color);
+}
+
+.form-content {
+    width: 100%;
+    padding: 10px 15px;
+}
+
+.form-content input {
+    padding: 15px 20px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.2rem;
+    width: 100%;
+    outline: none;
+}
+
+.login-container[theme="dark"] .form-content input {
+    background-color: #424242;
+    color: white;
+}
+
+.login-container[theme="light"] .form-content input {
+    background-color: #dadada;
+    color: black;
+}
+
+.form-content button {
+    padding: 15px 20px;
+    border-radius: 50px;
+    background-color: #c548ff;
+    border: none;
+    font-size: 1.2rem;
+    width: 100%;
+    outline: none;
+    color: white;
+    cursor: pointer;
+}
