@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 
 import { pagesRoute } from './routes/pages'
 import { loginRoute } from './routes/login'
+import { signupRoute } from './routes/signup'
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(cookieParser())
 
 app.use("/", pagesRoute)
 app.use("/", loginRoute)
+app.use("/", signupRoute)
 
 
 app.listen(80)

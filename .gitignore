@@ -7,3 +7,4 @@ package.json
 #folders
 /node_modules
 /db
+/jsondb
