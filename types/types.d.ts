@@ -63,3 +63,10 @@ type GroupChat = {
     users: User[],
     messages: Message[]
 }
+
+type Story = {
+    userid: string,
+    storyimage: string,
+    texts: string[],
+    timeout: number
+}
