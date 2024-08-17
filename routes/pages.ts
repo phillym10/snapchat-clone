@@ -1,16 +1,10 @@
 import express from "express"
+import { token } from "../include/token"
 
 export const pagesRoute = express.Router()
 
 
 pagesRoute.get("/", (request, response) => {
-    response.render("index")
-})
-
-pagesRoute.get("/login", (request, response) => {
-    response.render("login")
-})
-
-pagesRoute.get("/signup", (request, response) => {
-    response.render("signup")
+    const userAuthToken = token.auth(request)
+    if (userAuthToken) response.render("index"); else response.redirect("signup")
 })

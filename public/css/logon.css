@@ -49,6 +49,34 @@ img { -webkit-user-drag: none; }
     color: var(--lighttheme-color);
 }
 
+.logo {
+    width: 100%;
+    padding: 10px 0;
+}
+
+.logo img {
+    width: 30%;
+    border-radius: 10px;
+}
+
+.login-container[theme="light"] .logo img { border: 1px solid #eee; }
+.login-container[theme="dark"] .logo img { border: 1px solid #494949; }
+
+.title {
+    width: 100%;
+    padding: 15px 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.alertbad {
+    width: 100%;
+    padding: 15px 0;
+    color: #ff1919;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
 .form-content {
     width: 100%;
     padding: 10px 15px;

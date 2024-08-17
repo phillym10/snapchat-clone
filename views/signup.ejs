@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnapChat Clone Login</title>
+    <title>SnapChat Clone Sign Up</title>
 
     <link rel="stylesheet" href="css/logon.css">
 
@@ -11,14 +11,17 @@
 </head>
 <body>
     <div class="login-container" theme="light">
+        <div class="logo"><img src="imgs/logo.png" alt="SnapChat Clone Image"></div>
+        <div class="title">Sign Up</div>
+        <div class="alertbad" id="alertbad"></div>
         <div class="form-content">
-            <input type="text" name="username" id="username" placeholder="Username">
+            <input type="text" name="username" id="username" autocomplete="off" placeholder="Username">
         </div>
         <div class="form-content">
-            <input type="password" name="password" id="password" placeholder="Password">
+            <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
         </div>
         <div class="form-content">
-            <input type="password" name="password" id="password2" placeholder="Password (Again)">
+            <input type="password" name="password" id="password2" autocomplete="off" placeholder="Password (Again)">
         </div>
         <div class="form-content">
             <button id="signupbtn">Create Account</button>

@@ -3,8 +3,8 @@ import path from 'path'
 import cookieParser from 'cookie-parser'
 
 import { pagesRoute } from './routes/pages'
-import { loginRoute } from './routes/login'
-import { signupRoute } from './routes/signup'
+import { logonRoute } from './routes/logon'
+import { logoutRoute } from './routes/logout'
 
 const app = express()
 
@@ -15,8 +15,8 @@ app.use(express.json({ limit: '50mb' }))
 app.use(cookieParser())
 
 app.use("/", pagesRoute)
-app.use("/", loginRoute)
-app.use("/", signupRoute)
+app.use("/", logonRoute)
+app.use("/logout", logoutRoute)
 
 
 app.listen(80)

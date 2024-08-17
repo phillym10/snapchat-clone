@@ -65,6 +65,7 @@ type GroupChat = {
 }
 
 type Story = {
+    storyid: string,
     userid: string,
     storyimage: string,
     texts: string[],
