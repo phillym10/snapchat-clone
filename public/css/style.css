@@ -21,6 +21,7 @@ body {
     justify-content: center;
     overflow: hidden;
     font-family: 'Inter';
+    position: relative;
 }
 
 * { box-sizing: border-box; transition: all 0.2s; }
@@ -46,6 +47,88 @@ img { -webkit-user-drag: none; }
 .body-container[theme="light"] {
     background-color: var(--lighttheme-bg);
     color: var(--lighttheme-color);
+}
+
+.context-menu {
+    position: absolute;
+    z-index: 4;
+    top: 30px /* var(--mousex) */;
+    left: 30px /* var(--mousey) */;
+    width: 50%;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 8px #3d3d3d31;
+}
+.body-container[theme="dark"] .context-menu { background-color: var(--darktheme-bg); color: var(--darktheme-color); }
+.body-container[theme="light"] .context-menu { background-color: var(--lighttheme-bg); color: var(--lighttheme-color); }
+.context-menu .option {
+    width: 100%;
+    height: 4vh;
+    padding: 10px;
+    border-radius: 10px;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: inherit;
+    font-size: 1.05rem;
+}
+.context-menu .option:hover { opacity: 0.8; }
+.body-container[theme="dark"] .context-menu .option:hover { background-color: #363636; }
+.body-container[theme="light"] .context-menu .option:hover { background-color: #e2e2e2; }
+.context-menu .option.red { color: #fd2b2b; }
+.context-menu .optionreactions {
+    width: 100%;
+    height: 6vh;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.4rem;
+}
+.context-menu .optionreactions > div {
+    cursor: pointer;
+    animation: none;
+    border-radius: 5px;
+}
+.body-container[theme="dark"] .context-menu .optionreactions > div:hover { background-color: #363636; }
+.body-container[theme="light"] .context-menu .optionreactions > div:hover { background-color: #e2e2e2; }
+@keyframes shakereaction {
+    0% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(5px);
+    }
+    50% {
+        transform: translateX(-5px);
+    }
+    80% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+.context-menu .optionreactions > div:hover {
+    scale: 1.5;
+    animation: shakereaction 0.2s forwards;
+}
+
+.auserprofile {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .modal { display: none; }
