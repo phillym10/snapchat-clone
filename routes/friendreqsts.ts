@@ -18,12 +18,12 @@ friendRequestsRoute.post("/searchusers/:q", (request, response) => {
             const users: any[] = []
             if (currentuser == null || !isUser(currentuser)) return
 
-            data.forEach((user) => {
-                friendship.check(user.userid, currentuser.userid)
-                .then((data) => {
-                    if (user.userauthtoken !== userAuthToken && data === "true") users.push(user) 
-                })
-            })
+            for (let i = 0; i < data.length; i++) {
+                const user = data[i];
+                const friendshipCheck = await friendship.check(user.userid, currentuser.userid)
+                if (user.userauthtoken !== userAuthToken && friendshipCheck == "false") { users.push(user) }
+            }
+
             response.send({ message: users })
         })
     }
@@ -55,6 +55,9 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
         if (currentuser == null || !isUser(currentuser)) return
 
         if (currentuser.friendRequests.includes(touserid)) {
+            const touser = await anyuser.get(touserid)
+            if (touser == null || !isUser(touser)) return
+
             const friendship: Friend = {
                 userid: touserid,
                 messages: [],
@@ -67,17 +70,24 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
                 friendssince: Date.now(),
                 wallpaper: "#00000000"
             }
+            currentuser.friends.push(friendship)
+            touser.friends.push(friendshipR)
+
+
             usersDb.update(
                 { userid: currentuser.userid },
-                { friends: friendship, friendRequests: anyuser.deletefriendrequest(currentuser.friendRequests, touserid) }, false,
+                {
+                    friends: currentuser.friends,
+                    friendRequests: anyuser.deletefriendrequest(currentuser.friendRequests, touserid)
+                }, false,
                 (data: any, error: any) => {
                 if (error) return
                 if (data !== "updated") return
-                usersDb.update({ userid: touserid }, { friends: friendshipR }, false, async (data1: any, error1: any) => {
+                    
+                usersDb.update({ userid: touserid }, { friends: touser.friends }, false, (data1: any, error1: any) => {
                     if (error1) return
                     if (data1 !== "updated") return
-                    const tousername = await anyuser.get(touserid)
-                    response.send({ message: `Accepted Friend Request from ${tousername}` })
+                    response.send({ message: `Accepted Friend Request from ${touser.username}` })
                 })
             })
         } else response.send({ message: "fail" })

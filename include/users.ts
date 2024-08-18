@@ -27,9 +27,8 @@ export const friendship = {
                     if (error2) return
                     const friends = user1.friends
                     const friends2 = user2.friends
-
                     let areFriends = "false"
-                    
+
                     friends.forEach((friend) => {
                         if (friend.userid === user2.userid) areFriends = "true"
                     })
