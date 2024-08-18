@@ -7,11 +7,16 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <link rel="stylesheet" href="css/style.css">
+
+    <script src="scripts/index/user.js" defer></script>
+    <script src="scripts/index/components.js" defer></script>
+    <script src="scripts/index/extras.js" defer></script>
+    <script src="scripts/index/contextmenu.js" defer></script>
+    <script src="scripts/index/friendrequests.js" defer></script>
 </head>
 <body>
-    <div class="body-container" theme="dark">
+    <div class="body-container" id="body-container" theme="dark">
         <div class="modal" id="modal">
             <!-- <div class="modalbox yesornomodal">
                 <div class="title">Remove Friend</div>
@@ -54,7 +59,14 @@
                 <div class="tag">💕 Close Friend</div>
             </div>
         </div> -->
-        <div class="slideui show" id="chat">
+        <div class="fr" id="fr">
+            <div class="search-bar">
+                <div id="frclsbtn"><i class="fa-solid fa-chevron-down"></i></div>
+                <input type="text" name="search-people" id="search-fr" autocomplete="off" placeholder="Search...">
+            </div>
+            <div class="results" id="fr-results"></div>
+        </div>
+        <div class="slideui" id="chat">
             <div class="cprofile">
                 <i class="fa-solid fa-chevron-left"></i>
                 <div class="usericon"><i class="fa-solid fa-user"></i></div>
@@ -88,7 +100,7 @@
                 </form>
             </div>
         </div>
-        <div class="context-menu">
+        <div class="context-menu" id="context-menu">
             <div class="optionreactions">
                 <div class="opreact">🤣</div>
                 <div class="opreact">😡</div>
@@ -104,7 +116,7 @@
         <div class="col1">
             <div class="user-profile"><i class="fa-solid fa-user"></i></div>
             <div class="span">Chat</div>
-            <div class="friend-requests">
+            <div class="friend-requests" id="frbtn">
                 <i class="fa-solid fa-user-plus"></i>
                 <div class="notifs">9+</div>
             </div>

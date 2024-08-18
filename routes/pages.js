@@ -9,8 +9,9 @@ const token_1 = require("../include/token");
 exports.pagesRoute = express_1.default.Router();
 exports.pagesRoute.get("/", (request, response) => {
     const userAuthToken = token_1.token.auth(request);
-    if (userAuthToken)
-        response.render("index");
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) {
+        response.redirect('/login');
+    }
     else
-        response.redirect("signup");
+        response.render("index");
 });

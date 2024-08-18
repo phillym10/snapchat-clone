@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser'
 import { pagesRoute } from './routes/pages'
 import { logonRoute } from './routes/logon'
 import { logoutRoute } from './routes/logout'
+import { friendRequestsRoute } from './routes/friendreqsts'
+import { userRequestRoute } from './routes/userrequests'
 
 const app = express()
 
@@ -16,7 +18,9 @@ app.use(cookieParser())
 
 app.use("/", pagesRoute)
 app.use("/", logonRoute)
+app.use("/fr", friendRequestsRoute)
 app.use("/logout", logoutRoute)
+app.use("/user", userRequestRoute)
 
 
 app.listen(80)

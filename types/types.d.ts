@@ -1,4 +1,4 @@
-type User = {
+export type User = {
     userid: string,
     userauthtoken: string,
     displayname: string,
@@ -6,21 +6,21 @@ type User = {
     password: string,
     usercolor: string,
     friends: Friend[],
-    friendRequests: FriendRequest[],
+    friendRequests: string[],
     blockedUsers: string[],
     closeFriend: object | string | any,
-    verified: true | false,
+    verified: boolean,
     mode: "light" | "dark"
 }
 
-type Friend = {
+export type Friend = {
     userid: string,
     messages: any[],
-    friendssince: string,
+    friendssince: number,
     wallpaper: string
 }
 
-type Message = {
+export type Message = {
     messageid: string,
     messagetimeout: number,
     type: "chat" | "snap" | "deleted",
@@ -34,37 +34,31 @@ type Message = {
     chatid?: string
 }
 
-type FriendRequest = {
-    userid: string,
-    requesting: string,
-    accepted: true | false
-}
-
-type Reaction = {
+export type Reaction = {
     reaction: string,
     animation: "throb" | "grow"
 }
 
-type ChatLog = {
+export type ChatLog = {
     log: string,
     time: number
 }
 
-type Chat = {
+export type Chat = {
     chatid: string,
     log: ChatLog,
     users: User[],
     messages: Message[]
 }
 
-type GroupChat = {
+export type GroupChat = {
     gchatid: string,
     log: ChatLog,
     users: User[],
     messages: Message[]
 }
 
-type Story = {
+export type Story = {
     storyid: string,
     userid: string,
     storyimage: string,

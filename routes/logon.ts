@@ -2,13 +2,15 @@ import express from 'express'
 import { usersDb } from '../include/dbcnf'
 import { token } from '../include/token'
 import { keygen } from '../include/keygen'
+import { User } from '../types/types'
 
 export const logonRoute = express.Router()
 
 logonRoute.get("/login", (request, response) => {
     const userAuthToken = token.auth(request)
-    if (userAuthToken !== "" || userAuthToken !== null) response.redirect("/")
-    response.render('login')
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) {
+        response.render('login')
+    } else response.redirect("/")
 })
 
 logonRoute.post("/loginrequest", (request, response) => {
@@ -17,7 +19,7 @@ logonRoute.post("/loginrequest", (request, response) => {
     if (username == "" || password == "") return
     usersDb.findOne({ username: username, password: password }, (data: User, error: any) => {
         if (!error && data) {
-            response.cookie("snapchatcloneuath", data.userauthtoken, {
+            response.cookie("snapchatcloneauth", data.userauthtoken, {
                 maxAge: 86400000,
                 httpOnly: true,
                 path: "/"
@@ -29,8 +31,9 @@ logonRoute.post("/loginrequest", (request, response) => {
 
 logonRoute.get("/signup", (request, response) => {
     const userAuthToken = token.auth(request)
-    if (userAuthToken !== "" || userAuthToken !== null) response.redirect("/")
-    response.render('signup')
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) {
+        response.render('signup')
+    } else response.redirect("/")
 })
 
 logonRoute.post("/signuprequest", (request, response) => {
@@ -54,8 +57,8 @@ logonRoute.post("/signuprequest", (request, response) => {
                 mode: "dark"
             }
             usersDb.insert(newUser, (data: any, error: any) => {
-                if (!error) {
-                    response.cookie("snapchatcloneuath", newUser.userauthtoken, {
+                if (!error && data) {
+                    response.cookie("snapchatcloneauth", newUser.userauthtoken, {
                         maxAge: 86400000,
                         httpOnly: true,
                         path: "/"
