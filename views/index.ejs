@@ -15,6 +15,7 @@
     <script src="scripts/index/contextmenu.js" defer></script>
     <script src="scripts/index/friendrequests.js" defer></script>
     <script src="scripts/index/friends.js" defer></script>
+    <script src="scripts/index/currentuser.js" defer></script>
 </head>
 <body>
     <div class="body-container" id="body-container" theme="dark">
@@ -60,6 +61,33 @@
                 <div class="tag">💕 Close Friend</div>
             </div>
         </div> -->
+        <div class="currentuserprofile" id="currentuserprofile">
+            <div class="col-0">
+                <div id="curretuser-clsbtn"><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+            <div class="col-1">
+                <div class="usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                <div class="userinfo">
+                    <div class="name">philly</div>
+                    <div class="username">displayphilly</div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-container">
+                    <div class="title">Display Modes</div>
+                    <div class="text">Tap to switch between light and dark mode</div>
+                    <div class="switch">
+                        <div class="main tgl" id="switch-main"><i class="bi bi-moon-fill"></i> Dark</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-container">
+                    <div class="title">User Verification</div>
+                    <div class="text">You are not a verified user !</div>
+                </div>
+            </div>
+        </div>
         <div class="fr" id="fr">
             <div class="search-bar">
                 <div id="frclsbtn"><i class="fa-solid fa-chevron-down"></i></div>
@@ -115,7 +143,7 @@
             <div class="option red"><i class="fa-regular fa-trash-can"></i> Delete</div>
         </div>
         <div class="col1">
-            <div class="user-profile"><i class="fa-solid fa-user"></i></div>
+            <div class="user-profile" id="curretuser-openbtn" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
             <div class="span">Chat</div>
             <div class="friend-requests" id="frbtn">
                 <i class="fa-solid fa-user-plus"></i>

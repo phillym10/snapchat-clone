@@ -15,7 +15,7 @@ export type User = {
 
 export type Friend = {
     userid: string,
-    messages: any[],
+    chatid: string,
     friendssince: number,
     wallpaper: string
 }

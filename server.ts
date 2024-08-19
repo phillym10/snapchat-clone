@@ -7,7 +7,7 @@ import { logonRoute } from './routes/logon'
 import { logoutRoute } from './routes/logout'
 import { friendRequestsRoute } from './routes/friendreqsts'
 import { userRequestRoute } from './routes/userrequests'
-import { friendsRoute } from './routes/friendrqsts'
+import { friendsRoute } from './routes/friends'
 
 const app = express()
 

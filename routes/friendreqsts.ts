@@ -4,6 +4,7 @@ import { token } from '../include/token'
 import { anyuser, friendship } from '../include/users'
 import { User, Friend } from '../types/types'
 import { isUser } from '../types/typechecker'
+import { keygen } from '../include/keygen'
 
 export const friendRequestsRoute = express.Router()
 
@@ -58,15 +59,16 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
             const touser = await anyuser.get(touserid)
             if (touser == null || !isUser(touser)) return
 
+            const friendship_chatid = keygen.chatid()
             const friendship: Friend = {
                 userid: touserid,
-                messages: [],
+                chatid: friendship_chatid,
                 friendssince: Date.now(),
                 wallpaper: "#00000000"
             }
             const friendshipR: Friend = {
                 userid: currentuser.userid,
-                messages: [],
+                chatid: friendship_chatid,
                 friendssince: Date.now(),
                 wallpaper: "#00000000"
             }
