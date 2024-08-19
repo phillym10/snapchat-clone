@@ -8,9 +8,9 @@ async function searchusers(query: string) {
     })
 }
 
-async function getUserFriendRequests() {
+async function getAllUserFriendRequests() {
     return new Promise((resolve) => {
-        fetch(`/fr/requests`, {
+        fetch(`/fr/allfr`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' }
         }).then((response) => { return response.json() })

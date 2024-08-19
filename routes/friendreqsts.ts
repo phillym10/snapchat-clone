@@ -30,6 +30,25 @@ friendRequestsRoute.post("/searchusers/:q", (request, response) => {
     }
 })
 
+friendRequestsRoute.post("/allfr", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/signup'); else {
+        const currentuser: User | any = await token.getuser(userAuthToken)
+        const users: any[] = []
+        if (currentuser == null || !isUser(currentuser)) return
+
+        if (currentuser.friendRequests.length > 0) {
+            for (let i = 0; i < currentuser.friendRequests.length; i++) {
+                const fr_userid = currentuser.friendRequests[i];
+                const fr_user = await anyuser.get(fr_userid)
+                users.push(fr_user)
+            }
+        }
+
+        response.send({ message: users })
+    }
+})
+
 friendRequestsRoute.post("/sendfr", async (request, response) => {
     const touserid = request.body.touserid
     const userAuthToken = token.auth(request)
@@ -93,24 +112,5 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
                 })
             })
         } else response.send({ message: "fail" })
-    }
-})
-
-friendRequestsRoute.post("/requests", async (request, response) => {
-    const userAuthToken = token.auth(request)
-    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.render('signup'); else {
-        const currentuserid = await token.getkey(userAuthToken, "userid")
-        usersDb.findOne({ userid: currentuserid }, (currentUser: User, err: any) => {
-            if (err) return
-            const frqsts: User[] = []
-            for (let i = 0; i < currentUser.friendRequests.length; i++) {
-                usersDb.findOne({ userid: currentUser.friendRequests[i] }, (data: User, error: any) => {
-                    if (error) return
-                    frqsts.push(data)
-                })
-            }
-
-            response.send({ message: frqsts })
-        })
     }
 })

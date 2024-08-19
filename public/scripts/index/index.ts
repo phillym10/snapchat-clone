@@ -41,7 +41,7 @@ async function allOnloadFunctions() {
     userColorProfile.setAttribute("style", `--color: ${currentUser.usercolor}`)
 
     const findNewFriendsButton = document.querySelector<HTMLButtonElement>("#openFriendRequestsModal")
-    findNewFriendsButton?.addEventListener("click", loadFriendRequests)
+    findNewFriendsButton?.addEventListener("click", async () => { await loadFriendRequests() })
 }
 
 document.addEventListener("DOMContentLoaded", async () => { await allOnloadFunctions(); })
