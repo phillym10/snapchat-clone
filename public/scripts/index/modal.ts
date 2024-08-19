@@ -47,9 +47,9 @@ const ModalController = {
             if (cslider == null) return
             const csliderChosen = cslider.children[1] as HTMLDivElement
             if (csliderChosen == null) return
-            
+
             closeModal()
-            callback(csliderChosen.dataset.color)
+            callback(csliderChosen.getAttribute("color"))
         })
     }
 }

@@ -12,6 +12,5 @@ export function isUser(object: any): object is User {
            typeof object.friends === 'object' &&
            typeof object.friendRequests === 'object' &&
            (typeof object.closeFriend === 'string' || typeof object.closeFriend === 'object') &&
-           typeof object.verified === 'boolean' &&
-           typeof object.mode === 'string'
+           typeof object.verified === 'boolean'
 }

@@ -45,19 +45,21 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
 
 userDNameElement?.addEventListener("click", async () => {
     const currentUser = await getCurrentUser()
-    if (currentUser == undefined) return
+    if (currentUser == undefined || userDNameElement == null) return
     if (!isUser(currentUser)) return
-    ModalController.inputmodal("Display Name", "New Display Name below", currentUser.displayname, (value: any) => {
-        alert(value)
+    ModalController.inputmodal("Display Name", "New Display Name below", currentUser.displayname, async (value: any) => {
+        userDNameElement.innerHTML = value
+        await updateUser("displayname", value)
     })
 })
 
 userNameElement?.addEventListener("click", async () => {
     const currentUser = await getCurrentUser()
-    if (currentUser == undefined) return
+    if (currentUser == undefined || userNameElement == null) return
     if (!isUser(currentUser)) return
-    ModalController.inputmodal("Username", "New Username below", currentUser.username, (value: any) => {
-        alert(value)
+    ModalController.inputmodal("Username", "New Username below", currentUser.username, async (value: any) => {
+        userNameElement.innerHTML = value
+        await updateUser("username", value)
     })
 })
 
@@ -65,7 +67,10 @@ userIconElement?.addEventListener("click", async () => {
     const currentUser = await getCurrentUser()
     if (currentUser == undefined) return
     if (!isUser(currentUser)) return
-    ModalController.colorSlidermodal((value: any) => alert(value))
+    ModalController.colorSlidermodal( async (value: any) => {
+        userIconElement.setAttribute("style", `--color: ${value}`)
+        await updateUser("usercolor", value)
+    })
 })
 
 switchThemeButton?.addEventListener("click", () => {

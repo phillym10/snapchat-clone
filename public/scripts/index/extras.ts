@@ -56,3 +56,13 @@ async function getCurrentUser() {
         .then((data) => resolve(data.message))
     })
 }
+
+async function updateUser(key: string, value: string) {
+    return new Promise((resolve) => {
+        fetch(`/user/update/${key}/${value}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

@@ -9,8 +9,7 @@ export type User = {
     friendRequests: string[],
     blockedUsers: string[],
     closeFriend: object | string | any,
-    verified: boolean,
-    mode: "light" | "dark"
+    verified: boolean
 }
 
 export type Friend = {
