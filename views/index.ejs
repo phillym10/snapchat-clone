@@ -14,6 +14,7 @@
     <script src="scripts/index/extras.js" defer></script>
     <script src="scripts/index/contextmenu.js" defer></script>
     <script src="scripts/index/friendrequests.js" defer></script>
+    <script src="scripts/index/friends.js" defer></script>
 </head>
 <body>
     <div class="body-container" id="body-container" theme="dark">
@@ -138,32 +139,7 @@
             </div>
         </div>
         <!-- Chats -->
-        <div class="col3">
-            <div class="chat">
-                <div class="profile"><i class="fa-solid fa-user"></i></div>
-                <div class="chatinfo">
-                    <div class="name">Nigger</div>
-                    <div class="chat-status">
-                        <div class="nc"><i class="fa-solid fa-stop"></i> New Chat</div>
-                        <i class="bi bi-dot"></i>
-                        <div class="time">2d</div>
-                    </div>
-                </div>
-                <div class="snap"><i class="bi bi-camera"></i></div>
-            </div>
-            <div class="chat">
-                <div class="profile"><i class="fa-solid fa-user"></i></div>
-                <div class="chatinfo">
-                    <div class="name">Nigger</div>
-                    <div class="chat-status">
-                        <div class="dc"><i class="fa-solid fa-stop"></i> Delivered</div>
-                        <i class="bi bi-dot"></i>
-                        <div class="time">2d</div>
-                    </div>
-                </div>
-                <div class="snap"><i class="bi bi-camera"></i></div>
-            </div>
-        </div>
+        <div class="col3" id="friends-chat-list"></div>
     </div>
     <!-- <div class="nofrs">
         <h2>No Friends?</h2>

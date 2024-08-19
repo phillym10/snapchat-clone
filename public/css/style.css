@@ -638,6 +638,7 @@ input[type=file] { display: none; }
     font-size: 3rem;
     border-radius: 50%;
     overflow: hidden;
+    color: var(--color);
 }
 
 .chat .chatinfo {

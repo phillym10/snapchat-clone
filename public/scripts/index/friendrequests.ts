@@ -30,13 +30,13 @@ searchFRInput?.addEventListener("keyup", async () => {
 
     for (let i = 0; i < results.length; i++) {
         if (ufrqsts.includes(results[i].userid)) {
-            const personComponent = fr.personAccept(results[i].color, results[i].displayname, results[i].username, results[i].userid)
+            const personComponent = frComponent.personAccept(results[i].color, results[i].displayname, results[i].username, results[i].userid)
             frResults.innerHTML += personComponent
         } else if (results[i].friendRequests.includes(uid)) {
-            const personComponent = fr.personSent(results[i].color, results[i].displayname, results[i].username, results[i].userid)
+            const personComponent = frComponent.personSent(results[i].color, results[i].displayname, results[i].username, results[i].userid)
             frResults.innerHTML += personComponent
         } else {
-            const personComponent = fr.person(results[i].color, results[i].displayname, results[i].username, results[i].userid)
+            const personComponent = frComponent.person(results[i].color, results[i].displayname, results[i].username, results[i].userid)
             frResults.innerHTML += personComponent
         }
     }

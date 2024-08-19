@@ -7,6 +7,7 @@ import { logonRoute } from './routes/logon'
 import { logoutRoute } from './routes/logout'
 import { friendRequestsRoute } from './routes/friendreqsts'
 import { userRequestRoute } from './routes/userrequests'
+import { friendsRoute } from './routes/friendrqsts'
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use("/", logonRoute)
 app.use("/fr", friendRequestsRoute)
 app.use("/logout", logoutRoute)
 app.use("/user", userRequestRoute)
+app.use("/friends", friendsRoute)
 
 
 app.listen(80)

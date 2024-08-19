@@ -1,4 +1,4 @@
-const fr = {
+const frComponent = {
     person: (color: string, displayname: string, username: string, userid: string) => {
         let component = `
         <div class="person">
@@ -33,6 +33,25 @@ const fr = {
             </div>
             <button class="default" style="--fs: 1rem;" onclick="acceptFr(\'${userid}\')">Accept</button>
         </div>`;
+        return component
+    }
+}
+
+const chatComponent = {
+    friend: (color: string, displayname: string, status: string) => {
+        let component = `
+        <div class="chat">
+            <div class="profile" style="--color: ${color};"><i class="fa-solid fa-user"></i></div>
+            <div class="chatinfo">
+                <div class="name">${displayname}</div>
+                <div class="chat-status">
+                    <div class="dc"><i class="fa-solid fa-stop"></i> ${status}</div>
+                    <i class="bi bi-dot"></i>
+                    <div class="time">2d</div>
+                </div>
+            </div>
+            <div class="snap"><i class="bi bi-camera"></i></div>
+        </div>`
         return component
     }
 }

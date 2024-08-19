@@ -39,3 +39,13 @@ async function acceptFriendRequest(touserid: string) {
         .then((data) => resolve(data.message))
     })
 }
+
+async function loadUserFriends() {
+    return new Promise((resolve) => {
+        fetch(`/friends/allfriends`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
