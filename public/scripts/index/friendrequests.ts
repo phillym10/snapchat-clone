@@ -3,7 +3,7 @@ const friendrequestButton = document.querySelector<HTMLButtonElement>("#frbtn")
 const searchFRInput = document.querySelector<HTMLInputElement>("#search-fr")
 const friendrequestCloseButton = document.querySelector<HTMLDivElement>("#frclsbtn")
 
-friendrequestButton?.addEventListener("click", () => {
+function loadFriendRequests() {
     const frResults = document.querySelector<HTMLDivElement>("#fr-results")
     if (frResults == null) return
     if (friendrequests == null || friendrequestCloseButton == null || searchFRInput == null) return
@@ -13,8 +13,13 @@ friendrequestButton?.addEventListener("click", () => {
 
     friendrequests.classList.add("show")
     searchFRInput.focus()
-    friendrequestCloseButton.addEventListener("click", () => friendrequests.classList.remove("show"))
-})
+    friendrequestCloseButton.addEventListener("click", async () => {
+        friendrequests.classList.remove("show")
+        await allOnloadFunctions()
+    })
+}
+
+friendrequestButton?.addEventListener("click", loadFriendRequests)
 
 searchFRInput?.addEventListener("keyup", async () => {
     const frResults = document.querySelector<HTMLDivElement>("#fr-results")
@@ -51,5 +56,5 @@ async function addFriend(userid: string) {
 async function acceptFr(userid: string) {
     if (friendrequestCloseButton == null) return
     const response = await acceptFriendRequest(userid)
-    if (response == "success") friendrequestCloseButton.click() 
+    if (response == "success") friendrequestCloseButton.click()
 }

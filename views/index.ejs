@@ -18,6 +18,7 @@
     <script src="scripts/index/friendrequests.js" defer></script>
     <script src="scripts/index/friends.js" defer></script>
     <script src="scripts/index/currentuser.js" defer></script>
+    <script src="scripts/index/index.js" defer></script>
 </head>
 <body>
     <div class="body-container" id="body-container" theme="dark">
@@ -122,11 +123,11 @@
             <div class="option red"><i class="fa-regular fa-trash-can"></i> Delete</div>
         </div>
         <div class="col1">
-            <div class="user-profile" id="curretuser-openbtn" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+            <div class="user-profile" id="curretuser-openbtn"><i class="fa-solid fa-user"></i></div>
             <div class="span">Chat</div>
             <div class="friend-requests" id="frbtn">
                 <i class="fa-solid fa-user-plus"></i>
-                <div class="notifs">9+</div>
+                <div class="notifs" id="number-offr"></div>
             </div>
         </div>
         <!-- Stories -->
@@ -148,10 +149,5 @@
         <!-- Chats -->
         <div class="col3" id="friends-chat-list"></div>
     </div>
-    <!-- <div class="nofrs">
-        <h2>No Friends?</h2>
-        <span>Explore and meet new friends</span><br>
-        <button>Find Friends</button>
-    </div> -->
 </body>
 </html>

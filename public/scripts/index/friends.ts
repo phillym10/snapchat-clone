@@ -19,11 +19,14 @@ async function loadFriends() {
     const friends = await loadUserFriends();
     
     if (!Array.isArray(friends)) return
-    for (let i = 0; i < friends.length; i++) {
-        const friend = friends[i];
-        if (friend == null || !isChat(friend)) continue
-        friendsList.innerHTML += chatComponent.friend(friend.usercolor, friend.displayname, "Delivered")
+    if (friends.length > 0) {
+        friendsList.innerHTML = ""
+        for (let i = 0; i < friends.length; i++) {
+            const friend = friends[i];
+            if (friend == null || !isChat(friend)) continue
+            friendsList.innerHTML += chatComponent.friend(friend.usercolor, friend.displayname, "Delivered")
+        }
+    } else {
+        friendsList.innerHTML = chatComponent.nofriends()
     }
 }
-
-window.onload = async () => { await loadFriends() }

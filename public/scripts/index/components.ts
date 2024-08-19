@@ -53,5 +53,14 @@ const chatComponent = {
             <div class="snap"><i class="bi bi-camera"></i></div>
         </div>`
         return component
+    },
+    nofriends: () => {
+        let component = `
+        <div class="nofrs">
+            <h2>No Friends?</h2>
+            <span>Explore and meet new friends</span><br>
+            <button class="default" id="openFriendRequestsModal">Find Friends</button>
+        </div>`
+        return component
     }
 }

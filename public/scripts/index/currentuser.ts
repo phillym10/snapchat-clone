@@ -84,7 +84,8 @@ switchThemeButton?.addEventListener("click", () => {
     bodyContainer.setAttribute("theme", theme)
 })
 
-currentUserProfileCloseButton?.addEventListener("click", () => {
+currentUserProfileCloseButton?.addEventListener("click", async () => {
     if (currentUserProfile == null) return
     currentUserProfile.classList.remove("show")
+    await allOnloadFunctions()
 })

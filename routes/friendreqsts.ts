@@ -89,7 +89,7 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
                 usersDb.update({ userid: touserid }, { friends: touser.friends }, false, (data1: any, error1: any) => {
                     if (error1) return
                     if (data1 !== "updated") return
-                    response.send({ message: `Accepted Friend Request from ${touser.username}` })
+                    response.send({ message: "success" })
                 })
             })
         } else response.send({ message: "fail" })
