@@ -293,7 +293,9 @@ input {
     flex-direction: column;
     gap: 20px;
 }
-.modal div > .cslider .bar {
+.modal div > .cslider input[type=range] {
+    appearance: none;
+    -webkit-appearance: none;
     width: 100%;
     height: 3vh;
     background: linear-gradient(to right,
@@ -306,20 +308,18 @@ input {
         red 100%
     );
     border-radius: 20px;
-    position: relative;
+    padding: 0;
 }
-.modal div > .cslider .bar .thumb {
-    position: absolute;
-    top: 0;
-    left: 0;
-    scale: 1.2;
-    height: 100%;
+.modal div > .cslider input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 4vh;
     aspect-ratio: 1;
     border-radius: 50%;
     border: 3px solid white;
+    background-color: white;
     box-shadow: 0 0 5px 5px #eeeeee1c;
     cursor: grab;
-    transform: translateX(var(--thumb));
 }
 .modal div > .cslider .chosen {
     width: 100%;
