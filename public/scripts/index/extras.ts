@@ -49,3 +49,10 @@ async function loadUserFriends() {
         .then((data) => resolve(data.message))
     })
 }
+
+async function getCurrentUser() {
+    return new Promise((resolve) => {
+        fetch("/user").then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

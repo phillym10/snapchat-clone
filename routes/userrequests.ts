@@ -14,3 +14,12 @@ userRequestRoute.get("/:key", (request, response) => {
         })
     }
 })
+
+userRequestRoute.get("/", (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        usersDb.findOne({ userauthtoken: userAuthToken }, (data: any, error: any) => {
+            if (!error && data) response.send({ message: data })
+        })
+    }
+})
