@@ -64,3 +64,25 @@ const chatComponent = {
         return component
     }
 }
+
+const messageComponent = {
+    message: (usercolor: string, username: string, msg: string[], reactions: string[]) => {
+        let reactionsHtml = ""
+        if (reactions.length > 0) {
+            reactionsHtml = `<div class="reactions">`
+            for (let i = 0; i < reactions.length; i++) {
+                const reaction = reactions[i];
+                reactionsHtml += `<div class="reaction">${reaction}</div>`
+            }
+            reactionsHtml += `</div>`
+        } else reactionsHtml = ""
+        let component = `
+        <div class="chatmsg" style="--profcolor: ${usercolor};">
+            <div class="user">${username}</div>
+            <div class="chats">
+                <div class="">${msg}</div>
+                ${reactions}
+            </div>
+        </div>`
+    }
+}

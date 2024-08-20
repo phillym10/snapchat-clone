@@ -29,7 +29,6 @@ export type Message = {
     reactions: Reaction[],
     saved: true | false,
     replyto: string,
-    maxlength: number,
     chatid: string
 }
 
