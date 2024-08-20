@@ -66,3 +66,13 @@ async function updateUser(key: string, value: string) {
         .then((data) => resolve(data.message))
     })
 }
+
+async function getChatInfo(chatid: string) {
+    return new Promise((resolve) => {
+        fetch(`/chats/${chatid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

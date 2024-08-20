@@ -1,8 +1,8 @@
 import express from 'express'
-import { usersDb } from '../include/dbcnf'
+import { chatsDb, usersDb } from '../include/dbcnf'
 import { token } from '../include/token'
 import { anyuser, friendship } from '../include/users'
-import { User, Friend } from '../types/types'
+import { User, Friend, Chat, ChatLog } from '../types/types'
 import { isUser } from '../types/typechecker'
 import { keygen } from '../include/keygen'
 
@@ -78,37 +78,45 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
             const touser = await anyuser.get(touserid)
             if (touser == null || !isUser(touser)) return
 
-            const friendship_chatid = keygen.chatid()
+            const newfriendchatlog: ChatLog = { log: "Became Friends", time: Date.now() }
+            const newchat: Chat = {
+                chatid: keygen.chatid(),
+                log: newfriendchatlog,
+                users: [currentuser, touser],
+                messages: []
+            }
             const friendship: Friend = {
                 userid: touserid,
-                chatid: friendship_chatid,
+                chatid: newchat.chatid,
                 friendssince: Date.now(),
                 wallpaper: "#00000000"
             }
             const friendshipR: Friend = {
                 userid: currentuser.userid,
-                chatid: friendship_chatid,
+                chatid: newchat.chatid,
                 friendssince: Date.now(),
                 wallpaper: "#00000000"
             }
             currentuser.friends.push(friendship)
             touser.friends.push(friendshipR)
 
-
-            usersDb.update(
-                { userid: currentuser.userid },
-                {
-                    friends: currentuser.friends,
-                    friendRequests: anyuser.deletefriendrequest(currentuser.friendRequests, touserid)
-                }, false,
-                (data: any, error: any) => {
-                if (error) return
-                if (data !== "updated") return
-                    
-                usersDb.update({ userid: touserid }, { friends: touser.friends }, false, (data1: any, error1: any) => {
-                    if (error1) return
-                    if (data1 !== "updated") return
-                    response.send({ message: "success" })
+            chatsDb.insert(newchat, (chatdata: any, err1: any) => {
+                if (err1 || !chatdata) return
+                usersDb.update(
+                    { userid: currentuser.userid },
+                    {
+                        friends: currentuser.friends,
+                        friendRequests: anyuser.deletefriendrequest(currentuser.friendRequests, touserid)
+                    }, false,
+                    (data: any, error: any) => {
+                    if (error) return
+                    if (data !== "updated") return
+                        
+                    usersDb.update({ userid: touserid }, { friends: touser.friends }, false, (data1: any, error1: any) => {
+                        if (error1) return
+                        if (data1 !== "updated") return
+                        response.send({ message: "success" })
+                    })
                 })
             })
         } else response.send({ message: "fail" })

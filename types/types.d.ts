@@ -30,7 +30,7 @@ export type Message = {
     saved: true | false,
     replyto: string,
     maxlength: number,
-    chatid?: string
+    chatid: string
 }
 
 export type Reaction = {
@@ -47,14 +47,14 @@ export type Chat = {
     chatid: string,
     log: ChatLog,
     users: User[],
-    messages: Message[]
+    messages: string[]
 }
 
 export type GroupChat = {
     gchatid: string,
     log: ChatLog,
     users: User[],
-    messages: Message[]
+    messages: string[]
 }
 
 export type Story = {

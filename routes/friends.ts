@@ -22,7 +22,8 @@ friendsRoute.post("/allfriends", async (request, response) => {
             friends.push({
                 userid: currentUser.friends[i].userid,
                 displayname: friend.displayname,
-                usercolor: friend.usercolor
+                usercolor: friend.usercolor,
+                chatid: currentUser.friends[i].chatid
             })
         }
         response.send({ message: friends })
