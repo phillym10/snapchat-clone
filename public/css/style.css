@@ -435,9 +435,20 @@ input {
 .body-container[theme="dark"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #686868; }
 .body-container[theme="light"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #e2e2e2;}
 
-.slideui#chat .chatspace .chats > div:not(.reactions) {
+.slideui#chat .chatspace .chats > div:not(.reactions):not(.snap) {
     padding: 0 5px;
     border-left: 3px solid var(--profcolor);
+}
+
+.slideui#chat .chatspace .chats .snap {
+    padding: 10px 10px;
+    border-left: 3px solid var(--profcolor);
+}
+
+.slideui#chat .chatspace .chats .snap i {
+    background: red;
+    background-clip: text;
+    color: transparent;
 }
 
 .slideui#chat .chatspace .chats > .reactions {
@@ -592,6 +603,66 @@ input[type=file] { display: none; }
     cursor: pointer;
 }
 .currentuserprofile .switch .main.tgl { transform: translateX(100%); }
+
+@keyframes animateviewsnap {
+    0%{
+        scale: 0.2;
+        opacity: 0;
+    }
+    100%{
+        scale: 1;
+        opacity: 1;
+    }
+}
+.view-snap { display: none; }
+.view-snap.show {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    z-index: 4;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    animation: animateviewsnap 0.5s forwards;
+}
+
+.view-snap .vs-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.view-snap .vs-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.view-snap .vs-wrapper .profile {
+    width: 100%;
+    height: 10vh;
+    padding: 30px;
+    background: linear-gradient(to bottom, #00000040, transparent);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    gap: 10px;
+}
+.view-snap .vs-wrapper .profile .usericon {
+    color: var(--profcolor);
+}
 
 .preview-send-snap { display: none; }
 .preview-send-snap.show {

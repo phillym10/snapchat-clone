@@ -44,6 +44,15 @@
                 <div class="tag">💕 Close Friend</div>
             </div>
         </div> -->
+        <div class="view-snap show">
+            <div class="vs-wrapper">
+                <img src="imgs/logo.png" id="view-snap-image">
+                <div class="profile">
+                    <div class="usericon" id="view-snap-usericon" style="--profcolor:#2869f5;"><i class="fa-solid fa-user"></i></div>
+                    <div class="username" id="view-snap-username">drake</div>
+                </div>
+            </div>
+        </div>
         <div class="send-snap" id="send-snap">
             <div class="close-btn" id="send-snap-clsbtn"><i class="fa-solid fa-chevron-down"></i></div><br>
             <div class="title">
@@ -98,16 +107,19 @@
             </div>
             <div class="results" id="fr-results"></div>
         </div>
-        <div class="slideui" id="chat">
+        <div class="slideui" style="transform: translateX(0);" id="chat">
             <div class="cprofile">
                 <i class="fa-solid fa-chevron-left" id="chat-clsbtn"></i>
                 <div class="usericon" id="chat-usricon"><i class="fa-solid fa-user"></i></div>
                 <div class="profilename" id="chat-profilename"></div>
             </div>
-            <div class="chatspace" id="chats-chatspace"></div>
+            <div class="chatspace" id="chats-chatspace">
+                <div class="user" style="--profcolor: #0393ff;">dickson</div>
+                <div class="chats"></div>
+            </div>
             <div class="messagebox">
                 <div>
-                    <div class="attach" id="chats-msgbox-snap"><i class="fa-regular fa-image"></i></div>
+                    <div class="attach" id="chats-msgbox-snap"><i class="bi bi-camera"></i></div>
                     <input type="text" name="message" id="chatbox-message" class="message" autocomplete="off" placeholder="Chat">
                 </div>
             </div>

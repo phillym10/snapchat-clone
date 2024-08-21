@@ -90,5 +90,41 @@ const messageComponent = {
             <div class="">${msg}</div>
         </div>`;
         return component
+    },
+    unopenedSnap: (newmsg: boolean, username: string, usercolor: string) => {
+        let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
+        let component = `
+        ${user_c}
+        <div class="chats" style="--profcolor: ${usercolor};">
+            <div class="snap" onclick="openSnap()"><i class="fa-solid fa-square"></i> Tap to View</div>
+        </div>`;
+        return component
+    },
+    unopenedSnapMine: (newmsg: boolean, username: string, usercolor: string) => {
+        let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
+        let component = `
+        ${user_c}
+        <div class="chats" style="--profcolor: ${usercolor};">
+            <div class="snap" onclick="openSnap()"><i class="fa-solid fa-paper-plane"></i> Delivered</div>
+        </div>`;
+        return component
+    },
+    openedSnap: (newmsg: boolean, username: string, usercolor: string) => {
+        let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
+        let component = `
+        ${user_c}
+        <div class="chats" style="--profcolor: ${usercolor};">
+            <div class="snap" onclick="openSnap()"><i class="fa-regular fa-square"></i> Opened</div>
+        </div>`;
+        return component
+    },
+    openedSnapMine: (newmsg: boolean, username: string, usercolor: string) => {
+        let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
+        let component = `
+        ${user_c}
+        <div class="chats" style="--profcolor: ${usercolor};">
+            <div class="snap" onclick="openSnap()"><i class="fa-regular fa-paper-plane"></i> Opened</div>
+        </div>`;
+        return component
     }
 }

@@ -8,6 +8,11 @@ const previewSnapCloseButton = document.querySelector<HTMLDivElement>("#preview-
 const previewSnapUser = document.querySelector<HTMLDivElement>("#preview-send-snap-usrname")
 const previewSnapImage = document.querySelector<HTMLDivElement>("#preview-send-snap-image")
 
+const viewSnap = document.querySelector<HTMLDivElement>("#view-snap")
+const viewSnapImage = document.querySelector<HTMLDivElement>("#view-snap-image")
+const viewSnapUserName = document.querySelector<HTMLDivElement>("#view-snap-username")
+const viewSnapUserIcon = document.querySelector<HTMLDivElement>("#view-snap-usericon")
+
 sendSnapCloseButton?.addEventListener("click", () => {
     if (sendSnap == null) return
     sendSnap.classList.remove("show")
