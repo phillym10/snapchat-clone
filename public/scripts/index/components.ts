@@ -91,21 +91,21 @@ const messageComponent = {
         </div>`;
         return component
     },
-    unopenedSnap: (newmsg: boolean, username: string, usercolor: string) => {
+    unopenedSnap: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let component = `
         ${user_c}
         <div class="chats" style="--profcolor: ${usercolor};">
-            <div class="snap" onclick="openSnap()"><i class="fa-solid fa-square"></i> Tap to View</div>
+            <div class="snap" onclick="openSnap(this, '${messageid}')"><i class="fa-solid fa-square"></i> Tap to View</div>
         </div>`;
         return component
     },
-    unopenedSnapMine: (newmsg: boolean, username: string, usercolor: string) => {
+    unopenedSnapMine: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let component = `
         ${user_c}
         <div class="chats" style="--profcolor: ${usercolor};">
-            <div class="snap" onclick="openSnap()"><i class="fa-solid fa-paper-plane"></i> Delivered</div>
+            <div class="snap" onclick="openSnap(this, '${messageid}')"><i class="fa-solid fa-paper-plane"></i> Delivered</div>
         </div>`;
         return component
     },
@@ -114,7 +114,7 @@ const messageComponent = {
         let component = `
         ${user_c}
         <div class="chats" style="--profcolor: ${usercolor};">
-            <div class="snap" onclick="openSnap()"><i class="fa-regular fa-square"></i> Opened</div>
+            <div class="snap"><i class="fa-regular fa-square"></i> Opened</div>
         </div>`;
         return component
     },
@@ -123,7 +123,7 @@ const messageComponent = {
         let component = `
         ${user_c}
         <div class="chats" style="--profcolor: ${usercolor};">
-            <div class="snap" onclick="openSnap()"><i class="fa-regular fa-paper-plane"></i> Opened</div>
+            <div class="snap"><i class="fa-regular fa-paper-plane"></i> Opened</div>
         </div>`;
         return component
     }

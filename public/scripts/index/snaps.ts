@@ -29,6 +29,23 @@ previewSnapCloseButton?.addEventListener("click", () => {
     previewSnap.classList.remove("show")
 })
 
+async function openSnap(element: HTMLElement, messageid: string) {
+    if (viewSnap == null || viewSnapImage == null) return
+    if (viewSnapUserName == null || viewSnapUserIcon == null) return
+    if (element == null) return
+
+    const messageSnap: any = await getMessageSnap(messageid)
+    const messageSnapOwner: any = await getMessageSnapOwner(messageid)
+    console.log([messageSnap,messageSnapOwner])
+
+    // element.setAttribute("onclick", "")
+    // element.innerHTML = `<i class="fa-regular fa-square"></i> Opened`
+    // viewSnap.classList.add("show")
+    // viewSnapImage.setAttribute("src", messageSnap.message)
+    // viewSnapUserName.innerHTML = messageSnapOwner.displayname
+    // viewSnapUserIcon.setAttribute("style", `--profcolor:${messageSnapOwner.usercolor};`)
+}
+
 function previewASnap(chatid: string, receiver_username: string, receiver_userid: string, imgsrc: string) {
     if (previewSnap == null || previewSnapUser == null) return
     if (previewSnapSendIcon == null || previewSnapImage == null) return

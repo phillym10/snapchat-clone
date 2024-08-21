@@ -119,3 +119,25 @@ async function getChatMessages(chatid: string) {
         .then((data) => resolve(data.message))
     })
 }
+
+async function getMessageSnap(messageid: string) {
+    return new Promise((resolve) => {
+        fetch("/msgs/getmessagesnap", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageid: messageid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function getMessageSnapOwner(messageid: string) {
+    return new Promise((resolve) => {
+        fetch("/msgs/getmsgowner", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageid: messageid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

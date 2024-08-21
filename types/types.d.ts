@@ -26,6 +26,7 @@ export type Message = {
     userid: string,
     chat?: string,
     snap?: string,
+    opened?: true | false,
     time: number,
     reactions: Reaction[],
     saved: true | false,

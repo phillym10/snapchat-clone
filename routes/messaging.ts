@@ -1,5 +1,5 @@
 import express from 'express'
-import { chatsDb, messagesDb } from '../include/dbcnf'
+import { chatsDb, messagesDb, usersDb } from '../include/dbcnf'
 import { Chat, Message } from '../types/types'
 import { keygen } from '../include/keygen'
 import { token } from '../include/token'
@@ -23,6 +23,7 @@ messagingRoute.post("/sendmsg", async (request, response) => {
             type: messageType,
             chat: (messageType == "chat" || messageType == "deleted") ? message : "",
             snap: (messageType == "snap") ? message : "",
+            opened: false,
             time: Date.now(),
             reactions: [],
             saved: false,
@@ -60,5 +61,24 @@ messagingRoute.post("/getlastmsg", (request, response) => {
                 response.send({ message: message })
             })
         } else response.send({ message: undefined })
+    })
+})
+
+messagingRoute.post("/getmessagesnap", (request, response) => {
+    const messageid = request.body.messageid
+    messagesDb.findOne({ messageid: messageid }, (msg: Message, error: any) => {
+        if (error) return
+        if (msg) response.send({ message: msg })
+    })
+})
+
+messagingRoute.post("/getmsgowner", (request, response) => {
+    const messageid = request.body.messageid
+    messagesDb.findOne({ messageid: messageid }, (msg: Message, error: any) => {
+        if (error) return
+        usersDb.findOne({ userid: msg.userid }, (user: User, error1: any) => {
+            if (error1) return
+            if (user) response.send({ message: user })
+        })
     })
 })

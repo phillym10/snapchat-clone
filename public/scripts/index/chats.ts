@@ -113,7 +113,7 @@ async function openChat(chatid: string, userid: string) {
     })
 
     chatSnapButton.addEventListener("click", () => {
-        sendASnap(userid)
+        sendASnap(chatid, userid)
     })
 }
 
