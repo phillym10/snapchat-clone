@@ -18,7 +18,7 @@ messagingRoute.post("/sendmsg", async (request, response) => {
         const newMessageId = keygen.msgid()
         const newMessage: Message = {
             messageid: newMessageId,
-            messagetimeout: 3600000,
+            messagetimeout: 0,
             userid: currentUser.userid,
             type: messageType,
             chat: (messageType == "chat" || messageType == "deleted") ? message : "",

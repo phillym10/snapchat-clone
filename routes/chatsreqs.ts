@@ -40,9 +40,7 @@ chatsRoute.post("/getmsgs", (request, response) => {
             for (let i = 0; i < chatdata.messages.length; i++) {
                 const messageId = chatdata.messages[i];
                 const messageData: any = await getMessageInfo(messageId)
-                if ((Date.now() - messageData.time) >= messageData.messagetimeout) {
-                    await deleteMessage(chatid, messageId)
-                } else { messages.push(messageData) }
+                messages.push(messageData)
             }
             response.send({ message: messages })
         })

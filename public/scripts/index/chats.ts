@@ -30,32 +30,35 @@ function checkIfMessagesAreEqual (message1: any, message2: any) {
 
 async function loadChatMessages(chatid: string) {
     if (chatBox == null) return
+    const currentUser: any = await getCurrentUser()
     const chatMessages: any = await getChatMessages(chatid)
 
     if (chatMessages.length > 0 && lastMessage !== undefined) {
         const chat_message = chatMessages[chatMessages.length-1]
         if (!checkIfMessagesAreEqual(lastMessage, chat_message)) {
             const chat_message_owner: any = await getUser(chat_message.userid)
+            chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname) ? "me" : chat_message_owner.displayname
             if (lastMessage.userid !== chat_message_owner.userid && (lastMessage.replyto == "" || lastMessage.replyto == null)) {
                 chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
             } else {
                 chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
             }
         }
+        lastMessage = chat_message
     }
-
-    lastMessage = await getLastMessage(chatid)
 }
 
 async function initialLoadingMessages(chatid: string) {
     if (chatBox == null) return
+    const currentUser: any = await getCurrentUser()
     const chatMessages: any = await getChatMessages(chatid)
 
     if (chatMessages.length > 0) {
         for (let i = 0; i < chatMessages.length; i++) {
             const chat_message = chatMessages[i];
             const chat_message_owner: any = await getUser(chat_message.userid)
-            
+            chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname) ? "me" : chat_message_owner.displayname
+
             if (i == 0) {
                 chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
             } else {
@@ -76,7 +79,6 @@ async function openChat(chatid: string, userid: string) {
     if (chatUserName == null || chatUserIcon == null) return
     if (chatBox == null) return
     const chatUser: any = await getUser(userid)
-    const currentUser: any = await getCurrentUser()
     chatBox.innerHTML = ""
 
     chatUserName.innerHTML = chatUser.displayname
@@ -91,13 +93,13 @@ async function openChat(chatid: string, userid: string) {
         event.preventDefault()
         const message = messageInputBox.value
         if (event.keyCode == 13 && message !== "") {
-            await sendMessage(chatid, message, "chat", "")
             messageInputBox.value = ""
+            await sendMessage(chatid, message, "chat", "")
         }
     })
-
-    chatContainerCloseButton?.addEventListener("click", () => {
-        clearInterval(messagesHandler)
-        chatContainer?.animate([{ transform: "translateX(-100%)" }], { duration: 200, iterations: 1, fill: "forwards" })
-    })
 }
+
+chatContainerCloseButton?.addEventListener("click", () => {
+    clearInterval(messagesHandler)
+    chatContainer?.animate([{ transform: "translateX(-100%)" }], { duration: 200, iterations: 1, fill: "forwards" })
+})
