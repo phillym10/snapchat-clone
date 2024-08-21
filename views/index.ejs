@@ -20,6 +20,7 @@
     <script src="scripts/index/friends.js" defer></script>
     <script src="scripts/index/chats.js" defer></script>
     <script src="scripts/index/currentuser.js" defer></script>
+    <script src="scripts/index/snaps.js" defer></script>
     <script src="scripts/index/index.js" defer></script>
 </head>
 <body>
@@ -43,6 +44,26 @@
                 <div class="tag">💕 Close Friend</div>
             </div>
         </div> -->
+        <div class="send-snap" id="send-snap">
+            <div class="close-btn" id="send-snap-clsbtn"><i class="fa-solid fa-chevron-down"></i></div><br>
+            <div class="title">
+                <div>Send to</div>
+                <div id="send-snap-username">Drake</div>
+            </div>
+            <label for="send-snapfile">
+                <input type="file" name="send-snapfile" id="send-snapfile" accept="images/*">
+                <div class="snap-box">Tap or Click to add image</div>
+            </label>
+        </div>
+        <div class="preview-send-snap" id="preview-send-snap">
+            <div class="prvwss-wrapper">
+                <img src="imgs/logo.png" id="preview-send-snap-image" alt="">
+                <div class="close" id="preview-send-snap-closebtn"><i class="fa-solid fa-xmark"></i></div>
+                <div class="sendto">
+                    <span class="username" id="preview-send-snap-usrname" onclick="sendMessageSnap(this)">Drake</span><i class="fa-solid fa-play"></i>
+                </div>
+            </div>
+        </div>
         <div class="currentuserprofile" id="currentuserprofile">
             <div class="col-0">
                 <div id="curretuser-clsbtn"><i class="fa-solid fa-chevron-down"></i></div>
@@ -86,10 +107,7 @@
             <div class="chatspace" id="chats-chatspace"></div>
             <div class="messagebox">
                 <div>
-                    <label for="picture">
-                        <input type="file" name="picture" id="picture" accept="images/*">
-                        <div class="attach"><i class="fa-regular fa-image"></i></div>
-                    </label>
+                    <div class="attach" id="chats-msgbox-snap"><i class="fa-regular fa-image"></i></div>
                     <input type="text" name="message" id="chatbox-message" class="message" autocomplete="off" placeholder="Chat">
                 </div>
             </div>

@@ -6,6 +6,8 @@ const messageInputBox = document.querySelector<HTMLInputElement>("#chatbox-messa
 const chatUserName = document.querySelector<HTMLDivElement>("#chat-profilename")
 const chatUserIcon = document.querySelector<HTMLDivElement>("#chat-usricon")
 
+const chatSnapButton = document.querySelector<HTMLDivElement>("#chats-msgbox-snap")
+
 const chatBox = document.querySelector<HTMLDivElement>("#chats-chatspace")
 let messagesHandler: any = null;
 let lastMessage: any = null;
@@ -77,7 +79,7 @@ async function initialLoadingMessages(chatid: string) {
 async function openChat(chatid: string, userid: string) {
     if (messageInputBox == null || chatContainer == null) return
     if (chatUserName == null || chatUserIcon == null) return
-    if (chatBox == null) return
+    if (chatBox == null || chatSnapButton == null) return
     const chatUser: any = await getUser(userid)
     chatBox.innerHTML = ""
 
@@ -96,6 +98,10 @@ async function openChat(chatid: string, userid: string) {
             messageInputBox.value = ""
             await sendMessage(chatid, message, "chat", "")
         }
+    })
+
+    chatSnapButton.addEventListener("click", () => {
+        sendASnap(userid)
     })
 }
 

@@ -475,11 +475,13 @@ input[type=file] { display: none; }
     align-items: center;
     justify-content: center;
 }
-.slideui#chat .messagebox label .attach {
+.slideui#chat .messagebox .attach {
+    width: 15%;
     height: 85%;
     padding: 12px 20px;
     font-size: 1.4rem;
     text-align: center;
+    cursor: pointer;
 }
 .slideui#chat .messagebox input {
     flex-grow: 1;
@@ -591,6 +593,120 @@ input[type=file] { display: none; }
 }
 .currentuserprofile .switch .main.tgl { transform: translateX(100%); }
 
+.preview-send-snap { display: none; }
+.preview-send-snap.show {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    z-index: 4;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    transform: translateY(0);
+}
+
+.preview-send-snap .prvwss-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.preview-send-snap .prvwss-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.preview-send-snap .prvwss-wrapper .sendto {
+    width: 100%;
+    height: 10vh;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    font-size: 1.3rem;
+    gap: 10px;
+}
+
+.preview-send-snap .prvwss-wrapper .close {
+    width: 7vh;
+    height: 7vh;
+    padding: 20px 30px;
+    background: linear-gradient(115deg, #00000046, transparent 30%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 2.2rem;
+    cursor: pointer;
+}
+
+.preview-send-snap .prvwss-wrapper .sendto > * {
+    cursor: pointer;
+}
+
+.send-snap { display: none; }
+.send-snap.show {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    z-index: 4;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    transform: translateY(0);
+}
+
+.send-snap .close-btn {
+    width: 40%;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1.7rem;
+}
+.send-snap .title {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    height: 10vh;
+}
+.send-snap .title > div {
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    font-size: 1.2rem;
+}
+.send-snap .title :first-child { font-size: 1.4rem; }
+
+.send-snap .snap-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #dadada;
+    cursor: pointer;
+    font-size: 1.5rem;
+    height: 75vh;
+}
 
 .col1 {
     width: 100%;
