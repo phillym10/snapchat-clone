@@ -9,6 +9,7 @@ import { friendRequestsRoute } from './routes/friendreqsts'
 import { userRequestRoute } from './routes/userrequests'
 import { friendsRoute } from './routes/friends'
 import { chatsRoute } from './routes/chatsreqs'
+import { messagingRoute } from './routes/messaging'
 
 const app = express()
 
@@ -25,6 +26,7 @@ app.use("/logout", logoutRoute)
 app.use("/user", userRequestRoute)
 app.use("/friends", friendsRoute)
 app.use("/chats", chatsRoute)
+app.use("/msgs", messagingRoute)
 
 
 app.listen(80)

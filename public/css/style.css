@@ -48,7 +48,7 @@ button.regular { background-color: #7e7e7e; color: white; }
 button:disabled { background-color: #7e7e7e; color: white; opacity: 0.6; }
 
 .body-container {
-    width: 24vw;
+    width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -387,8 +387,6 @@ input {
     align-items: center;
     gap: 20px;
 }
-
-.slideui#chat .cprofile i { cursor: pointer; }
 .slideui#chat .cprofile .usericon {
     height: 100%;
     font-size: 1.8rem;
@@ -396,7 +394,10 @@ input {
     align-items: center;
     cursor: pointer;
     user-select: none;
+    color: var(--color);
 }
+.slideui#chat .cprofile i { cursor: pointer; color: inherit; }
+
 .slideui#chat .cprofile .profilename {
     font-size: 1.4rem; font-weight: 700;
     cursor: pointer; user-select: none;
@@ -404,17 +405,17 @@ input {
 
 .slideui#chat .chatspace {
     width: 100%;
-    flex-grow: 1;
-}
-
-.slideui#chat .chatspace .chatmsg {
-    width: 100%;
-    padding: 10px;
+    height: 83vh;
     font-size: 1.2rem;
-    user-select: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-.slideui#chat .chatspace .chatmsg .user {
+.slideui#chat .chatspace > div {
+    padding: 0 10px;
+}
+
+.slideui#chat .chatspace .user {
     width: 100%;
     white-space: nowrap;
     text-transform: uppercase;
@@ -424,27 +425,36 @@ input {
     color: var(--profcolor);
 }
 
-.slideui#chat .chatspace .chatmsg .chats {
+.slideui#chat .chatspace .chats {
     width: 100%;
     display: flex;
     flex-direction: column;
+    user-select: none;
 }
+.slideui#chat .chatspace .chats > div:not(.reactions) { cursor: pointer; }
+.body-container[theme="dark"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #686868; }
+.body-container[theme="light"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #e2e2e2;}
 
-.slideui#chat .chatspace .chatmsg .chats > div:not(.reactions) {
+.slideui#chat .chatspace .chats > div:not(.reactions) {
     padding: 0 5px;
     border-left: 3px solid var(--profcolor);
 }
 
-.slideui#chat .chatspace .chatmsg .chats > .reactions {
+.slideui#chat .chatspace .chats > .reactions {
     padding: 0 5px 5px 5px;
     font-size: 1.8rem;
 }
 
-.slideui#chat .chatspace .chatmsg .chats > div.saved {
+.slideui#chat .chatspace .chats > div.saved {
     border-left: 6px solid var(--profcolor);
 }
-.body-container[theme="dark"] .slideui#chat .chatspace .chatmsg .chats > div.saved { background: #3a3a3a; }
-.body-container[theme="light"] .slideui#chat .chatspace .chatmsg .chats > div.saved { background: #cccccc;}
+
+.slideui#chat .chatspace .msgspace {
+    width: 100%;
+    height: 15px;
+}
+.body-container[theme="dark"] .slideui#chat .chatspace .chats > div.saved { background: #3a3a3a; }
+.body-container[theme="light"] .slideui#chat .chatspace .chats > div.saved { background: #cccccc;}
 
 input[type=file] { display: none; }
 .slideui#chat .messagebox {
@@ -456,7 +466,7 @@ input[type=file] { display: none; }
     justify-content: center;
     gap: 8px;
 }
-.slideui#chat .messagebox form {
+.slideui#chat .messagebox div {
     width: 100%;
     height: 100%;
     padding: 10px;
@@ -811,3 +821,26 @@ input[type=file] { display: none; }
     justify-content: center;
     font-size: 2rem;
 }
+
+@media screen and (min-width: 900px) {
+    .body-container {
+        width: 48vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .body-container {
+        width: 24vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+}
+

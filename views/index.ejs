@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="css/style.css">
-
+    
     <script src="scripts/inc/timef.js" defer></script>
     <script src="scripts/index/user.js" defer></script>
     <script src="scripts/index/cslider.js" defer></script>
@@ -80,18 +80,18 @@
         <div class="slideui" id="chat">
             <div class="cprofile">
                 <i class="fa-solid fa-chevron-left" id="chat-clsbtn"></i>
-                <div class="usericon"><i class="fa-solid fa-user"></i></div>
-                <div class="profilename">User</div>
+                <div class="usericon" id="chat-usricon"><i class="fa-solid fa-user"></i></div>
+                <div class="profilename" id="chat-profilename"></div>
             </div>
             <div class="chatspace" id="chats-chatspace"></div>
             <div class="messagebox">
-                <form>
-                    <input type="text" name="message" id="chatbox-message" class="message" placeholder="Chat">
+                <div>
                     <label for="picture">
                         <input type="file" name="picture" id="picture" accept="images/*">
                         <div class="attach"><i class="fa-regular fa-image"></i></div>
                     </label>
-                </form>
+                    <input type="text" name="message" id="chatbox-message" class="message" autocomplete="off" placeholder="Chat">
+                </div>
             </div>
         </div>
         <div class="context-menu" id="context-menu">

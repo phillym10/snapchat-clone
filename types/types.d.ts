@@ -23,6 +23,7 @@ export type Message = {
     messageid: string,
     messagetimeout: number,
     type: "chat" | "snap" | "deleted",
+    userid: string,
     chat?: string,
     snap?: string,
     time: number,

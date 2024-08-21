@@ -40,7 +40,7 @@ async function loadFriends() {
             const currentTime = Date.now()
             if (friend == null || !isChat(friend) || !isChatLogs(chatinfo)) continue
 
-            friendsList.innerHTML += chatComponent.friend(friend.chatid, friend.usercolor, friend.displayname, wtime.format(currentTime - chatinfo.time), chatinfo.log)
+            friendsList.innerHTML += chatComponent.friend(friend.chatid, friend.userid, friend.usercolor, friend.displayname, wtime.format(currentTime - chatinfo.time), chatinfo.log)
         }
     } else {
         friendsList.innerHTML = chatComponent.nofriends()

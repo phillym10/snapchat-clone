@@ -1,12 +1,61 @@
 import express from 'express'
 import { chatsDb, messagesDb, usersDb } from '../include/dbcnf'
 import { token } from '../include/token'
-import { anyuser, friendship } from '../include/users'
 import { User, Friend, Chat, ChatLog, Message } from '../types/types'
-import { isUser } from '../types/typechecker'
-import { keygen } from '../include/keygen'
 
+
+async function getMessageInfo(messageId: string) {
+    return new Promise((resolve) => {
+        messagesDb.findOne({ messageid: messageId }, (msg: Message, error: any) => {
+            if (error) resolve("fail"); else resolve(msg)
+        })
+    })
+}
+
+async function deleteMessage(chatid: string, messageid: string) {
+    chatsDb.findOne({ chatid: chatid }, async (chatdata: Chat, error: any) => {
+        const chatMessages = []
+        for (let i = 0; i < chatdata.messages.length; i++) {
+            const messageId = chatdata.messages[i];
+            if (messageId !== messageid) chatMessages.push(chatdata.messages[i])
+        }
+        chatsDb.update(
+            { chatid: chatid },
+            { messages: chatMessages },
+            false,
+            (data: any, error: any) => {}
+        )
+    })
+}
 export const chatsRoute = express.Router()
+
+
+chatsRoute.post("/getmsgs", (request, response) => {
+    const chatid = request.body.chatid
+    const userAuthToken = token.auth(request)
+
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        chatsDb.findOne({ chatid: chatid }, async (chatdata: Chat, error: any) => {
+            const messages = []
+            for (let i = 0; i < chatdata.messages.length; i++) {
+                const messageId = chatdata.messages[i];
+                const messageData: any = await getMessageInfo(messageId)
+                if ((Date.now() - messageData.time) >= messageData.messagetimeout) {
+                    await deleteMessage(chatid, messageId)
+                } else { messages.push(messageData) }
+            }
+            response.send({ message: messages })
+        })
+    }
+})
+
+chatsRoute.post("/chatinfo/:userid", (request, response) => {
+    const userid = request.params.userid
+    usersDb.findOne({ userid: userid }, (userdata: User, error: any) => {
+        if (error) return
+        response.send({ message: userdata })
+    })
+})
 
 chatsRoute.post("/:id", (request, response) => {
     const chatid = request.params.id
@@ -16,31 +65,3 @@ chatsRoute.post("/:id", (request, response) => {
     })
 })
 
-chatsRoute.post("/sendmsg/:type", (request, response) => {
-    const chatid = request.body.chatid
-    const replyto = request.body.replyto
-    const msg = request.body.msg
-    const snap = request.body.snap
-    const msgType = request.params.type
-    const userAuthToken = token.auth(request)
-
-    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
-        if (msgType !== "snap" && msgType !== "chat" && msgType !== "deleted") return
-        const message: Message = {
-            messageid: keygen.msgid(),
-            messagetimeout: (Date.now()) + 10000, // 10 seconds for testing
-            type: msgType,
-            chat: msg,
-            snap: snap,
-            time:  Date.now(),
-            reactions: [],
-            saved: false,
-            replyto: replyto,
-            chatid: chatid
-        }
-        messagesDb.insert(message, (data: any, error: any) => {
-            if (error || !data) return
-            response.send({ message: "success" })
-        })
-    }
-})

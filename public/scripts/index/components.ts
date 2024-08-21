@@ -38,9 +38,9 @@ const frComponent = {
 }
 
 const chatComponent = {
-    friend: (chatid: string, color: string, displayname: string, formattedTime: string, status: string) => {
+    friend: (chatid: string, userid: string, color: string, displayname: string, formattedTime: string, status: string) => {
         let component = `
-        <div class="chat" onclick="openChat('${chatid}')">
+        <div class="chat" onclick="openChat('${chatid}', '${userid}')">
             <div class="profile" style="--color: ${color};"><i class="fa-solid fa-user"></i></div>
             <div class="chatinfo">
                 <div class="name">${displayname}</div>
@@ -66,23 +66,29 @@ const chatComponent = {
 }
 
 const messageComponent = {
-    message: (usercolor: string, username: string, msg: string[], reactions: string[]) => {
-        let reactionsHtml = ""
-        if (reactions.length > 0) {
-            reactionsHtml = `<div class="reactions">`
-            for (let i = 0; i < reactions.length; i++) {
-                const reaction = reactions[i];
-                reactionsHtml += `<div class="reaction">${reaction}</div>`
-            }
-            reactionsHtml += `</div>`
-        } else reactionsHtml = ""
+    message: (usercolor: string, username: string, msg: string) => {
         let component = `
-        <div class="chatmsg" style="--profcolor: ${usercolor};">
-            <div class="user">${username}</div>
-            <div class="chats">
-                <div class="">${msg}</div>
-                ${reactions}
-            </div>
-        </div>`
+        <div class="msgspace"></div>
+        <div class="user" style="--profcolor: ${usercolor};">${username}</div>
+        <div class="chats" style="--profcolor: ${usercolor};">
+            <div class="">${msg}</div>
+        </div>`;
+        return component
+    },
+    continueMsg: (usercolor: string, username: string, msg: string) => {
+        // let reactionsHtml = ""
+        // if (reactions.length > 0) {
+        //     reactionsHtml = `<div class="reactions">`
+        //     for (let i = 0; i < reactions.length; i++) {
+        //         const reaction = reactions[i];
+        //         reactionsHtml += `<div class="reaction">${reaction}</div>`
+        //     }
+        //     reactionsHtml += `</div>`
+        // } else reactionsHtml = ""
+        let component = `
+        <div class="chats" style="--profcolor: ${usercolor};">
+            <div class="">${msg}</div>
+        </div>`;
+        return component
     }
 }
