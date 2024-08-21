@@ -41,9 +41,15 @@ async function loadChatMessages(chatid: string) {
             const chat_message_owner: any = await getUser(chat_message.userid)
             chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname) ? "me" : chat_message_owner.displayname
             if (lastMessage.userid !== chat_message_owner.userid && (lastMessage.replyto == "" || lastMessage.replyto == null)) {
-                chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                if (chat_message.type == "snap") {
+                } else {
+                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                }
             } else {
-                chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                if (chat_message.type == "snap") {
+                } else {
+                    chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                }
             }
         }
         lastMessage = chat_message
@@ -66,9 +72,15 @@ async function initialLoadingMessages(chatid: string) {
             } else {
                 const lastMessage = chatMessages[i-1];
                 if (lastMessage.userid !== chat_message_owner.userid && (lastMessage.replyto == "" || lastMessage.replyto == null)) {
-                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                    if (chat_message.type == "snap") {
+                    } else {
+                        chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                    }
                 } else {
-                    chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                    if (chat_message.type == "snap") {
+                    } else {
+                        chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                    }
                 }
             }
         }

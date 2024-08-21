@@ -50,7 +50,7 @@ const chatComponent = {
                     <div class="time">${formattedTime}</div>
                 </div>
             </div>
-            <div class="snap" onclick="sendASnap('${userid}')"><i class="bi bi-camera"></i></div>
+            <div class="snap" onclick="sendASnap('${chatid}', '${userid}')"><i class="bi bi-camera"></i></div>
         </div>`
         return component
     },

@@ -7,11 +7,17 @@ const previewSnap = document.querySelector<HTMLDivElement>("#preview-send-snap")
 const previewSnapCloseButton = document.querySelector<HTMLDivElement>("#preview-send-snap-closebtn")
 const previewSnapUser = document.querySelector<HTMLDivElement>("#preview-send-snap-usrname")
 const previewSnapImage = document.querySelector<HTMLDivElement>("#preview-send-snap-image")
+const previewSnapSendIcon = document.querySelector<HTMLDivElement>("#preview-send-snap-sendicon")
 
 const viewSnap = document.querySelector<HTMLDivElement>("#view-snap")
 const viewSnapImage = document.querySelector<HTMLDivElement>("#view-snap-image")
 const viewSnapUserName = document.querySelector<HTMLDivElement>("#view-snap-username")
 const viewSnapUserIcon = document.querySelector<HTMLDivElement>("#view-snap-usericon")
+
+viewSnapImage?.addEventListener("click", () => {
+    if (viewSnap == null) return
+    viewSnap.classList.remove("show")
+})
 
 sendSnapCloseButton?.addEventListener("click", () => {
     if (sendSnap == null) return
@@ -23,15 +29,23 @@ previewSnapCloseButton?.addEventListener("click", () => {
     previewSnap.classList.remove("show")
 })
 
-function previewASnap(receiver_username: string, receiver_userid: string, imgsrc: string) {
-    if (previewSnap == null || previewSnapUser == null || previewSnapImage == null) return
+function previewASnap(chatid: string, receiver_username: string, receiver_userid: string, imgsrc: string) {
+    if (previewSnap == null || previewSnapUser == null) return
+    if (previewSnapSendIcon == null || previewSnapImage == null) return
     previewSnap.classList.add("show")
     previewSnapUser.innerHTML = receiver_username
     previewSnapUser.setAttribute("userid", receiver_userid)
     previewSnapImage.setAttribute("src", imgsrc)
+
+    previewSnapUser.addEventListener("click", async () => {
+        await sendMessage(chatid, imgsrc, "snap", "")
+    })
+    previewSnapSendIcon.addEventListener("click", async () => {
+        await sendMessage(chatid, imgsrc, "snap", "")
+    })
 }
 
-async function sendASnap(receiver_userid: string) {
+async function sendASnap(chatid: string, receiver_userid: string) {
     if (sendSnap == null || sendSnapFileInput == null || sendSnapUser == null) return
     const receivingUser: any = await getUser(receiver_userid)
     sendSnapUser.innerHTML = receivingUser.displayname
@@ -44,7 +58,7 @@ async function sendASnap(receiver_userid: string) {
         if (!file.type.startsWith('image/')) return;
         const reader = new FileReader();
         reader.onload = (e: any) => {
-            previewASnap(receivingUser.displayname, receiver_userid, e.target.result)
+            previewASnap(chatid, receivingUser.displayname, receiver_userid, e.target.result)
         }
         reader.readAsDataURL(file);
     })    
