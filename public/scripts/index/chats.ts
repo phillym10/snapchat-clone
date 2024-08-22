@@ -35,6 +35,9 @@ async function loadChatMessages(chatid: string) {
     const currentUser: any = await getCurrentUser()
     const chatMessages: any = await getChatMessages(chatid)
 
+    if (chatMessages.length == 1 && !checkIfMessagesAreEqual(lastMessage, chatMessages[0])) {
+        lastMessage = { userid: "", replyto: "" }
+    }
     if (chatMessages.length > 0 && lastMessage !== undefined) {
         const chat_message = chatMessages[chatMessages.length-1]
         if (!checkIfMessagesAreEqual(lastMessage, chat_message)) {
@@ -59,6 +62,7 @@ async function loadChatMessages(chatid: string) {
             }
         }
         lastMessage = chat_message
+        chatBox.scrollTop = chatBox.scrollHeight
     }
 }
 
@@ -104,6 +108,7 @@ async function initialLoadingMessages(chatid: string) {
         }
     }
     lastMessage = await getLastMessage(chatid)
+    chatBox.scrollTop = chatBox.scrollHeight
 }
 
 async function openChat(chatid: string, userid: string) {

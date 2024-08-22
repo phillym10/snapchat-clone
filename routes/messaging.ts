@@ -48,7 +48,7 @@ messagingRoute.post("/sendmsg", async (request, response) => {
         const snapFilename: string = (messageType == "snap") ? await saveSnap(message,newMessageId) : ""
         const newMessage: Message = {
             messageid: newMessageId,
-            messagetimeout: 0,
+            messagetimeout: 3600000,
             userid: currentUser.userid,
             type: messageType,
             chat: (messageType == "chat" || messageType == "deleted") ? message : "",
