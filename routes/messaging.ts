@@ -3,8 +3,37 @@ import { chatsDb, messagesDb, usersDb } from '../include/dbcnf'
 import { Chat, Message } from '../types/types'
 import { keygen } from '../include/keygen'
 import { token } from '../include/token'
+import path from 'path'
+import fs from 'fs'
 
 export const messagingRoute = express.Router()
+
+async function saveSnap (base64: string, messageid: string) {
+    let base64Data = base64.replace(/^data:image\/[a-zA-Z0-9+]+;base64,/, '');
+
+    // get extension
+    const match = base64.match(/^data:image\/([a-zA-Z0-9+]+);base64,/);
+    let extension = ""
+    if (match && match[1]) extension = match[1]; // "png", "jpeg", "gif", etc.
+
+    // validate base64 data and get all necessary data
+    const paddedBase64 = base64Data.padEnd(base64.length + (4 - (base64Data.length % 4)) % 4, '=');
+    const buffer = Buffer.from(paddedBase64, 'base64');
+    const filename = `${messageid}.${extension}`;
+    const filepath = path.join('public', 'snaps', filename)
+
+    // check if user already has a profile picture
+    const profilePictures = fs.readdirSync(path.join('public', 'snaps'))
+    const existingUserProfilePicture = profilePictures.find(file => path.parse(file).name === messageid)
+
+    if (existingUserProfilePicture) {
+        const existingUserProfilePicturePath = path.join('public', 'snaps', existingUserProfilePicture);
+        fs.unlinkSync(existingUserProfilePicturePath)
+        fs.writeFileSync(filepath, buffer);
+    } else fs.writeFileSync(filepath, buffer);
+
+    return filename
+}
 
 messagingRoute.post("/sendmsg", async (request, response) => {
     const chatid = request.body.chatid
@@ -16,13 +45,14 @@ messagingRoute.post("/sendmsg", async (request, response) => {
     if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
         const currentUser: any = await token.getuser(userAuthToken)
         const newMessageId = keygen.msgid()
+        const snapFilename: string = (messageType == "snap") ? await saveSnap(message,newMessageId) : ""
         const newMessage: Message = {
             messageid: newMessageId,
             messagetimeout: 0,
             userid: currentUser.userid,
             type: messageType,
             chat: (messageType == "chat" || messageType == "deleted") ? message : "",
-            snap: (messageType == "snap") ? message : "",
+            snap: (messageType == "snap") ? `snaps/${snapFilename}` : "",
             opened: false,
             time: Date.now(),
             reactions: [],

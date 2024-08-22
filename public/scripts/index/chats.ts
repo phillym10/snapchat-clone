@@ -42,11 +42,17 @@ async function loadChatMessages(chatid: string) {
             chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname) ? "me" : chat_message_owner.displayname
             if (lastMessage.userid !== chat_message_owner.userid && (lastMessage.replyto == "" || lastMessage.replyto == null)) {
                 if (chat_message.type == "snap") {
+                    (chat_message.userid == currentUser.userid)
+                    ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+                    : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                 } else {
                     chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
                 }
             } else {
                 if (chat_message.type == "snap") {
+                    (chat_message.userid == currentUser.userid)
+                    ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+                    : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                 } else {
                     chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
                 }
@@ -68,16 +74,28 @@ async function initialLoadingMessages(chatid: string) {
             chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname) ? "me" : chat_message_owner.displayname
 
             if (i == 0) {
-                chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                if (chat_message.type == "snap") {
+                    (chat_message.userid == currentUser.userid)
+                    ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+                    : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+                } else {
+                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                }
             } else {
                 const lastMessage = chatMessages[i-1];
                 if (lastMessage.userid !== chat_message_owner.userid && (lastMessage.replyto == "" || lastMessage.replyto == null)) {
                     if (chat_message.type == "snap") {
+                        (chat_message.userid == currentUser.userid)
+                        ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+                        : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                     } else {
                         chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
                     }
                 } else {
                     if (chat_message.type == "snap") {
+                        (chat_message.userid == currentUser.userid)
+                        ? chatBox.innerHTML += messageComponent.unopenedSnapMine(false, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+                        : chatBox.innerHTML += messageComponent.unopenedSnap(false, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                     } else {
                         chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
                     }
@@ -101,7 +119,7 @@ async function openChat(chatid: string, userid: string) {
     messageInputBox.focus()
 
     await initialLoadingMessages(chatid)
-    messagesHandler = setInterval(async () => { await loadChatMessages(chatid) }, 100)
+    messagesHandler = setInterval(async () => { await loadChatMessages(chatid) }, 1000)
 
     messageInputBox.addEventListener("keyup", async (event) => {
         event.preventDefault()

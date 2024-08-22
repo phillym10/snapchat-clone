@@ -33,20 +33,21 @@ async function openSnap(element: HTMLElement, messageid: string) {
     if (viewSnap == null || viewSnapImage == null) return
     if (viewSnapUserName == null || viewSnapUserIcon == null) return
     if (element == null) return
+    console.log("opening snap")
 
     const messageSnap: any = await getMessageSnap(messageid)
     const messageSnapOwner: any = await getMessageSnapOwner(messageid)
-    console.log([messageSnap,messageSnapOwner])
 
-    // element.setAttribute("onclick", "")
-    // element.innerHTML = `<i class="fa-regular fa-square"></i> Opened`
-    // viewSnap.classList.add("show")
-    // viewSnapImage.setAttribute("src", messageSnap.message)
-    // viewSnapUserName.innerHTML = messageSnapOwner.displayname
-    // viewSnapUserIcon.setAttribute("style", `--profcolor:${messageSnapOwner.usercolor};`)
+    element.setAttribute("onclick", "")
+    element.innerHTML = `<i class="fa-regular fa-square"></i> Opened`
+    viewSnapImage.setAttribute("src", messageSnap.snap)
+    viewSnapUserName.innerHTML = messageSnapOwner.displayname
+    viewSnapUserIcon.setAttribute("style", `--profcolor:${messageSnapOwner.usercolor};`)
+    viewSnap.classList.add("show")
 }
 
 function previewASnap(chatid: string, receiver_username: string, receiver_userid: string, imgsrc: string) {
+    if (sendSnap == null) return
     if (previewSnap == null || previewSnapUser == null) return
     if (previewSnapSendIcon == null || previewSnapImage == null) return
     previewSnap.classList.add("show")
@@ -56,9 +57,13 @@ function previewASnap(chatid: string, receiver_username: string, receiver_userid
 
     previewSnapUser.addEventListener("click", async () => {
         await sendMessage(chatid, imgsrc, "snap", "")
+        previewSnap.classList.remove("show")
+        sendSnap.classList.remove("show")
     })
     previewSnapSendIcon.addEventListener("click", async () => {
         await sendMessage(chatid, imgsrc, "snap", "")
+        previewSnap.classList.remove("show")
+        sendSnap.classList.remove("show")
     })
 }
 
@@ -76,6 +81,7 @@ async function sendASnap(chatid: string, receiver_userid: string) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
             previewASnap(chatid, receivingUser.displayname, receiver_userid, e.target.result)
+            sendSnapFileInput.value = ""
         }
         reader.readAsDataURL(file);
     })    
