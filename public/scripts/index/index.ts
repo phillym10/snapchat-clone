@@ -42,6 +42,9 @@ async function allOnloadFunctions() {
 
     const findNewFriendsButton = document.querySelector<HTMLButtonElement>("#openFriendRequestsModal")
     findNewFriendsButton?.addEventListener("click", async () => { await loadFriendRequests() })
+
+    const logoutButton = document.querySelector<HTMLButtonElement>("#logoutof-acc-user-btn")
+    logoutButton?.addEventListener("click", () => window.location.assign("/logout"))
 }
 
 document.addEventListener("DOMContentLoaded", async () => { await allOnloadFunctions(); })

@@ -49,7 +49,7 @@ async function loadChatMessages(chatid: string) {
                     ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                     : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                 } else {
-                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
                 }
             } else {
                 if (chat_message.type == "snap") {
@@ -57,7 +57,7 @@ async function loadChatMessages(chatid: string) {
                     ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                     : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                 } else {
-                    chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                    chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
                 }
             }
         }
@@ -83,7 +83,7 @@ async function initialLoadingMessages(chatid: string) {
                     ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                     : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                 } else {
-                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
                 }
             } else {
                 const lastMessage = chatMessages[i-1];
@@ -93,7 +93,7 @@ async function initialLoadingMessages(chatid: string) {
                         ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                         : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                     } else {
-                        chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                        chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
                     }
                 } else {
                     if (chat_message.type == "snap") {
@@ -101,7 +101,7 @@ async function initialLoadingMessages(chatid: string) {
                         ? chatBox.innerHTML += messageComponent.unopenedSnapMine(false, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                         : chatBox.innerHTML += messageComponent.unopenedSnap(false, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
                     } else {
-                        chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat)
+                        chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
                     }
                 }
             }
@@ -138,6 +138,12 @@ async function openChat(chatid: string, userid: string) {
     chatSnapButton.addEventListener("click", () => {
         sendASnap(chatid, userid)
     })
+}
+
+async function toggleSaveMsg(element: Element, messageid: string) {
+    element.classList.toggle("saved")
+    const saveState = (element.classList.contains("saved")) ? true : false;
+    await togglesaveMessageInChat(messageid, saveState)
 }
 
 chatContainerCloseButton?.addEventListener("click", () => {

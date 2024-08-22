@@ -66,16 +66,16 @@ const chatComponent = {
 }
 
 const messageComponent = {
-    message: (usercolor: string, username: string, msg: string) => {
+    message: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean) => {
         let component = `
         <div class="msgspace"></div>
         <div class="user" style="--profcolor: ${usercolor};">${username}</div>
-        <div class="chats" style="--profcolor: ${usercolor};">
-            <div class="">${msg}</div>
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+            <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
         </div>`;
         return component
     },
-    continueMsg: (usercolor: string, username: string, msg: string) => {
+    continueMsg: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean) => {
         // let reactionsHtml = ""
         // if (reactions.length > 0) {
         //     reactionsHtml = `<div class="reactions">`
@@ -86,16 +86,17 @@ const messageComponent = {
         //     reactionsHtml += `</div>`
         // } else reactionsHtml = ""
         let component = `
-        <div class="chats" style="--profcolor: ${usercolor};">
-            <div class="">${msg}</div>
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+            <div class="${(saved) ? 'saved' : ''}">${msg}</div>
         </div>`;
         return component
     },
     unopenedSnap: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let component = `
+        <div class="msgspace"></div>
         ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};">
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
             <div class="snap" onclick="openSnap(this, '${messageid}')"><i class="fa-solid fa-square"></i> Tap to View</div>
         </div>`;
         return component
@@ -103,26 +104,29 @@ const messageComponent = {
     unopenedSnapMine: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let component = `
+        <div class="msgspace"></div>
         ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};">
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
             <div class="snap" onclick="openSnap(this, '${messageid}')"><i class="fa-solid fa-paper-plane"></i> Delivered</div>
         </div>`;
         return component
     },
-    openedSnap: (newmsg: boolean, username: string, usercolor: string) => {
+    openedSnap: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let component = `
+        <div class="msgspace"></div>
         ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};">
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
             <div class="snap"><i class="fa-regular fa-square"></i> Opened</div>
         </div>`;
         return component
     },
-    openedSnapMine: (newmsg: boolean, username: string, usercolor: string) => {
+    openedSnapMine: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let component = `
+        <div class="msgspace"></div>
         ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};">
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
             <div class="snap"><i class="fa-regular fa-paper-plane"></i> Opened</div>
         </div>`;
         return component

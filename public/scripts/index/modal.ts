@@ -1,4 +1,5 @@
 const modal = document.querySelector<HTMLDivElement>("#modal")
+type ButtonType = "default" | "danger" | "regular"
 const ModalController = {
     inputmodal: (title: string, placeholder: string, value = "", callback: Function) => {
         if (modal == null) return
@@ -21,6 +22,25 @@ const ModalController = {
             if (input == null || input?.value == null) return
             closeModal()
             callback(input.value)
+        })
+    },
+    yesornomodal: (title: string, text: string, buttonType: ButtonType, callback: Function) => {
+        if (modal == null) return
+        modal.classList.add("show")
+        let component = `
+        <div class="modalbox yesornomodal">
+            <div class="title">${title}</div>
+            <div class="text">${text}</div>
+            <div class="buttons">
+                <button class="${buttonType}" id="yesornomodalbtn">Yes</button>
+                <button class="regular" onclick="closeModal()">No</button>
+            </div>
+        </div>`;
+        modal.innerHTML = component
+        const yesButton = document.querySelector<HTMLButtonElement>("#yesornomodalbtn")
+        yesButton?.addEventListener("click", () => {
+            closeModal()
+            callback()
         })
     },
     colorSlidermodal: (callback: Function) => {

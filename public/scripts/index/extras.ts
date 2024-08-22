@@ -141,3 +141,47 @@ async function getMessageSnapOwner(messageid: string) {
         .then((data) => resolve(data.message))
     })
 }
+
+async function togglesaveMessageInChat(messageid: string, saveState: boolean) {
+    return new Promise((resolve) => {
+        fetch("/msgs/togglesavemsg", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageid: messageid, saveState: saveState })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function getMessage(messageid: string) {
+    return new Promise((resolve) => {
+        fetch("/msgs/getmsg", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageid: messageid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function editMessage(messageid: string, newMsg: string) {
+    return new Promise((resolve) => {
+        fetch("/msgs/editmsg", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageid: messageid, message: newMsg })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function deleteMessage(messageid: string) {
+    return new Promise((resolve) => {
+        fetch("/msgs/deletemsg", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageid: messageid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

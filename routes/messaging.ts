@@ -80,6 +80,14 @@ messagingRoute.post("/sendmsg", async (request, response) => {
     }
 })
 
+messagingRoute.post("/getmsg", (request, response) => {
+    const messageid = request.body.messageid
+    messagesDb.findOne({ messageid: messageid }, (message: Message,  error: any) => {
+        if (error) return
+        response.send({ message: message })
+    })
+})
+
 messagingRoute.post("/getlastmsg", (request, response) => {
     const chatid = request.body.chatid
     chatsDb.findOne({ chatid: chatid }, (chat: Chat, error: any) => {
@@ -99,6 +107,78 @@ messagingRoute.post("/getmessagesnap", (request, response) => {
     messagesDb.findOne({ messageid: messageid }, (msg: Message, error: any) => {
         if (error) return
         if (msg) response.send({ message: msg })
+    })
+})
+
+messagingRoute.post("/togglesavemsg", (request, response) => {
+    const messageid = request.body.messageid
+    const messageSaveState: boolean = request.body.saveState
+    if (messageid == null || typeof messageSaveState !== "boolean") return
+    messagesDb.update(
+        { messageid: messageid },
+        { saved: messageSaveState },
+        false,
+        (data: any, error: any) => { if (!error) response.send({ message: "updated" }) }
+    )
+})
+
+messagingRoute.post("/editmsg", (request, response) => {
+    const messageid = request.body.messageid
+    const newMsg = request.body.message
+    if (messageid == null || newMsg == null) return
+    messagesDb.update(
+        { messageid: messageid },
+        { message: newMsg },
+        false,
+        (data: any, error: any) => { if (!error) response.send({ message: "updated" }) }
+    )
+})
+
+async function deleteMessage(chatid: string, messageid: string) {
+    chatsDb.findOne({ chatid: chatid }, async (chatdata: Chat, error: any) => {
+        const chatMessages = []
+        for (let i = 0; i < chatdata.messages.length; i++) {
+            const messageId = chatdata.messages[i];
+            if (messageId !== messageid) chatMessages.push(chatdata.messages[i])
+        }
+        chatsDb.update(
+            { chatid: chatid },
+            { messages: chatMessages },
+            false,
+            (data: any, error: any) => {}
+        )
+    })
+}
+
+async function deleteSnapMessage(chatid: string, messageid: string, snappath: string) {
+    chatsDb.findOne({ chatid: chatid }, async (chatdata: Chat, error: any) => {
+        const chatMessages = []
+        for (let i = 0; i < chatdata.messages.length; i++) {
+            const messageId = chatdata.messages[i];
+            if (messageId !== messageid) chatMessages.push(chatdata.messages[i])
+        }
+        chatsDb.update(
+            { chatid: chatid },
+            { messages: chatMessages },
+            false,
+            (data: any, error: any) => {
+                fs.unlinkSync(path.join("public", "snaps", snappath))
+            }
+        )
+    })
+}
+
+messagingRoute.post("/deletemsg", (request, response) => {
+    const messageid = request.body.messageid
+    if (messageid == null) return
+    messagesDb.findOne({ messageid: messageid }, async (messageData: Message, error: any) => {
+        if (error) return
+        if (messageData.type == "chat") {
+            await deleteMessage(messageData.chatid, messageData.messageid)
+        } else if (messageData.type == "snap") {
+            if (messageData.snap == undefined || messageData.snap == null) return
+            await deleteSnapMessage(messageData.chatid, messageData.messageid, messageData.snap)
+        }
     })
 })
 

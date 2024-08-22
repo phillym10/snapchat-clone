@@ -25,17 +25,7 @@
 </head>
 <body>
     <div class="body-container" id="body-container" theme="dark">
-        <div class="modal" id="modal">
-            <!-- <div class="modalbox yesornomodal">
-                <div class="title">Remove Friend</div>
-                <div class="text">Are you sure you want to remove user as a friend?</div>
-                <div class="buttons">
-                    <button class="danger">Yes</button>
-                    <button class="default">Yes</button>
-                    <button class="regular">No</button>
-                </div>
-            </div> -->
-        </div>
+        <div class="modal" id="modal"></div>
         <!-- <div class="auserprofile">
             <div class="username" style="--color: #2869f5;">User</div>
             <div class="tags">
@@ -99,6 +89,11 @@
                     <div class="text" id="cup-vtxt"></div>
                 </div>
             </div>
+            <div class="col-2">
+                <div class="form-container">
+                    <button class="default" id="logoutof-acc-user-btn">Logout</button>
+                </div>
+            </div>
         </div>
         <div class="fr" id="fr">
             <div class="search-bar">
@@ -124,18 +119,21 @@
                 </div>
             </div>
         </div>
-        <div class="context-menu" id="context-menu">
-            <div class="optionreactions">
-                <div class="opreact">🤣</div>
-                <div class="opreact">😡</div>
-                <div class="opreact">👍</div>
-                <div class="opreact">👎</div>
-                <div class="opreact">💀</div>
+        <div class="context-menu-modal" id="context-menu-modal">
+            <div class="context-menu" id="context-menu">
+                <div class="optionreactions">
+                    <div class="opreact">🤣</div>
+                    <div class="opreact">😡</div>
+                    <div class="opreact">👍</div>
+                    <div class="opreact">👎</div>
+                    <div class="opreact">💀</div>
+                </div>
+                <div class="option" id="ctxtmenu-savebtn"><i class="fa-solid fa-bookmark"></i> Save</div>
+                <div class="option" id="ctxtmenu-copybtn"><i class="fa-regular fa-copy"></i> Copy</div>
+                <div class="option" id="ctxtmenu-editbtn"><i class="fa-solid fa-pen"></i> Edit</div>
+                <div class="option" id="ctxtmenu-replybtn"><i class="fa-solid fa-reply"></i> Reply</div>
+                <div class="option red" id="ctxtmenu-deletebtn"><i class="fa-regular fa-trash-can"></i> Delete</div>
             </div>
-            <div class="option"><i class="fa-solid fa-bookmark"></i> Save</div>
-            <div class="option"><i class="fa-regular fa-copy"></i> Copy</div>
-            <div class="option"><i class="fa-solid fa-reply"></i> Reply</div>
-            <div class="option red"><i class="fa-regular fa-trash-can"></i> Delete</div>
         </div>
         <div class="col1">
             <div class="user-profile" id="curretuser-openbtn"><i class="fa-solid fa-user"></i></div>
