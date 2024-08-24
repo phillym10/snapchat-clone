@@ -35,6 +35,14 @@ async function saveSnap (base64: string, messageid: string) {
     return filename
 }
 
+function checkIfMessagesAreEqual (message1: any, message2: any) {
+    return (
+        message1.userid === message2.userid &&
+        message1.chatid === message2.chatid &&
+        message1.messageid === message2.messageid
+    )
+}
+
 messagingRoute.post("/sendmsg", async (request, response) => {
     const chatid = request.body.chatid
     const message = request.body.message
@@ -43,6 +51,7 @@ messagingRoute.post("/sendmsg", async (request, response) => {
     const userAuthToken = token.auth(request)
 
     if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        console.log([message,replyToMessageId])
         const currentUser: any = await token.getuser(userAuthToken)
         const newMessageId = keygen.msgid()
         const snapFilename: string = (messageType == "snap") ? await saveSnap(message,newMessageId) : ""
@@ -90,12 +99,14 @@ messagingRoute.post("/getmsg", (request, response) => {
 
 messagingRoute.post("/getlastmsg", (request, response) => {
     const chatid = request.body.chatid
+    const lastMessage = request.body.lastmsg
     chatsDb.findOne({ chatid: chatid }, (chat: Chat, error: any) => {
         if (error) return
         if (chat.messages.length > 0) {
             const lastMessageId = chat.messages[chat.messages.length - 1]
             messagesDb.findOne({ messageid: lastMessageId }, (message: Message,  error1: any) => {
                 if (error) return
+                if (checkIfMessagesAreEqual(message, lastMessage)) response.send({ message: undefined }); else 
                 response.send({ message: message })
             })
         } else response.send({ message: undefined })

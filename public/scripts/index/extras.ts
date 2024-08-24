@@ -87,12 +87,12 @@ async function getChatInfo(chatid: string) {
     })
 }
 
-async function getLastMessage(chatid: string) {
+async function getLastMessage(chatid: string, lastMessage: any) {
     return new Promise((resolve) => {
         fetch(`/msgs/getlastmsg`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chatid: chatid })
+            body: JSON.stringify({ chatid: chatid, lastmsg: lastMessage })
         }).then((response) => { return response.json() })
         .then((data) => resolve(data.message))
     })

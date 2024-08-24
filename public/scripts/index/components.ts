@@ -65,17 +65,23 @@ const chatComponent = {
     }
 }
 
-const messageComponent = {
-    message: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean) => {
-        let component = `
-        <div class="msgspace"></div>
-        <div class="user" style="--profcolor: ${usercolor};">${username}</div>
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-            <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
-        </div>`;
-        return component
-    },
-    continueMsg: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean) => {
+function renderMessageComponent(usercolor: string, username: string, msg: string, messageid: string, saved: boolean, continued: boolean) {
+    let component = (continued == false)
+    ? `
+    <div class="msgspace"></div>
+    <div class="user" style="--profcolor: ${usercolor};">${username}</div>
+    <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+        <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
+    </div>`
+    : `
+    <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+        <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
+    </div>`;
+    return component
+}
+
+let messageComponent = {
+    message: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean, continued: boolean) => {
         // let reactionsHtml = ""
         // if (reactions.length > 0) {
         //     reactionsHtml = `<div class="reactions">`
@@ -85,9 +91,32 @@ const messageComponent = {
         //     }
         //     reactionsHtml += `</div>`
         // } else reactionsHtml = ""
-        let component = `
+
+        let component = (continued == false)
+        ? `
+        <div class="msgspace"></div>
+        <div class="user" style="--profcolor: ${usercolor};">${username}</div>
         <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-            <div class="${(saved) ? 'saved' : ''}">${msg}</div>
+            <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
+        </div>`
+        : `
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+            <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
+        </div>`;
+        return component
+    },
+    replyMessage: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean, replyusername: string, replyusercolor: string, replymsg: string) => {
+        let component = `
+        <div class="msgspace"></div>
+        <div class="user" style="--profcolor: ${usercolor};">${username}</div>
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+            <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">
+                <div class="replied-msg" style="--rcolor: ${replyusercolor};">
+                    <div class="user">${replyusername}</div>
+                    <div class="msg">${replymsg}</div>
+                </div>
+                ${msg}
+            </div>
         </div>`;
         return component
     },
@@ -132,3 +161,4 @@ const messageComponent = {
         return component
     }
 }
+

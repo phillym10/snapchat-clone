@@ -10,104 +10,63 @@ const chatSnapButton = document.querySelector<HTMLDivElement>("#chats-msgbox-sna
 
 const chatBox = document.querySelector<HTMLDivElement>("#chats-chatspace")
 let messagesHandler: any = null;
-let lastMessage: any = null;
-
-function checkIfMessagesAreEqual (message1: any, message2: any) {
-    return (
-        typeof message1 === "object" &&
-        typeof message2 === "object" &&
-        message1.userid === message2.userid &&
-        message1.chat === message2.chat &&
-        message1.chatid === message2.chatid &&
-        message1.messageid === message2.messageid &&
-        message1.messagetimeout === message2.messagetimeout &&
-        message1.reactions.length === message2.reactions.length &&
-        message1.replyto === message2.replyto &&
-        message1.saved === message2.saved &&
-        message1.snap === message2.snap &&
-        message1.time === message2.time &&
-        message1.type === message2.type
-    )
-}
+let lastMessage = {userid: "",messageid:"",chatid:""};
 
 async function loadChatMessages(chatid: string) {
     if (chatBox == null) return
     const currentUser: any = await getCurrentUser()
-    const chatMessages: any = await getChatMessages(chatid)
+    const lastMessagerReceived: any = await getLastMessage(chatid, lastMessage)
 
-    if (chatMessages.length == 1 && !checkIfMessagesAreEqual(lastMessage, chatMessages[0])) {
-        lastMessage = { userid: "", replyto: "" }
-    }
-    if (chatMessages.length > 0 && lastMessage !== undefined) {
-        const chat_message = chatMessages[chatMessages.length-1]
-        if (!checkIfMessagesAreEqual(lastMessage, chat_message)) {
-            const chat_message_owner: any = await getUser(chat_message.userid)
-            chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname) ? "me" : chat_message_owner.displayname
-            if (lastMessage.userid !== chat_message_owner.userid && (lastMessage.replyto == "" || lastMessage.replyto == null)) {
-                if (chat_message.type == "snap") {
-                    (chat_message.userid == currentUser.userid)
-                    ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                    : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                } else {
-                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
-                }
-            } else {
-                if (chat_message.type == "snap") {
-                    (chat_message.userid == currentUser.userid)
-                    ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                    : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                } else {
-                    chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
-                }
-            }
-        }
-        lastMessage = chat_message
-        chatBox.scrollTop = chatBox.scrollHeight
+    if (lastMessagerReceived == undefined) return
+    let lastMessagerReceived_Owner: any = await getUser(lastMessagerReceived.userid)
+    lastMessagerReceived_Owner.displayname = (currentUser.displayname == lastMessagerReceived_Owner.displayname)
+    ? "me"
+    : lastMessagerReceived_Owner.displayname
+    await renderMessage(lastMessagerReceived, lastMessagerReceived_Owner, currentUser)
+    lastMessage = lastMessagerReceived
+}
+
+async function renderMessage(chat_message: any, chat_message_owner: any, currentUser: any) {
+    if (chatBox == null) return
+    const reply_message: any = (chat_message.replyto !== "")
+    ? await getMessage(chat_message.replyto)
+    : ""
+    const reply_message_owner: any = (reply_message !== "")
+    ? await getUser(reply_message.userid)
+    : ""
+
+    if (chat_message.type == "snap") {
+        const messageHTML: string = (chat_message.userid == currentUser.userid)
+        ? messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+        : messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+
+        chatBox.innerHTML += messageHTML
+    } else {
+        const messageHTML: string = (chat_message.replyto !== "")
+        ? messageComponent.replyMessage(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved, reply_message_owner.displayname, reply_message_owner.usercolor, reply_message.chat)
+        : messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved, (lastMessage.userid !== chat_message_owner.userid) ? false : true)
+
+        chatBox.innerHTML += messageHTML
     }
 }
 
 async function initialLoadingMessages(chatid: string) {
     if (chatBox == null) return
     const currentUser: any = await getCurrentUser()
-    const chatMessages: any = await getChatMessages(chatid)
+    const chatMessages: any[] | unknown = await getChatMessages(chatid)
+    if (!Array.isArray(chatMessages)) return
+    if (chatMessages.length < 1) return
 
-    if (chatMessages.length > 0) {
-        for (let i = 0; i < chatMessages.length; i++) {
-            const chat_message = chatMessages[i];
-            const chat_message_owner: any = await getUser(chat_message.userid)
-            chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname) ? "me" : chat_message_owner.displayname
+    for (let i = 0; i < chatMessages.length; i++) {
+        const chat_message = chatMessages[i];
+        let chat_message_owner: any = await getUser(chat_message.userid)
+        chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname)
+        ? "me"
+        : chat_message_owner.displayname
 
-            if (i == 0) {
-                if (chat_message.type == "snap") {
-                    (chat_message.userid == currentUser.userid)
-                    ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                    : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                } else {
-                    chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
-                }
-            } else {
-                const lastMessage = chatMessages[i-1];
-                if (lastMessage.userid !== chat_message_owner.userid && (lastMessage.replyto == "" || lastMessage.replyto == null)) {
-                    if (chat_message.type == "snap") {
-                        (chat_message.userid == currentUser.userid)
-                        ? chatBox.innerHTML += messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                        : chatBox.innerHTML += messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                    } else {
-                        chatBox.innerHTML += messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
-                    }
-                } else {
-                    if (chat_message.type == "snap") {
-                        (chat_message.userid == currentUser.userid)
-                        ? chatBox.innerHTML += messageComponent.unopenedSnapMine(false, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                        : chatBox.innerHTML += messageComponent.unopenedSnap(false, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-                    } else {
-                        chatBox.innerHTML += messageComponent.continueMsg(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved)
-                    }
-                }
-            }
-        }
+        await renderMessage(chat_message, chat_message_owner, currentUser)
+        lastMessage = chat_message
     }
-    lastMessage = await getLastMessage(chatid)
     chatBox.scrollTop = chatBox.scrollHeight
 }
 
@@ -129,10 +88,15 @@ async function openChat(chatid: string, userid: string) {
     messageInputBox.addEventListener("keyup", async (event) => {
         event.preventDefault()
         const message = messageInputBox.value
-        if (event.keyCode == 13 && message !== "") {
-            messageInputBox.value = ""
-            await sendMessage(chatid, message, "chat", "")
-        }
+        const replyto = chatContainer.getAttribute("replyto")
+        const replyMessageBox = document.querySelector<HTMLDivElement>("#replytomsg")
+        if (replyMessageBox == null) return
+        if (event.keyCode !== 13 || message == "" || replyto == null) return
+
+        messageInputBox.value = ""
+        chatContainer.setAttribute("replyto", "")
+        replyMessageBox.classList.remove("show")
+        await sendMessage(chatid, message, "chat", replyto)
     })
 
     chatSnapButton.addEventListener("click", () => {

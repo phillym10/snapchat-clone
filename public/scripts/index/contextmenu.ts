@@ -33,7 +33,28 @@ function chatContextMenu(element: HTMLElement, event: Event, messageid: string) 
         const message = element.children[0].innerHTML
         ModalController.inputmodal("Edit Message", "New Message", message, async (value: string) => {
             await editMessage(messageid, value)
+            contextmenumodal.classList.remove("show")
         })
+    })
+
+    replyButton?.addEventListener("click", async () => {
+        const replyMessageBox = document.querySelector<HTMLDivElement>("#replytomsg")
+        const replyMessageBoxUsername = document.querySelector<HTMLDivElement>("#replytomsg-username")
+        const replyMessageBoxMessage = document.querySelector<HTMLDivElement>("#replytomsg-msg")
+
+        if (replyMessageBox == null || replyMessageBoxMessage == null) return
+        if (replyMessageBoxUsername == null || chatContainer == null) return
+
+        const reply_message: any = await getMessage(messageid)
+        const reply_message_owner: any = await getUser(reply_message.userid)
+
+        replyMessageBox.setAttribute("style", `--profcolor: ${reply_message_owner.usercolor};`)
+        replyMessageBoxUsername.innerHTML = reply_message_owner.displayname
+        replyMessageBoxMessage.innerHTML = reply_message.chat
+        chatContainer.setAttribute("replyto", messageid)
+
+        replyMessageBox.classList.add("show")
+        contextmenumodal.classList.remove("show")
     })
 
     deleteChatButton?.addEventListener("click", () => {
@@ -41,6 +62,7 @@ function chatContextMenu(element: HTMLElement, event: Event, messageid: string) 
             if (chatBox == null) return
             chatBox.innerHTML = ""
             await deleteMessage(messageid)
+            contextmenumodal.classList.remove("show")
         })
     })
 }

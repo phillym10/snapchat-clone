@@ -15,12 +15,12 @@
     <script src="scripts/index/modal.js" defer></script>
     <script src="scripts/index/components.js" defer></script>
     <script src="scripts/index/extras.js" defer></script>
-    <script src="scripts/index/contextmenu.js" defer></script>
     <script src="scripts/index/friendrequests.js" defer></script>
     <script src="scripts/index/friends.js" defer></script>
     <script src="scripts/index/chats.js" defer></script>
     <script src="scripts/index/currentuser.js" defer></script>
     <script src="scripts/index/snaps.js" defer></script>
+    <script src="scripts/index/contextmenu.js" defer></script>
     <script src="scripts/index/index.js" defer></script>
 </head>
 <body>
@@ -102,17 +102,18 @@
             </div>
             <div class="results" id="fr-results"></div>
         </div>
-        <div class="slideui" id="chat">
+        <div class="slideui" id="chat" replyto="">
             <div class="cprofile">
                 <i class="fa-solid fa-chevron-left" id="chat-clsbtn"></i>
                 <div class="usericon" id="chat-usricon"><i class="fa-solid fa-user"></i></div>
                 <div class="profilename" id="chat-profilename"></div>
             </div>
-            <div class="chatspace" id="chats-chatspace">
-                <div class="user" style="--profcolor: #0393ff;">dickson</div>
-                <div class="chats"></div>
-            </div>
+            <div class="chatspace" id="chats-chatspace"></div>
             <div class="messagebox">
+                <div class="replytomsg" id="replytomsg">
+                    <div class="user" id="replytomsg-username"></div>
+                    <div class="msg" id="replytomsg-msg"></div>
+                </div>
                 <div>
                     <div class="attach" id="chats-msgbox-snap"><i class="bi bi-camera"></i></div>
                     <input type="text" name="message" id="chatbox-message" class="message" autocomplete="off" placeholder="Chat">

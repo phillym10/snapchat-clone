@@ -439,8 +439,8 @@ input {
     user-select: none;
 }
 .slideui#chat .chatspace .chats > div:not(.reactions) { cursor: pointer; }
-.body-container[theme="dark"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #686868; }
-.body-container[theme="light"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #e2e2e2;}
+.body-container[theme="dark"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #3f3f3f; }
+.body-container[theme="light"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #f1f1f1;}
 
 .slideui#chat .chatspace .chats > div:not(.reactions):not(.snap) {
     padding: 0 5px;
@@ -463,15 +463,47 @@ input {
     font-size: 1.8rem;
 }
 
+.slideui#chat .chatspace .chats > div .replied-msg {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #757575;
+    margin: 10px 0 10px 5px;
+}
+
+.slideui#chat .chatspace .chats > div .replied-msg .user {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    font-weight: 600;
+    padding: 0;
+    text-transform: uppercase;
+    color: var(--rcolor);
+}
+
+.slideui#chat .chatspace .chats > div .replied-msg .msg {
+    width: 100%;
+    height: fit-content;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    padding: 0 5px;
+    border-left: 3px solid var(--rcolor);
+}
+
 .slideui#chat .chatspace .msgspace {
     width: 100%;
     height: 15px;
 }
 .body-container[theme="dark"] .slideui#chat .chatspace .chats > div.saved { background: #444444; }
-.body-container[theme="light"] .slideui#chat .chatspace .chats > div.saved { background: #b8b8b8;}
-.slideui#chat .chatspace .chats > .saved {
-    border-left: 22px solid var(--profcolor);
-}
+.body-container[theme="light"] .slideui#chat .chatspace .chats > div.saved { background: #e9e9e9;}
 
 input[type=file] { display: none; }
 .slideui#chat .messagebox {
@@ -482,7 +514,48 @@ input[type=file] { display: none; }
     align-items: center;
     justify-content: center;
     gap: 8px;
+    position: relative;
 }
+
+.slideui#chat .messagebox .replytomsg { display: none; }
+.slideui#chat .messagebox .replytomsg.show {
+    position: absolute;
+    top: -120%;
+    left: 5%;
+    width: 90%;
+    height: 9vh;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    box-shadow: 0 0 10px 8px #3d3d3d31;
+}
+
+.slideui#chat .messagebox .replytomsg .user {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    font-weight: 600;
+    padding: 0;
+    text-transform: uppercase;
+    color: var(--profcolor);
+}
+
+.slideui#chat .messagebox .replytomsg .msg {
+    width: 100%;
+    height: fit-content;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    border-left: 3px solid var(--profcolor);
+}
+.body-container[theme="dark"] .slideui#chat .messagebox .replytomsg { background-color: #3f3f3f; color: white; }
+.body-container[theme="light"] .slideui#chat .messagebox .replytomsg { background-color: #fff; color: black; }
+
 .slideui#chat .messagebox div {
     width: 100%;
     height: 100%;
