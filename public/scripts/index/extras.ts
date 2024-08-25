@@ -185,3 +185,14 @@ async function deleteMessage(messageid: string) {
         .then((data) => resolve(data.message))
     })
 }
+
+async function openSnapMsg(messageid: string) {
+    return new Promise((resolve) => {
+        fetch("/msgs/opensnap", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messageid: messageid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

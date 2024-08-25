@@ -65,21 +65,6 @@ const chatComponent = {
     }
 }
 
-function renderMessageComponent(usercolor: string, username: string, msg: string, messageid: string, saved: boolean, continued: boolean) {
-    let component = (continued == false)
-    ? `
-    <div class="msgspace"></div>
-    <div class="user" style="--profcolor: ${usercolor};">${username}</div>
-    <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-        <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
-    </div>`
-    : `
-    <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-        <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
-    </div>`;
-    return component
-}
-
 let messageComponent = {
     message: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean, continued: boolean) => {
         // let reactionsHtml = ""
@@ -96,11 +81,11 @@ let messageComponent = {
         ? `
         <div class="msgspace"></div>
         <div class="user" style="--profcolor: ${usercolor};">${username}</div>
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'chat', ${(username == "me") ? true : false})">
             <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
         </div>`
         : `
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'chat', ${(username == "me") ? true : false})">
             <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
         </div>`;
         return component
@@ -109,7 +94,7 @@ let messageComponent = {
         let component = `
         <div class="msgspace"></div>
         <div class="user" style="--profcolor: ${usercolor};">${username}</div>
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
+        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'chat', ${(username == "me") ? true : false})">
             <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">
                 <div class="replied-msg" style="--rcolor: ${replyusercolor};">
                     <div class="user">${replyusername}</div>
@@ -120,44 +105,54 @@ let messageComponent = {
         </div>`;
         return component
     },
-    unopenedSnap: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
-        let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
-        let component = `
-        <div class="msgspace"></div>
-        ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-            <div class="snap" onclick="openSnap(this, '${messageid}')"><i class="fa-solid fa-square"></i> Tap to View</div>
-        </div>`;
+    deletedMsg: (username: string) => {
+        let component = `<div class="deleted-msg">${username} deleted a message!</div>`
         return component
     },
-    unopenedSnapMine: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
+    snap: (newmsg: boolean, username: string, usercolor: string, messageid: string, opened: boolean, saved: boolean, snappath: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
-        let component = `
-        <div class="msgspace"></div>
-        ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-            <div class="snap" onclick="openSnap(this, '${messageid}')"><i class="fa-solid fa-paper-plane"></i> Delivered</div>
-        </div>`;
+        let msg = (opened)
+        ? `<i class="fa-regular fa-square"></i> Opened`
+        : `<i class="fa-solid fa-square"></i> Tap to View`
+
+        let component = (!saved)
+        ? `
+            <div class="msgspace"></div>
+            ${user_c}
+            <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})" spp="${snappath}">
+                <div class="snap" ${(!opened) ? `onclick="openSnap(this, '${messageid}')"` : ''}>${msg}</div>
+            </div>
+        `
+        : `
+            <div class="msgspace"></div>
+            ${user_c}
+            <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})">
+                <div class="saved" onclick="toggleSaveMsg(this, '${messageid}')"><img src="${snappath}" onclick="openSnapNormal('${snappath}','${username}','${usercolor}')"></div>
+            </div>
+        `
         return component
     },
-    openedSnap: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
+    snapMine: (newmsg: boolean, username: string, usercolor: string, messageid: string, opened: boolean, saved: boolean, snappath: string) => {
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
-        let component = `
-        <div class="msgspace"></div>
-        ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-            <div class="snap"><i class="fa-regular fa-square"></i> Opened</div>
-        </div>`;
-        return component
-    },
-    openedSnapMine: (newmsg: boolean, username: string, usercolor: string, messageid: string) => {
-        let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
-        let component = `
-        <div class="msgspace"></div>
-        ${user_c}
-        <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}')">
-            <div class="snap"><i class="fa-regular fa-paper-plane"></i> Opened</div>
-        </div>`;
+        let msg = (opened)
+        ? `<i class="fa-regular fa-paper-plane"></i> Opened`
+        : `<i class="fa-solid fa-paper-plane"></i> Delivered`
+
+        let component = (!saved)
+        ? `
+            <div class="msgspace"></div>
+            ${user_c}
+            <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})" spp="${snappath}">
+                <div class="snap" ${(!opened) ? `onclick="openSnap(this, '${messageid}')"` : ''}>${msg}</div>
+            </div>
+        `
+        : `
+            <div class="msgspace"></div>
+            ${user_c}
+            <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})">
+                <div class="saved" onclick="toggleSaveMsg(this, '${messageid}')"><img src="${snappath}" onclick="openSnapNormal('${snappath}','${username}','${usercolor}')"></div>
+            </div>
+        `
         return component
     }
 }

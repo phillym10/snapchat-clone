@@ -438,6 +438,28 @@ input {
     flex-direction: column;
     user-select: none;
 }
+
+.slideui#chat .chatspace .chats > div > img {
+    height: 20vh;
+    aspect-ratio: 3/5;
+    border-radius: 8px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.slideui#chat .chatspace .deleted-msg {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+.body-container[theme="dark"] .slideui#chat .chatspace .deleted-msg { color: #b4b4b4; }
+.body-container[theme="light"] .slideui#chat .chatspace .deleted-msg { color: #a5a5a5;}
+
+
 .slideui#chat .chatspace .chats > div:not(.reactions) { cursor: pointer; }
 .body-container[theme="dark"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #3f3f3f; }
 .body-container[theme="light"] .slideui#chat .chatspace .chats > div:not(.reactions):hover { background: #f1f1f1;}

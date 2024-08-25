@@ -1,7 +1,8 @@
 const contextmenumodal = document.querySelector<HTMLDivElement>("#context-menu-modal")
 const contextmenu = document.querySelector<HTMLDivElement>("#context-menu")
 
-function chatContextMenu(element: HTMLElement, event: Event, messageid: string) {
+type msgType = "chat" | "snap"
+function chatContextMenu(element: HTMLElement, event: Event, messageid: string, type: msgType, isUser: boolean) {
     if (contextmenumodal == null || contextmenu == null) return
     event.preventDefault()
     contextmenumodal.classList.add("show")
@@ -12,6 +13,11 @@ function chatContextMenu(element: HTMLElement, event: Event, messageid: string) 
     const editMessageBtn = document.querySelector<HTMLDivElement>("#ctxtmenu-editbtn")
     const replyButton = document.querySelector<HTMLDivElement>("#ctxtmenu-replybtn")
     const deleteChatButton = document.querySelector<HTMLDivElement>("#ctxtmenu-deletebtn")
+
+    if (deleteChatButton == null || editMessageBtn == null || replyButton == null) return
+    deleteChatButton.style.display = (isUser) ? "flex" : "none";
+    editMessageBtn.style.display = (isUser) ? "flex" : "none";
+    replyButton.style.display = (type == "chat") ? "flex" : "none";
 
     document.addEventListener("click", (event: any) => {
         if (!contextmenu.contains(event.target)) contextmenumodal.classList.remove("show")
@@ -57,10 +63,17 @@ function chatContextMenu(element: HTMLElement, event: Event, messageid: string) 
         contextmenumodal.classList.remove("show")
     })
 
-    deleteChatButton?.addEventListener("click", () => {
+    deleteChatButton?.addEventListener("click", async () => {
+        const currentUser: any = await getCurrentUser()
         ModalController.yesornomodal("Delete Message", "Are you sure you want to delete this message?", "danger", async () => {
             if (chatBox == null) return
-            chatBox.innerHTML = ""
+
+            element.setAttribute("class", "deleted-msg")
+            element.setAttribute("style", "")
+            element.setAttribute("oncontextmenu", "")
+            element.previousElementSibling?.remove()
+            element.innerHTML = messageComponent.deletedMsg(currentUser.displayname)
+
             await deleteMessage(messageid)
             contextmenumodal.classList.remove("show")
         })

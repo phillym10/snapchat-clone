@@ -33,16 +33,25 @@ async function openSnap(element: HTMLElement, messageid: string) {
     if (viewSnap == null || viewSnapImage == null) return
     if (viewSnapUserName == null || viewSnapUserIcon == null) return
     if (element == null) return
-    console.log("opening snap")
 
     const messageSnap: any = await getMessageSnap(messageid)
     const messageSnapOwner: any = await getMessageSnapOwner(messageid)
+    await openSnapMsg(messageid)
 
     element.setAttribute("onclick", "")
     element.innerHTML = `<i class="fa-regular fa-square"></i> Opened`
     viewSnapImage.setAttribute("src", messageSnap.snap)
     viewSnapUserName.innerHTML = messageSnapOwner.displayname
     viewSnapUserIcon.setAttribute("style", `--profcolor:${messageSnapOwner.usercolor};`)
+    viewSnap.classList.add("show")
+}
+
+async function openSnapNormal(snap_path: string, owner_dname: string, owner_usercolor: string) {
+    if (viewSnap == null || viewSnapImage == null) return
+    if (viewSnapUserName == null || viewSnapUserIcon == null) return
+    viewSnapImage.setAttribute("src", snap_path)
+    viewSnapUserName.innerHTML = owner_dname
+    viewSnapUserIcon.setAttribute("style", `--profcolor:${owner_usercolor};`)
     viewSnap.classList.add("show")
 }
 

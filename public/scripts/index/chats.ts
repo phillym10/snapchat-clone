@@ -37,9 +37,12 @@ async function renderMessage(chat_message: any, chat_message_owner: any, current
 
     if (chat_message.type == "snap") {
         const messageHTML: string = (chat_message.userid == currentUser.userid)
-        ? messageComponent.unopenedSnapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
-        : messageComponent.unopenedSnap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid)
+        ? messageComponent.snapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid, chat_message.opened, chat_message.saved, chat_message.snap)
+        : messageComponent.snap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid, chat_message.opened, chat_message.saved, chat_message.snap)
 
+        chatBox.innerHTML += messageHTML
+    } else if (chat_message.type == "deleted") {
+        const messageHTML = messageComponent.deletedMsg(chat_message.chat)
         chatBox.innerHTML += messageHTML
     } else {
         const messageHTML: string = (chat_message.replyto !== "")
@@ -59,10 +62,12 @@ async function initialLoadingMessages(chatid: string) {
 
     for (let i = 0; i < chatMessages.length; i++) {
         const chat_message = chatMessages[i];
-        let chat_message_owner: any = await getUser(chat_message.userid)
-        chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname)
-        ? "me"
-        : chat_message_owner.displayname
+        let chat_message_owner: any = (chat_message.type !== "deleted") ? await getUser(chat_message.userid) : ""
+        if (chat_message.type !== "deleted") {
+            chat_message_owner.displayname = (currentUser.displayname == chat_message_owner.displayname)
+            ? "me"
+            : chat_message_owner.displayname
+        }
 
         await renderMessage(chat_message, chat_message_owner, currentUser)
         lastMessage = chat_message

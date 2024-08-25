@@ -5,6 +5,7 @@ import { keygen } from '../include/keygen'
 import { token } from '../include/token'
 import path from 'path'
 import fs from 'fs'
+import { anyuser } from '../include/users'
 
 export const messagingRoute = express.Router()
 
@@ -147,35 +148,37 @@ messagingRoute.post("/editmsg", (request, response) => {
 
 async function deleteMessage(chatid: string, messageid: string) {
     chatsDb.findOne({ chatid: chatid }, async (chatdata: Chat, error: any) => {
-        const chatMessages = []
-        for (let i = 0; i < chatdata.messages.length; i++) {
-            const messageId = chatdata.messages[i];
-            if (messageId !== messageid) chatMessages.push(chatdata.messages[i])
-        }
-        chatsDb.update(
-            { chatid: chatid },
-            { messages: chatMessages },
-            false,
-            (data: any, error: any) => {}
-        )
+        if (error) return
+        if (!chatdata.messages.includes(messageid)) return
+        messagesDb.findOne({ messageid: messageid }, async (message: Message, error1: any) => {
+            if (error1) return
+            const user: any = await anyuser.get(message.userid)
+            messagesDb.update(
+                { chatid: chatid, messageid: messageid },
+                { chat: user.displayname, type: "deleted", userid: "" },
+                false,
+                (data: any, error: any) => {}
+            )
+        })
     })
 }
 
 async function deleteSnapMessage(chatid: string, messageid: string, snappath: string) {
     chatsDb.findOne({ chatid: chatid }, async (chatdata: Chat, error: any) => {
-        const chatMessages = []
-        for (let i = 0; i < chatdata.messages.length; i++) {
-            const messageId = chatdata.messages[i];
-            if (messageId !== messageid) chatMessages.push(chatdata.messages[i])
-        }
-        chatsDb.update(
-            { chatid: chatid },
-            { messages: chatMessages },
-            false,
-            (data: any, error: any) => {
-                fs.unlinkSync(path.join("public", "snaps", snappath))
-            }
-        )
+        if (error) return
+        if (!chatdata.messages.includes(messageid)) return
+        messagesDb.findOne({ messageid: messageid }, async (message: Message, error1: any) => {
+            if (error1) return
+            const user: any = await anyuser.get(message.userid)
+            messagesDb.update(
+                { chatid: chatid, messageid: messageid },
+                { chat: user.displayname, type: "deleted", userid: "" },
+                false,
+                (data: any, error: any) => {
+                    fs.unlinkSync(path.join("public", "snaps", snappath))
+                }
+            )
+        })
     })
 }
 
@@ -184,12 +187,28 @@ messagingRoute.post("/deletemsg", (request, response) => {
     if (messageid == null) return
     messagesDb.findOne({ messageid: messageid }, async (messageData: Message, error: any) => {
         if (error) return
+        console.log(messageid)
         if (messageData.type == "chat") {
             await deleteMessage(messageData.chatid, messageData.messageid)
         } else if (messageData.type == "snap") {
             if (messageData.snap == undefined || messageData.snap == null) return
             await deleteSnapMessage(messageData.chatid, messageData.messageid, messageData.snap)
         }
+    })
+})
+
+messagingRoute.post("/opensnap", (request, response) => {
+    const messageid = request.body.messageid
+    messagesDb.findOne({ messageid: messageid }, (msg: Message, error: any) => {
+        if (error) return
+        if (msg.type !== "snap") return
+        messagesDb.update(
+            { messageid: messageid },
+            { opened: true },
+            false, (user: User, error1: any) => {
+            if (error1) return
+            if (user) response.send({ message: user })
+        })
     })
 })
 
