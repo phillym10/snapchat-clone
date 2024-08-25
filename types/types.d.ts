@@ -41,6 +41,7 @@ export type Reaction = {
 
 export type ChatLog = {
     log: string,
+    userid: string,
     time: number
 }
 
@@ -64,4 +65,11 @@ export type Story = {
     storyimage: string,
     texts: string[],
     timeout: number
+}
+
+export type Streak = {
+    chatid: string,
+    lastuser: string,
+    time: number,
+    streakcount: number
 }

@@ -78,7 +78,7 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
             const touser = await anyuser.get(touserid)
             if (touser == null || !isUser(touser)) return
 
-            const newfriendchatlog: ChatLog = { log: "Friends", time: Date.now() }
+            const newfriendchatlog: ChatLog = { log: "Friends", time: Date.now(), userid: "" }
             const newchat: Chat = {
                 chatid: keygen.chatid(),
                 log: newfriendchatlog,

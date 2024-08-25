@@ -1,6 +1,6 @@
 import express from 'express'
-import { chatsDb, messagesDb, usersDb } from '../include/dbcnf'
-import { Chat, Message } from '../types/types'
+import { chatsDb, messagesDb, streaksDb, usersDb } from '../include/dbcnf'
+import { Chat, Message, Streak } from '../types/types'
 import { keygen } from '../include/keygen'
 import { token } from '../include/token'
 import path from 'path'
@@ -44,6 +44,38 @@ function checkIfMessagesAreEqual (message1: any, message2: any) {
     )
 }
 
+async function handleStreaks(chatid: string, userid: string) {
+    console.log("streaks")
+    streaksDb.findOne({ chatid: chatid }, (data: any, err: any) => {
+        if (data == undefined) {
+            console.log("new streak")
+            const newStreak: Streak = {
+                chatid: chatid,
+                lastuser: userid,
+                streakcount: 1,
+                time: Date.now()
+            }
+            streaksDb.insert(newStreak, (data: any, error1: any) => {})
+        } else {
+            console.log("continue streak")
+            let streak = data;
+            if ((Date.now() - streak.time) < 3600000) {
+                streak.streakcount = (streak.lastuser == userid)
+                ? streak.streakcount
+                : streak.streakcount + 1
+                
+                streak.time = (streak.lastuser == userid)
+                ? streak.time
+                : Date.now()
+                streaksDb.update(
+                    { chatid: chatid },
+                    streak, false, (resultdata: any, error2: any) => {}
+                )
+            }
+        }
+    })
+}
+
 messagingRoute.post("/sendmsg", async (request, response) => {
     const chatid = request.body.chatid
     const message = request.body.message
@@ -52,7 +84,6 @@ messagingRoute.post("/sendmsg", async (request, response) => {
     const userAuthToken = token.auth(request)
 
     if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
-        console.log([message,replyToMessageId])
         const currentUser: any = await token.getuser(userAuthToken)
         const newMessageId = keygen.msgid()
         const snapFilename: string = (messageType == "snap") ? await saveSnap(message,newMessageId) : ""
@@ -70,6 +101,8 @@ messagingRoute.post("/sendmsg", async (request, response) => {
             replyto: replyToMessageId,
             chatid: chatid
         }
+        // if (messageType == "snap") { await handleStreaks(chatid, currentUser.userid) }
+
         messagesDb.insert(newMessage, (data: any, err: any) => {
             if (err) return
             if (!data) return
