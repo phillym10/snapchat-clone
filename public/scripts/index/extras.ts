@@ -109,6 +109,16 @@ async function sendMessage(chatid: string, message: string, type: string, replyt
     })
 }
 
+async function getChat(chatid: string) {
+    return new Promise((resolve) => {
+        fetch(`/chats/getchatjson/${chatid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
 async function getChatMessages(chatid: string) {
     return new Promise((resolve) => {
         fetch("/chats/getmsgs", {
@@ -200,6 +210,26 @@ async function openSnapMsg(messageid: string) {
 async function getChatTags(chatid: string, userid: string) {
     return new Promise((resolve) => {
         fetch(`/misc/gettags/${chatid}/${userid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function makeBestFriend(userid: string) {
+    return new Promise((resolve) => {
+        fetch(`/misc/makebsf/${userid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function removeBestFriend(userid: string) {
+    return new Promise((resolve) => {
+        fetch(`/misc/rmbsf/${userid}`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' }
         }).then((response) => { return response.json() })

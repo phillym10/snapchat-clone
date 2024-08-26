@@ -17,19 +17,35 @@ async function openUserProfile(userid: string, chatid: string) {
     if (userProfileContainer_FriendsSince == null || removeFriendButton == null) return
     if (blockFriendButton == null || makeBestFriendButton == null) return
 
-    const currentUser: any = await getCurrentUser()
+    const chatInfo: any = await getChat(chatid)
     const user: any = await getUser(userid)
     const chatTags: any = await getChatTags(chatid, userid)
     if (!Array.isArray(chatTags)) return
 
     userProfileContainerTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(chatTags[0]))
     if (chatTags[1] > 0) userProfileContainerTags.innerHTML += aUserProfileComponents.streakTag(number$.format(chatTags[1]))
-    if (chatTags[2] == true) userProfileContainerTags.innerHTML += aUserProfileComponents.bsfTag
+    if (chatTags[2] == true) {
+        makeBestFriendButton.innerHTML = "Remove Best Friend"
+        userProfileContainerTags.innerHTML += aUserProfileComponents.bsfTag
+    } else makeBestFriendButton.innerHTML = "Make Best Friend"
 
+    userProfileContainer_FriendsSince.innerHTML = chatInfo.date
     userProfileContainerUser.setAttribute("style", `--color: ${user.usercolor}`)
-    userProfileContainerUser.innerHTML += user.displayname
+    userProfileContainerUser.innerHTML = `<i class="fa-solid fa-user"></i> ${user.displayname}`
 
     userProfileContainer.classList.add("show")
+
+    makeBestFriendButton.addEventListener("click", async () => {
+        if (chatTags[2] == true) {
+            await removeBestFriend(userid).then((data) => {
+                if (data == "deleted") userProfileContainer.classList.remove("show")
+            })
+        } else {
+            await makeBestFriend(userid).then((data) => {
+                if (data == "updated") userProfileContainer.classList.remove("show")
+            })
+        }
+    })
 
     userProfileContainerCloseButton.addEventListener("click", () => {
         userProfileContainer.classList.remove("show")

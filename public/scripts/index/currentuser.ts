@@ -2,7 +2,8 @@ type User = {
     displayname: string,
     username: string,
     usercolor: string,
-    verified: boolean
+    verified: boolean,
+    snapscore: number
 }
 function isUser(object: any): object is User {
     return typeof object === 'object' &&
@@ -10,7 +11,8 @@ function isUser(object: any): object is User {
            typeof object.displayname === 'string' &&
            typeof object.username === 'string' &&
            typeof object.usercolor === 'string' &&
-           typeof object.verified === 'boolean'
+           typeof object.usercolor === 'string' &&
+           typeof object.snapscore === 'number'
 }
 
 const currentUserProfile = document.querySelector<HTMLDivElement>("#currentuserprofile")
@@ -25,10 +27,10 @@ const userDNameElement = document.querySelector<HTMLDivElement>("#cup-dname")
 const userNameElement = document.querySelector<HTMLDivElement>("#cup-username")
 const userVerifiedTextElement = document.querySelector<HTMLDivElement>("#cup-vtxt")
 
+const userTags = document.querySelector<HTMLDivElement>("#cup-tags")
+
 currentUserProfileOpenButton?.addEventListener("click", async () => {
-    if (currentUserProfile == null) return
-    currentUserProfile.classList.add("show")
-    
+    if (currentUserProfile == null || userTags == null) return
     if (userDNameElement == null || userIconElement == null) return
     if (userNameElement == null || userVerifiedTextElement == null) return
 
@@ -41,6 +43,10 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
     userNameElement.innerHTML = currentUser.username
     userVerifiedTextElement.innerHTML = (currentUser.verified) 
     ? "You are a verified user !" : "You are not a verified user !"
+
+    userTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(currentUser.snapscore))
+
+    currentUserProfile.classList.add("show")
 })
 
 userDNameElement?.addEventListener("click", async () => {

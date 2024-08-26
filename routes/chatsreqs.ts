@@ -66,3 +66,11 @@ chatsRoute.post("/:id", (request, response) => {
     })
 })
 
+chatsRoute.post("/getchatjson/:chatid", (request, response) => {
+    const chatid = request.params.chatid
+    chatsDb.findOne({ chatid: chatid }, (chatdata: Chat, error: any) => {
+        if (error) return
+        response.send({ message: chatdata })
+    })
+})
+

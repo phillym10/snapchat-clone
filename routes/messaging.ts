@@ -102,7 +102,14 @@ messagingRoute.post("/sendmsg", async (request, response) => {
             replyto: replyToMessageId,
             chatid: chatid
         }
-        if (messageType == "snap") { await handleStreaks(chatid, currentUser.userid) }
+
+        if (messageType == "snap") {
+            await handleStreaks(chatid, currentUser.userid)
+            usersDb.update(
+                { userid: currentUser.userid },
+                { snapscore: currentUser.snapscore+1 }, false, (data: any, error: any) => {}
+            )
+        }
 
         messagesDb.insert(newMessage, (data: any, err: any) => {
             if (err) return

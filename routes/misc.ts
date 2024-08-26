@@ -39,16 +39,30 @@ miscRoute.post("/makebsf/:userid", async (request, response) => {
         const userid = request.params.userid
         const currentUser: any = await token.getuser(userAuthToken)
         bsfsDb.findOne({ userid: currentUser.userid }, (bsfdata: any, error: any) => {
-            if (error) return
             if (bsfdata == undefined || bsfdata == null) {
                 const newBestfriend = { userid: currentUser.userid, bsfid: userid }
-                bsfsDb.insert(newBestfriend, (data: any, error: any) => {})
+                bsfsDb.insert(newBestfriend, (data: any, error: any) => { response.send({ message: data }) })
             } else {
                 bsfsDb.update(
                     { userid: currentUser.userid, bsfid: userid },
-                    { bsfid: userid }, false, (data: any, err: any) => {}
+                    { bsfid: userid }, false, (data: any, err: any) => { response.send({ message: data }) }
                 )
             }
+        })
+    }
+})
+
+miscRoute.post("/rmbsf/:userid", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const userid = request.params.userid
+        const currentUser: any = await token.getuser(userAuthToken)
+        bsfsDb.findOne({ userid: currentUser.userid }, (bsfdata: any, error: any) => {
+            if (error) return
+            bsfsDb.delete(
+                { userid: currentUser.userid, bsfid: userid },
+                (data: any, err: any) => { response.send({ message: data }) }
+            )
         })
     }
 })

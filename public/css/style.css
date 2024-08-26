@@ -699,6 +699,22 @@ input[type=file] { display: none; }
     padding: 5px;
 }
 
+.currentuserprofile [class*="col-"] .tags {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+.currentuserprofile [class*="col-"] .tag {
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 20px;
+    user-select: none;
+    border: 1px solid #9b9b9b;
+}
+
 .currentuserprofile #curretuser-clsbtn { cursor: pointer; }
 
 .currentuserprofile .col-1 {
