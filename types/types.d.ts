@@ -50,7 +50,8 @@ export type Chat = {
     chatid: string,
     log: ChatLog,
     users: User[],
-    messages: string[]
+    messages: string[],
+    date: string
 }
 
 export type GroupChat = {

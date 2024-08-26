@@ -10,6 +10,7 @@ import { userRequestRoute } from './routes/userrequests'
 import { friendsRoute } from './routes/friends'
 import { chatsRoute } from './routes/chatsreqs'
 import { messagingRoute } from './routes/messaging'
+import { miscRoute } from './routes/misc'
 
 const app = express()
 
@@ -27,6 +28,7 @@ app.use("/user", userRequestRoute)
 app.use("/friends", friendsRoute)
 app.use("/chats", chatsRoute)
 app.use("/msgs", messagingRoute)
+app.use("/misc", miscRoute)
 
 
 app.listen(80)

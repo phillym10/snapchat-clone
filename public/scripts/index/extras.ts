@@ -196,3 +196,13 @@ async function openSnapMsg(messageid: string) {
         .then((data) => resolve(data.message))
     })
 }
+
+async function getChatTags(chatid: string, userid: string) {
+    return new Promise((resolve) => {
+        fetch(`/misc/gettags/${chatid}/${userid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

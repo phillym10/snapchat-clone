@@ -19,7 +19,12 @@ async function openUserProfile(userid: string, chatid: string) {
 
     const currentUser: any = await getCurrentUser()
     const user: any = await getUser(userid)
-    console.log([currentUser,user])
+    const chatTags: any = await getChatTags(chatid, userid)
+    if (!Array.isArray(chatTags)) return
+
+    userProfileContainerTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(chatTags[0]))
+    if (chatTags[1] > 0) userProfileContainerTags.innerHTML += aUserProfileComponents.streakTag(number$.format(chatTags[1]))
+    if (chatTags[2] == true) userProfileContainerTags.innerHTML += aUserProfileComponents.bsfTag
 
     userProfileContainerUser.setAttribute("style", `--color: ${user.usercolor}`)
     userProfileContainerUser.innerHTML += user.displayname

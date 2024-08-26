@@ -5,6 +5,7 @@ import { anyuser, friendship } from '../include/users'
 import { User, Friend, Chat, ChatLog } from '../types/types'
 import { isUser } from '../types/typechecker'
 import { keygen } from '../include/keygen'
+import { wdate } from '../include/datetime'
 
 export const friendRequestsRoute = express.Router()
 
@@ -83,7 +84,8 @@ friendRequestsRoute.post("/acceptfr", async (request, response) => {
                 chatid: keygen.chatid(),
                 log: newfriendchatlog,
                 users: [currentuser, touser],
-                messages: []
+                messages: [],
+                date: wdate.current()
             }
             const friendship: Friend = {
                 userid: touserid,

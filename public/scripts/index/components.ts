@@ -65,6 +65,18 @@ const chatComponent = {
     }
 }
 
+const aUserProfileComponents = {
+    bsfTag: `<div class="tag">😊 Best Friend</div>`,
+    streakTag: (streak_value: string) => {
+        let component = `<div class="tag">🔥 ${streak_value}</div>`
+        return component
+    },
+    snapscoreTag: (score_value: string) => {
+        let component = `<div class="tag">👻 ${score_value}</div>`
+        return component
+    }
+}
+
 let messageComponent = {
     message: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean, continued: boolean) => {
         // let reactionsHtml = ""
