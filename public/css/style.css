@@ -160,9 +160,20 @@ button:disabled { background-color: #7e7e7e; color: white; opacity: 0.6; }
 .body-container[theme="dark"] .auserprofile { background-color: #3f3f3f; color: white; }
 .body-container[theme="light"] .auserprofile { background-color: #fff; color: black; }
 
-.auserprofile {
+@keyframes slideinuserpf {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.auserprofile { display: none; opacity: 0; z-index: -2; }
+.auserprofile.show {
     position: absolute;
-    z-index: 2;
+    z-index: 6;
+    opacity: 1;
     top: 0;
     left: 0;
     width: 100%;
@@ -170,6 +181,63 @@ button:disabled { background-color: #7e7e7e; color: white; opacity: 0.6; }
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 20px;
+    padding-top: 40px;
+}
+
+.auserprofile .back {
+    width: fit-content;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.auserprofile .username {
+    width: 100%;
+    font-size: 1.8rem;
+    padding: 20px 0;
+}
+
+.auserprofile .username i {
+    color: var(--color);
+}
+
+.auserprofile .tags {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+.auserprofile .tags .tag {
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 20px;
+    user-select: none;
+    border: 1px solid #9b9b9b;
+}
+
+.auserprofile .text-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auserprofile .text-container .title { font-size: 1.3rem; }
+.auserprofile .text-container .text { font-size: 1rem; }
+
+.auserprofile .buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.auserprofile .buttons button {
+    width: 100%;
 }
 
 .fr { display: none; }

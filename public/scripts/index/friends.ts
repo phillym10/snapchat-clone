@@ -29,6 +29,7 @@ const friendsList = document.querySelector<HTMLDivElement>("#friends-chat-list")
 
 async function loadFriends() {
     if (friendsList == null || friendsList.innerHTML == null) return
+    friendsList.innerHTML = ""
     const friends = await loadUserFriends();
     
     if (!Array.isArray(friends)) return

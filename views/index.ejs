@@ -21,19 +21,34 @@
     <script src="scripts/index/currentuser.js" defer></script>
     <script src="scripts/index/snaps.js" defer></script>
     <script src="scripts/index/contextmenu.js" defer></script>
+    <script src="scripts/index/chatprofile.js" defer></script>
     <script src="scripts/index/index.js" defer></script>
 </head>
 <body>
     <div class="body-container" id="body-container" theme="dark">
         <div class="modal" id="modal"></div>
-        <!-- <div class="auserprofile">
-            <div class="username" style="--color: #2869f5;">User</div>
-            <div class="tags">
+        <div class="auserprofile" id="auserprofile">
+            <div class="back" id="auserprofile-clsbtn">
+                <i class="fa-solid fa-chevron-left" id="userprofile-clsbtn"></i>
+            </div>
+            <div class="username" id="auserprofile-username" style="--color: #2869f5;"><i class="fa-solid fa-user"></i> </div>
+            <div class="tags" id="auserprofile-tags">
                 <div class="tag">😊 Best Friend</div>
                 <div class="tag">🔥 5</div>
                 <div class="tag">💕 Close Friend</div>
             </div>
-        </div> -->
+            <br>
+            <div class="text-container">
+                <div class="title">Friends Since</div>
+                <div class="text" id="friends-since">29 January 2024</div>
+            </div>
+            <br><br>
+            <div class="buttons">
+                <button class="default" id="auserprofile-mkbsf">Make Best Friend</button>
+                <button class="danger" id="auserprofile-rmf">Remove Friend</button>
+                <button class="danger" id="auserprofile-block">Block</button>
+            </div>
+        </div>
         <div class="view-snap" id="view-snap">
             <div class="vs-wrapper">
                 <img src="imgs/logo.png" id="view-snap-image">
@@ -104,7 +119,7 @@
         </div>
         <div class="slideui" id="chat" replyto="">
             <div class="cprofile">
-                <i class="fa-solid fa-chevron-left" id="chat-clsbtn"></i>
+                <div id="chat-clsbtn"><i class="fa-solid fa-chevron-left"></i></div>
                 <div class="usericon" id="chat-usricon"><i class="fa-solid fa-user"></i></div>
                 <div class="profilename" id="chat-profilename"></div>
             </div>

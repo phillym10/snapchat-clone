@@ -7,6 +7,7 @@ export type User = {
     usercolor: string,
     friends: Friend[],
     friendRequests: string[],
+    snapscore: number,
     blockedUsers: string[],
     closeFriend: object | string | any,
     verified: boolean
@@ -71,5 +72,6 @@ export type Streak = {
     chatid: string,
     lastuser: string,
     time: number,
-    streakcount: number
+    streakcount: number,
+    date: string
 }

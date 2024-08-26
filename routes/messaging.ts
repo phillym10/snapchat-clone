@@ -6,6 +6,7 @@ import { token } from '../include/token'
 import path from 'path'
 import fs from 'fs'
 import { anyuser } from '../include/users'
+import { wdate } from '../include/datetime'
 
 export const messagingRoute = express.Router()
 
@@ -45,24 +46,24 @@ function checkIfMessagesAreEqual (message1: any, message2: any) {
 }
 
 async function handleStreaks(chatid: string, userid: string) {
-    console.log("streaks")
     streaksDb.findOne({ chatid: chatid }, (data: any, err: any) => {
         if (data == undefined) {
-            console.log("new streak")
             const newStreak: Streak = {
                 chatid: chatid,
                 lastuser: userid,
                 streakcount: 1,
-                time: Date.now()
+                time: Date.now(),
+                date: wdate.current()
             }
             streaksDb.insert(newStreak, (data: any, error1: any) => {})
         } else {
-            console.log("continue streak")
             let streak = data;
             if ((Date.now() - streak.time) < 3600000) {
+                const streak_counter = (streak.date == wdate.current()) ? 0 : 1
+
                 streak.streakcount = (streak.lastuser == userid)
                 ? streak.streakcount
-                : streak.streakcount + 1
+                : streak.streakcount + streak_counter
                 
                 streak.time = (streak.lastuser == userid)
                 ? streak.time
@@ -101,7 +102,7 @@ messagingRoute.post("/sendmsg", async (request, response) => {
             replyto: replyToMessageId,
             chatid: chatid
         }
-        // if (messageType == "snap") { await handleStreaks(chatid, currentUser.userid) }
+        if (messageType == "snap") { await handleStreaks(chatid, currentUser.userid) }
 
         messagesDb.insert(newMessage, (data: any, err: any) => {
             if (err) return

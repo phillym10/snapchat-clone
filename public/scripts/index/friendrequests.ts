@@ -28,7 +28,6 @@ async function loadFriendRequests() {
     searchFRInput.focus()
     friendrequestCloseButton.addEventListener("click", async () => {
         friendrequests.classList.remove("show")
-        await allOnloadFunctions()
     })
 }
 

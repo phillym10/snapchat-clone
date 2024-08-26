@@ -26,7 +26,7 @@ async function loadChatMessages(chatid: string) {
     lastMessage = lastMessagerReceived
 }
 
-async function renderMessage(chat_message: any, chat_message_owner: any, currentUser: any) {
+async function renderMessage(chat_message: any, chat_message_owner: any, currentUser: any, firstmsg: boolean = false) {
     if (chatBox == null) return
     const reply_message: any = (chat_message.replyto !== "")
     ? await getMessage(chat_message.replyto)
@@ -45,9 +45,13 @@ async function renderMessage(chat_message: any, chat_message_owner: any, current
         const messageHTML = messageComponent.deletedMsg(chat_message.chat)
         chatBox.innerHTML += messageHTML
     } else {
+        const continueMessage = (firstmsg)
+        ? false
+        : (lastMessage.userid !== chat_message_owner.userid) ? false : true
+
         const messageHTML: string = (chat_message.replyto !== "")
         ? messageComponent.replyMessage(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved, reply_message_owner.displayname, reply_message_owner.usercolor, reply_message.chat)
-        : messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved, (lastMessage.userid !== chat_message_owner.userid) ? false : true)
+        : messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved, continueMessage)
 
         chatBox.innerHTML += messageHTML
     }
@@ -69,7 +73,7 @@ async function initialLoadingMessages(chatid: string) {
             : chat_message_owner.displayname
         }
 
-        await renderMessage(chat_message, chat_message_owner, currentUser)
+        await renderMessage(chat_message, chat_message_owner, currentUser, (i == 0) ? true : false)
         lastMessage = chat_message
     }
     chatBox.scrollTop = chatBox.scrollHeight
@@ -79,6 +83,8 @@ async function openChat(chatid: string, userid: string) {
     if (messageInputBox == null || chatContainer == null) return
     if (chatUserName == null || chatUserIcon == null) return
     if (chatBox == null || chatSnapButton == null) return
+    if (chatContainerCloseButton == null) return
+
     const chatUser: any = await getUser(userid)
     chatBox.innerHTML = ""
 
@@ -89,6 +95,7 @@ async function openChat(chatid: string, userid: string) {
 
     await initialLoadingMessages(chatid)
     messagesHandler = setInterval(async () => { await loadChatMessages(chatid) }, 1000)
+
 
     messageInputBox.addEventListener("keyup", async (event) => {
         event.preventDefault()
@@ -104,6 +111,9 @@ async function openChat(chatid: string, userid: string) {
         await sendMessage(chatid, message, "chat", replyto)
     })
 
+    chatUserName.addEventListener("click", async () => { await openUserProfile(userid, chatid) })
+    chatUserIcon.addEventListener("click", async () => { await openUserProfile(userid, chatid) })
+
     chatSnapButton.addEventListener("click", () => {
         sendASnap(chatid, userid)
     })
@@ -116,6 +126,7 @@ async function toggleSaveMsg(element: Element, messageid: string) {
 }
 
 chatContainerCloseButton?.addEventListener("click", () => {
+    if (chatContainer == null) return
     clearInterval(messagesHandler)
-    chatContainer?.animate([{ transform: "translateX(-100%)" }], { duration: 200, iterations: 1, fill: "forwards" })
+    chatContainer.animate([{ transform: "translateX(-100%)" }], { duration: 200, iterations: 1, fill: "forwards" })
 })

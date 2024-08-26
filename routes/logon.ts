@@ -42,7 +42,7 @@ logonRoute.post("/signuprequest", (request, response) => {
     if (username == "" || password == "") return
     usersDb.findOne({ username: username }, (data: any, err: any) => {
         if (!data || data.length < 1) {
-            const newUser = {
+            const newUser: User = {
                 userid: keygen.uid(),
                 userauthtoken: keygen.uauthtoken(),
                 displayname: username,
@@ -51,10 +51,10 @@ logonRoute.post("/signuprequest", (request, response) => {
                 usercolor: "#5aaaff",
                 friends: [],
                 friendRequests: [],
+                snapscore: 0,
                 blockedUsers: [],
                 closeFriend: null,
-                verified: false,
-                mode: "dark"
+                verified: false
             }
             usersDb.insert(newUser, (data: any, error: any) => {
                 if (!error && data) {
