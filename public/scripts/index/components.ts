@@ -77,6 +77,13 @@ const aUserProfileComponents = {
     }
 }
 
+const miniBioComponent = {
+    load: (emoji: string, text: string, id: string) => {
+        let component = `<div class="tag" id="${id}">${emoji} ${text}</div>`
+        return component
+    }
+}
+
 let messageComponent = {
     message: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean, continued: boolean) => {
         // let reactionsHtml = ""

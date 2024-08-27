@@ -28,6 +28,10 @@ const userNameElement = document.querySelector<HTMLDivElement>("#cup-username")
 const userVerifiedTextElement = document.querySelector<HTMLDivElement>("#cup-vtxt")
 const userTags = document.querySelector<HTMLDivElement>("#cup-tags")
 
+const miniBio = document.querySelector<HTMLDivElement>("#cup-minibio")
+const miniBioEmoji = document.querySelector<HTMLDivElement>("#cup-minibio-emoji")
+const miniBioText = document.querySelector<HTMLDivElement>("#cup-minibio-text")
+
 const bestFriendContainer = document.querySelector<HTMLDivElement>("#bsf-container")
 
 currentUserProfileOpenButton?.addEventListener("click", async () => {
@@ -50,12 +54,20 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
     ? "You are a verified user !" : "You are not a verified user !"
 
     userTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(currentUser.snapscore))
+    userTags.innerHTML += miniBioComponent.load("💀", "hello world", "minibio-c")
+
+    const miniBioContainer = document.querySelector<HTMLDivElement>("#minibio-c")
+    miniBioContainer?.addEventListener("click", () => {
+        ModalController.minibiomodal("Mini Bio", "Mini Bio Text", "", (emoji: any, value: any) => {
+            console.log([emoji, value])
+        })
+    })
 
     if (typeof currentUsersBestFriend == "string") {
         bestFriendContainer.innerHTML = "You don't have a best friend"
     } else if (isUser(currentUsersBestFriend)) {
-        const emojis = ['🔥','❤️','😊','💕']
-        const animations = ['throb','flip','throbfade']
+        const emojis: string[] = ['🔥','❤️','😊','💕']
+        const animations: string[] = ['throb','flip','throbfade']
 
         bestFriendContainer.innerHTML = `
         <div class="bestfriend">
@@ -70,8 +82,8 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
         if (bestFriendUserIcon == null) return
         if (bestFriendEmojiAnimator == null || bestFriendUserName == null) return
 
-        const randomEmoji = emojis[Math.floor(Math.random()* emojis.length)]
-        const randomAnimation = animations[Math.floor(Math.random()* animations.length)]
+        let randomEmoji = emojis[Math.floor(Math.random()* emojis.length)]
+        let randomAnimation = animations[Math.floor(Math.random()* animations.length)]
 
         bestFriendUserIcon.setAttribute("style", `--color: ${currentUsersBestFriend.usercolor}`)
         bestFriendUserName.innerHTML = currentUsersBestFriend.displayname

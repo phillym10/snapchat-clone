@@ -345,6 +345,32 @@ button:disabled { background-color: #7e7e7e; color: white; opacity: 0.6; }
     text-align: center;
 }
 
+.modal div > .emoji-selector {
+    width: 100%;
+    padding: 20px 0 10px 0;
+    display: grid;
+    grid-template-rows: 2;
+    grid-template-columns: repeat(5, 20%);
+}
+
+.modal div > .emoji-selector .emoji-s {
+    padding: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.3rem;
+    border-radius: 8px;
+}
+.modal div > .emoji-selector .emoji-s:hover {
+    opacity: 0.8;
+}
+.modal div > .emoji-selector .emoji-s:hover {
+    scale: 0.96;
+}
+.body-container[theme="dark"] .modal div > .emoji-selector .emoji-s:hover { background: #808080af; }
+.body-container[theme="light"] .modal div > .emoji-selector .emoji-s:hover { background: #cacacaaf; }
+.body-container[theme="dark"] .modal div > .emoji-selector .emoji-s.sel { background: #808080e8; }
+.body-container[theme="light"] .modal div > .emoji-selector .emoji-s.sel { background: #cacacad7; }
+
 .modal div > .input {
     width: 100%;
     padding: 20px 0;

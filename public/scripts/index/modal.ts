@@ -24,6 +24,52 @@ const ModalController = {
             callback(input.value)
         })
     },
+    minibiomodal: (title: string, placeholder: string, value = "", callback: Function) => {
+        if (modal == null) return
+        modal.classList.add("show")
+        let component = `
+        <div class="modalbox inputmodal">
+            <div class="title">${title}</div>
+            <div class="emoji-selector">
+                <div class="emoji-s">😊</div>
+                <div class="emoji-s">😡</div>
+                <div class="emoji-s">🥶</div>
+                <div class="emoji-s sel">💀</div>
+                <div class="emoji-s">💕</div>
+                <div class="emoji-s">😭</div>
+                <div class="emoji-s">😍</div>
+                <div class="emoji-s">🤣</div>
+                <div class="emoji-s">😐</div>
+                <div class="emoji-s">😱</div>
+            </div>
+            <div class="input">
+                <input type="text" name="modalinput" id="modalinput" autocomplete="off" placeholder="${placeholder}" value="${value}">
+            </div>
+            <div class="buttons">
+                <button class="default" id="inputmodalbtn">Yes</button>
+                <button class="regular" onclick="closeModal()">No</button>
+            </div>
+        </div>`;
+        modal.innerHTML = component
+
+        const emojis = document.querySelectorAll(".emoji-s")
+        emojis.forEach((emoji) => {
+            emoji.addEventListener("click", () => {
+                document.querySelector(".emoji-s.sel")?.classList.remove("sel")
+                emoji.classList.add("sel")
+            })
+        })
+
+        const yesButton = document.querySelector<HTMLButtonElement>("#inputmodalbtn")
+        yesButton?.addEventListener("click", () => {
+            const input = document.querySelector<HTMLInputElement>("#modalinput")
+            const emojichoice = document.querySelector<HTMLDivElement>(".emoji-s.sel")
+            if (input == null || input?.value == null) return
+            if (emojichoice == null) return
+            closeModal()
+            callback(emojichoice.innerHTML, input.value)
+        })
+    },
     yesornomodal: (title: string, text: string, buttonType: ButtonType, callback: Function) => {
         if (modal == null) return
         modal.classList.add("show")

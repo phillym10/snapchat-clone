@@ -76,3 +76,9 @@ export type Streak = {
     streakcount: number,
     date: string
 }
+
+export type MiniBio = {
+    userid: string,
+    emoji: string,
+    text: string
+}
