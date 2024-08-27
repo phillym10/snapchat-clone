@@ -8,3 +8,5 @@ package.json
 /node_modules
 /db
 /jsondb
+/public/snaps
+/public/imgs

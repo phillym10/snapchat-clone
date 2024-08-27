@@ -37,13 +37,11 @@ async function openUserProfile(userid: string, chatid: string) {
 
     makeBestFriendButton.addEventListener("click", async () => {
         if (chatTags[2] == true) {
-            await removeBestFriend(userid).then((data) => {
-                if (data == "deleted") userProfileContainer.classList.remove("show")
-            })
+            userProfileContainerTags.lastElementChild?.remove()
+            await removeBestFriend(userid)
         } else {
-            await makeBestFriend(userid).then((data) => {
-                if (data == "updated") userProfileContainer.classList.remove("show")
-            })
+            userProfileContainerTags.innerHTML += aUserProfileComponents.bsfTag
+            await makeBestFriend(userid)
         }
     })
 
