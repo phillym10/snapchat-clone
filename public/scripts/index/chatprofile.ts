@@ -24,6 +24,11 @@ async function openUserProfile(userid: string, chatid: string) {
 
     userProfileContainerTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(chatTags[0]))
     if (chatTags[1] > 0) userProfileContainerTags.innerHTML += aUserProfileComponents.streakTag(number$.format(chatTags[1]))
+
+    userProfileContainerTags.innerHTML += (chatTags[3] == false || chatTags[3] == null)
+    ? miniBioComponent.load("👋", "no mini bio yet", "")
+    : miniBioComponent.load(chatTags[3].emoji, chatTags[3].text, "")
+
     if (chatTags[2] == true) {
         makeBestFriendButton.innerHTML = "Remove Best Friend"
         userProfileContainerTags.innerHTML += aUserProfileComponents.bsfTag
@@ -37,7 +42,7 @@ async function openUserProfile(userid: string, chatid: string) {
 
     makeBestFriendButton.addEventListener("click", async () => {
         if (chatTags[2] == true) {
-            userProfileContainerTags.lastElementChild?.remove()
+            userProfileContainer.classList.remove("show")
             await removeBestFriend(userid)
         } else {
             userProfileContainerTags.innerHTML += aUserProfileComponents.bsfTag

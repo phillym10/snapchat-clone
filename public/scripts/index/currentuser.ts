@@ -1,4 +1,5 @@
 type User = {
+    userid: string,
     displayname: string,
     username: string,
     usercolor: string,
@@ -12,7 +13,8 @@ function isUser(object: any): object is User {
            typeof object.username === 'string' &&
            typeof object.usercolor === 'string' &&
            typeof object.usercolor === 'string' &&
-           typeof object.snapscore === 'number'
+           typeof object.snapscore === 'number' &&
+           typeof object.userid === 'string'
 }
 
 const currentUserProfile = document.querySelector<HTMLDivElement>("#currentuserprofile")
@@ -54,12 +56,12 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
     ? "You are a verified user !" : "You are not a verified user !"
 
     userTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(currentUser.snapscore))
-    userTags.innerHTML += miniBioComponent.load("💀", "hello world", "minibio-c")
+    userTags.innerHTML += miniBioComponent.load("👋", "no mini bio yet", "minibio-c")
 
     const miniBioContainer = document.querySelector<HTMLDivElement>("#minibio-c")
     miniBioContainer?.addEventListener("click", () => {
-        ModalController.minibiomodal("Mini Bio", "Mini Bio Text", "", (emoji: any, value: any) => {
-            console.log([emoji, value])
+        ModalController.minibiomodal("Mini Bio", "Mini Bio Text", "", async (emoji: any, value: any) => {
+            await updateMiniBio(currentUser.userid, emoji, value)
         })
     })
 

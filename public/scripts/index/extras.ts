@@ -246,3 +246,14 @@ async function getCurrentUserBestFriend() {
         .then((data) => resolve(data.message))
     })
 }
+
+async function updateMiniBio(userid: string, emoji: string, text: string) {
+    return new Promise((resolve) => {
+        fetch(`/misc/mkminibio`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userid: userid, emoji: emoji, text: text })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

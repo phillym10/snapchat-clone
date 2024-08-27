@@ -1,7 +1,6 @@
 import express from 'express'
-import { User } from '../types/types'
-import { bsfsDb, chatsDb, messagesDb, streaksDb, usersDb } from '../include/dbcnf'
-import { Chat, Message, Streak } from '../types/types'
+import { bsfsDb, chatsDb, messagesDb, minibioDb, streaksDb, usersDb } from '../include/dbcnf'
+import { Chat, Message, Streak, MiniBio, User } from '../types/types'
 import { keygen } from '../include/keygen'
 import { token } from '../include/token'
 import { anyuser } from '../include/users'
@@ -25,7 +24,13 @@ miscRoute.post("/gettags/:chatid/:userid", async (request, response) => {
             streaksDb.findOne({ chatid: chatid }, (streakdata: Streak, error1: any) => {
                 user_streak_count = (streakdata == undefined || streakdata == null) ? 0 : streakdata.streakcount
                 bsfsDb.findOne({ userid: currentUser.userid, bsfid: userid }, (data: any, error2: any) => {
-                    response.send({ message: [checkUser.snapscore, user_streak_count, (data == undefined) ? false : true] })
+                    minibioDb.findOne({ userid: currentUser.userid }, (minibiodata: MiniBio, error3: any) => {
+                        if (error) {
+                            response.send({ message: [checkUser.snapscore, user_streak_count, (data == undefined) ? false : true, false] })
+                        } else {
+                            response.send({ message: [checkUser.snapscore, user_streak_count, (data == undefined) ? false : true, minibiodata] })
+                        }
+                    })
                 })
             })
         })
@@ -79,6 +84,31 @@ miscRoute.post("/getbsf", async (request, response) => {
                     if (error1) response.send({ message: "nobsf" })
                     response.send({ message: data })
                 })
+            }
+        })
+    }
+})
+
+miscRoute.post("/mkminibio", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const userid = request.body.userid
+        const emoji = request.body.emoji
+        const text = request.body.text
+        const currentUser: any = await token.getuser(userAuthToken)
+        minibioDb.findOne({ userid: userid }, (data: any, err: any) => {
+            if (err) {
+                const newMiniBio: MiniBio = {
+                    userid: currentUser.userid,
+                    emoji: emoji,
+                    text: text
+                }
+                minibioDb.insert(newMiniBio, (data: any, error: any) => response.send({ message: "done" }))
+            } else {
+                minibioDb.update(
+                    { userid: userid },
+                    { emoji: emoji, text: text }, false, (data: any, error: any) => response.send({ message: "done" })
+                )
             }
         })
     }

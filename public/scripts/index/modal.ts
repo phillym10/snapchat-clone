@@ -43,7 +43,7 @@ const ModalController = {
                 <div class="emoji-s">😱</div>
             </div>
             <div class="input">
-                <input type="text" name="modalinput" id="modalinput" autocomplete="off" placeholder="${placeholder}" value="${value}">
+                <input type="text" name="modalinput" id="modalinput" autocomplete="off" maxlength="30" placeholder="${placeholder}" value="${value}">
             </div>
             <div class="buttons">
                 <button class="default" id="inputmodalbtn">Yes</button>
