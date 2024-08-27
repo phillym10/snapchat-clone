@@ -779,45 +779,6 @@ input[type=file] { display: none; }
     }
 }
 
-@keyframes bsf_anim_shake {
-    0% {
-        transform: rotate(0deg);
-    }
-    5% {
-        transform: rotate(45deg);
-    }
-    10% {
-        transform: rotate(-45deg);
-    }
-    15% {
-        transform: rotate(45deg);
-    }
-    20% {
-        transform: rotate(-45deg);
-    }
-    25% {
-        transform: rotate(45deg);
-    }
-    30% {
-        transform: rotate(-45deg);
-    }
-    35% {
-        transform: rotate(45deg);
-    }
-    40% {
-        transform: rotate(-45deg);
-    }
-    45% {
-        transform: rotate(45deg);
-    }
-    50% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(0deg);
-    }
-}
-
 @keyframes bsf_anim_throbfade {
     0% {
         scale: 1;
@@ -834,7 +795,6 @@ input[type=file] { display: none; }
 }
 .currentuserprofile [class*="col-"] .bestfriend .emoji-animation.throb { animation: bsf_anim_throb 1s infinite; }
 .currentuserprofile [class*="col-"] .bestfriend .emoji-animation.flip { animation: bsf_anim_flip 1s infinite; }
-.currentuserprofile [class*="col-"] .bestfriend .emoji-animation.shake { animation: bsf_anim_shake 1s infinite; }
 .currentuserprofile [class*="col-"] .bestfriend .emoji-animation.throbfade { animation: bsf_anim_throbfade 1s infinite; }
 
 .currentuserprofile #curretuser-clsbtn { cursor: pointer; }

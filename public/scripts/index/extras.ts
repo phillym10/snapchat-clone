@@ -236,3 +236,13 @@ async function removeBestFriend(userid: string) {
         .then((data) => resolve(data.message))
     })
 }
+
+async function getCurrentUserBestFriend() {
+    return new Promise((resolve) => {
+        fetch(`/misc/getbsf`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

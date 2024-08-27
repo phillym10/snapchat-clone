@@ -66,3 +66,20 @@ miscRoute.post("/rmbsf/:userid", async (request, response) => {
         })
     }
 })
+
+miscRoute.post("/getbsf", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const currentUser: any = await token.getuser(userAuthToken)
+        bsfsDb.findOne({ userid: currentUser.userid }, (bsfdata: any, error: any) => {
+            if (error) {
+                response.send({ message: "nobsf" })
+            } else {
+                usersDb.findOne({ userid: bsfdata.bsfid }, (data: User, error1: any) => {
+                    if (error1) response.send({ message: "nobsf" })
+                    response.send({ message: data })
+                })
+            }
+        })
+    }
+})

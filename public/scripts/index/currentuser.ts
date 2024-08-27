@@ -26,15 +26,20 @@ const userIconElement = document.querySelector<HTMLDivElement>("#cup-usericon")
 const userDNameElement = document.querySelector<HTMLDivElement>("#cup-dname")
 const userNameElement = document.querySelector<HTMLDivElement>("#cup-username")
 const userVerifiedTextElement = document.querySelector<HTMLDivElement>("#cup-vtxt")
-
 const userTags = document.querySelector<HTMLDivElement>("#cup-tags")
+
+const bestFriendContainer = document.querySelector<HTMLDivElement>("#bsf-container")
 
 currentUserProfileOpenButton?.addEventListener("click", async () => {
     if (currentUserProfile == null || userTags == null) return
     if (userDNameElement == null || userIconElement == null) return
     if (userNameElement == null || userVerifiedTextElement == null) return
+    if (bestFriendContainer == null) return
+
+    currentUserProfile.classList.add("show")
 
     const currentUser = await getCurrentUser()
+    const currentUsersBestFriend = await getCurrentUserBestFriend()
     if (currentUser == undefined) return
     if (!isUser(currentUser)) return
 
@@ -46,7 +51,33 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
 
     userTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(currentUser.snapscore))
 
-    currentUserProfile.classList.add("show")
+    if (typeof currentUsersBestFriend == "string") {
+        bestFriendContainer.innerHTML = "You don't have a best friend"
+    } else if (isUser(currentUsersBestFriend)) {
+        const emojis = ['🔥','❤️','😊','💕']
+        const animations = ['throb','flip','throbfade']
+
+        bestFriendContainer.innerHTML = `
+        <div class="bestfriend">
+            <div class="bsf-usericon" id="bsf-usricon"><i class="fa-solid fa-user"></i></div>
+            <div class="bsf-profilename" id="bsf-profilename"></div>
+            <div class="emoji-animation" id="bsf-emojianim"></div>
+        </div>`;
+
+        const bestFriendUserIcon = document.querySelector<HTMLDivElement>("#bsf-usricon")
+        const bestFriendUserName = document.querySelector<HTMLDivElement>("#bsf-profilename")
+        const bestFriendEmojiAnimator = document.querySelector<HTMLDivElement>("#bsf-emojianim")
+        if (bestFriendUserIcon == null) return
+        if (bestFriendEmojiAnimator == null || bestFriendUserName == null) return
+
+        const randomEmoji = emojis[Math.floor(Math.random()* emojis.length)]
+        const randomAnimation = animations[Math.floor(Math.random()* animations.length)]
+
+        bestFriendUserIcon.setAttribute("style", `--color: ${currentUsersBestFriend.usercolor}`)
+        bestFriendUserName.innerHTML = currentUsersBestFriend.displayname
+        bestFriendEmojiAnimator.setAttribute("class", `emoji-animation ${randomAnimation}`)
+        bestFriendEmojiAnimator.innerHTML = randomEmoji
+    }
 })
 
 userDNameElement?.addEventListener("click", async () => {
