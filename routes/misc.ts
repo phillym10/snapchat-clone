@@ -24,7 +24,7 @@ miscRoute.post("/gettags/:chatid/:userid", async (request, response) => {
             streaksDb.findOne({ chatid: chatid }, (streakdata: Streak, error1: any) => {
                 user_streak_count = (streakdata == undefined || streakdata == null) ? 0 : streakdata.streakcount
                 bsfsDb.findOne({ userid: currentUser.userid, bsfid: userid }, (data: any, error2: any) => {
-                    minibioDb.findOne({ userid: currentUser.userid }, (minibiodata: MiniBio, error3: any) => {
+                    minibioDb.findOne({ userid: userid }, (minibiodata: MiniBio, error3: any) => {
                         if (error) {
                             response.send({ message: [checkUser.snapscore, user_streak_count, (data == undefined) ? false : true, false] })
                         } else {

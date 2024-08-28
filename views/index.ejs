@@ -56,6 +56,26 @@
                 </div>
             </div>
         </div>
+        <div class="view-story" id="view-story">
+            <div class="container">
+                <img src="" id="view-story-current-image" alt="">
+                <div class="story-tabs" id="view-story-tabs">
+                    <div class="tab sel"></div>
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                    <div class="tab"></div>
+                </div>
+                <div class="user">
+                    <div class="usericon" id="view-story-usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                    <div class="name-date">
+                        <div class="username" id="view-story-user"></div>
+                        <div class="date" id="view-story-time"></div>
+                    </div>
+                </div>
+                <div class="nav left" id="view-story-navl"><i class="fa-solid fa-circle-chevron-left"></i></div>
+                <div class="nav right" id="view-story-navr"><i class="fa-solid fa-circle-chevron-right"></i></div>
+            </div>
+        </div>
         <div class="send-snap" id="send-snap">
             <div class="close-btn" id="send-snap-clsbtn"><i class="fa-solid fa-chevron-down"></i></div><br>
             <div class="title">
@@ -76,6 +96,15 @@
                 <input type="file" name="send-storyfile" id="send-storyfile" accept="image/*">
                 <div class="snap-box">Tap or Click to add image</div>
             </label>
+        </div>
+        <div class="preview-send-snap" id="preview-send-story">
+            <div class="prvwss-wrapper">
+                <img src="imgs/logo.png" id="preview-send-story-image" alt="">
+                <div class="close" id="preview-send-story-closebtn"><i class="fa-solid fa-xmark"></i></div>
+                <div class="sendto">
+                    <span class="username" id="preview-send-story-send1">Add to Story</span><i class="fa-solid fa-play" id="preview-send-story-send2"></i>
+                </div>
+            </div>
         </div>
         <div class="preview-send-snap" id="preview-send-snap">
             <div class="prvwss-wrapper">
@@ -98,9 +127,7 @@
                 </div>
             </div>
             <div class="col-2">
-                <div class="tags" id="cup-tags">
-                    <div class="tag">💀 aint no way</div>
-                </div>
+                <div class="tags" id="cup-tags"></div>
             </div>
             <div class="col-3">
                 <div class="form-container">
@@ -110,6 +137,12 @@
             </div>
             <div class="col-4">
                 <div class="form-container">
+                    <div class="title">Stories</div>
+                    <div class="stories" id="stories-container"></div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="form-container">
                     <div class="title">Display Modes</div>
                     <div class="text">Tap to switch between light and dark mode</div>
                     <div class="switch">
@@ -117,7 +150,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-6">
                 <div class="form-container">
                     <div class="title">User Verification</div>
                     <div class="text" id="cup-vtxt"></div>
@@ -126,6 +159,43 @@
             <div class="col-2">
                 <div class="form-container">
                     <button class="default" id="logoutof-acc-user-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+        <div class="manage-stories" id="manage-stories">
+            <div class="back">
+                <div id="manage-stories-clsbtn"><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+            <div class="story-preview">
+                <img src="imgs/img1.png" id="manage-stories-storyimage" alt="">
+            </div>
+            <div class="story-views">
+                <div class="title" id="manage-stories-views">5 views</div>
+                <div class="views" id="manage-stories-viewers">
+                    <div class="user">
+                        <div class="usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                        <div class="name">User</div>
+                    </div>
+                    <div class="user">
+                        <div class="usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                        <div class="name">User</div>
+                    </div>
+                    <div class="user">
+                        <div class="usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                        <div class="name">User</div>
+                    </div>
+                    <div class="user">
+                        <div class="usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                        <div class="name">User</div>
+                    </div>
+                    <div class="user">
+                        <div class="usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                        <div class="name">User</div>
+                    </div>
+                    <div class="user">
+                        <div class="usericon" style="--color: #2869f5;"><i class="fa-solid fa-user"></i></div>
+                        <div class="name">User</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -180,18 +250,9 @@
         </div>
         <!-- Stories -->
         <div class="col2" id="stories">
-            <div class="story add" id="add-a-story-btn" onclick="hi()">
+            <div class="story add" id="add-a-story-btn">
                 <div class="img"><i class="fa-solid fa-plus"></i></div>
                 <div class="span">Add to Story</div>
-            </div>
-            <div class="story watched">
-                <img src="imgs/img1.png" alt="">
-                <div class="span">user1000</div>
-                <div class="refresh"><i class="fa-solid fa-rotate-left"></i></div>
-            </div>
-            <div class="story">
-                <img src="imgs/img1.png" alt="">
-                <div class="span">user10002912929290</div>
             </div>
         </div>
         <!-- Chats -->

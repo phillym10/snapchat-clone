@@ -3,6 +3,7 @@
 *.js
 package-lock.json
 package.json
+notes.txt
 
 #folders
 /node_modules

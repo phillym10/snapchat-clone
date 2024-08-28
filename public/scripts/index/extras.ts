@@ -278,3 +278,56 @@ async function loadFeedStories() {
         .then((data) => resolve(data.message))
     })
 }
+
+async function getUserStories(userid: string) {
+    return new Promise((resolve) => {
+        fetch(`/story/getstories/${userid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function getUserStory(userid: string, storyid: string) {
+    return new Promise((resolve) => {
+        fetch(`/story/getstory/${userid}/${storyid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function viewAStory(owneruserid: string, storyid: string, currentUserId: string) {
+    return new Promise((resolve) => {
+        fetch(`/story/viewstory`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ owneruserid: owneruserid, storyid: storyid, currentUserId: currentUserId })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function addAUserStory(img: string) {
+    return new Promise((resolve) => {
+        fetch(`/story/addStory`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ storyimg: img })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function deleteStory(storyid: string) {
+    return new Promise((resolve) => {
+        fetch(`/story/deleteStory`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ storyid: storyid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}

@@ -59,14 +59,13 @@ export type GroupChat = {
 export type Story = {
     storyid: string,
     storyimage: string,
-    texts: string[],
-    timeout: number
+    timeout: number,
+    watched: string[]
 }
 
 export type UserStory = {
     userid: string,
-    stories: Story[],
-    watched: boolean
+    stories: Story[]
 }
 
 export type Streak = {

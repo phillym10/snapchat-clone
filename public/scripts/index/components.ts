@@ -213,3 +213,96 @@ let messageComponent = {
     }
 }
 
+const storyComponent = {
+    feed_story: (userid: string, username: string, usercolor: string, laststoryimage: string) => {
+        let component = `
+        <div class="story" style="--storyringcolor: ${usercolor};" onclick="viewStory('${userid}')">
+            <img src="${laststoryimage}" alt="">
+            <div class="span">${username}</div>
+        </div>`
+        return component
+    },
+    my_story: (timef: string, storyimg: string, storyid: string) => {
+        let component = `
+        <div class="story">
+            <div class="img"><img src="${storyimg}" alt=""></div>
+            <div class="name-date" onclick="openManageStory('${storyid}', '${storyimg}')">
+                <div class="name">My Story</div>
+                <div class="date">${timef}</div>
+            </div>
+            <div class="delete" onclick="deleteAStory('${storyid}')"><i class="fa-regular fa-trash-can"></i></div>
+        </div>`
+        return component
+    },
+    story_viewer: (usercolor: string, username: string) => {
+        let component = `
+        <div class="user">
+            <div class="usericon" style="--color: ${usercolor};"><i class="fa-solid fa-user"></i></div>
+            <div class="name">${username}</div>
+        </div>`
+        return component
+    }
+}
+
+const storyViewerComponent = {
+    init: (username: string, usercolor: string, images: string[], times: string[], storyids: string[], switchFunction: Function, startIndex?: number) => {
+        const viewSnap = document.querySelector<HTMLDivElement>("#view-story")
+        const viewSnapTabsContainer = document.querySelector<HTMLDivElement>("#view-story-tabs")
+        const viewSnapNavLeft = document.querySelector<HTMLDivElement>("#view-story-navl")
+        const viewSnapNavRight = document.querySelector<HTMLDivElement>("#view-story-navr")
+        const viewSnapCurrentImage = document.querySelector<HTMLImageElement>("#view-story-current-image")
+        const viewSnapUserIcon = document.querySelector<HTMLDivElement>("#view-story-usericon")
+        const viewSnapUser = document.querySelector<HTMLDivElement>("#view-story-user")
+        const viewSnapTime = document.querySelector<HTMLDivElement>("#view-story-time")
+
+        if (viewSnap == null || viewSnapTabsContainer == null) return
+        if (viewSnapNavLeft == null || viewSnapNavRight == null) return
+        if (viewSnapUserIcon == null || viewSnapCurrentImage == null) return
+        if (viewSnapUser == null || viewSnapTime == null) return
+        if (images.length == 0) return
+
+        let currentImageIndex = (startIndex && images[startIndex] !== undefined && images[startIndex] !== null) ? startIndex : 0
+
+        viewSnapTabsContainer.innerHTML = ""
+        viewSnapUser.innerHTML = ""
+        viewSnapTime.innerHTML = ""
+        viewSnapCurrentImage.setAttribute("src", "")
+        viewSnapUserIcon.setAttribute("style", `--color: transparent;`)
+        viewSnap.classList.add("show")
+
+        viewSnapCurrentImage.setAttribute("src", `stories/${images[currentImageIndex]}`)
+        viewSnapUser.innerHTML = username
+        viewSnapTime.innerHTML = times[currentImageIndex]
+        viewSnapUserIcon.setAttribute("style", `--color: ${usercolor};`)
+
+        for (let i = 0; i < images.length; i++) {
+            viewSnapTabsContainer.innerHTML += `<div class="tab ${(i==0)?'sel':''}"></div>`
+        }
+
+        viewSnapNavLeft.addEventListener("click", () => {
+            if (currentImageIndex > 0) {
+                currentImageIndex--
+                viewSnapCurrentImage.setAttribute("src", `stories/${images[currentImageIndex]}`)
+                viewSnapTime.innerHTML = times[currentImageIndex]
+                
+                document.querySelector<HTMLDivElement>(".tab.sel")?.classList.remove("sel")
+                viewSnapTabsContainer.children[currentImageIndex].classList.add("sel")
+
+                switchFunction(storyids[currentImageIndex])
+            } else viewSnap.classList.remove("show")
+        })
+        viewSnapNavRight.addEventListener("click", () => {
+            if (currentImageIndex < images.length-1) {
+                currentImageIndex++
+                viewSnapCurrentImage.setAttribute("src", `stories/${images[currentImageIndex]}`)
+                viewSnapTime.innerHTML = times[currentImageIndex]
+
+                document.querySelector<HTMLDivElement>(".tab.sel")?.classList.remove("sel")
+                viewSnapTabsContainer.children[currentImageIndex].classList.add("sel")
+                
+                switchFunction(storyids[currentImageIndex])
+            } else viewSnap.classList.remove("show")
+        })
+        viewSnapCurrentImage.addEventListener("click", () => viewSnap.classList.remove("show") )
+    }
+}

@@ -45,7 +45,9 @@ async function allOnloadFunctions() {
     findNewFriendsButton?.addEventListener("click", async () => { await loadFriendRequests() })
 
     const logoutButton = document.querySelector<HTMLButtonElement>("#logoutof-acc-user-btn")
-    logoutButton?.addEventListener("click", () => window.location.assign("/logout"))
+    logoutButton?.addEventListener("click", () => {
+        ModalController.yesornomodal("Logout", "Are you sure you want to log out of your account?", "default", () => window.location.assign("/logout"))
+    })
 }
 
 document.addEventListener("DOMContentLoaded", async () => { await allOnloadFunctions(); })

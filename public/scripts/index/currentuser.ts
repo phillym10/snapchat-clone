@@ -34,13 +34,15 @@ const miniBio = document.querySelector<HTMLDivElement>("#cup-minibio")
 const miniBioEmoji = document.querySelector<HTMLDivElement>("#cup-minibio-emoji")
 const miniBioText = document.querySelector<HTMLDivElement>("#cup-minibio-text")
 
+const userStories = document.querySelector<HTMLDivElement>("#stories-container")
+
 const bestFriendContainer = document.querySelector<HTMLDivElement>("#bsf-container")
 
 currentUserProfileOpenButton?.addEventListener("click", async () => {
     if (currentUserProfile == null || userTags == null) return
     if (userDNameElement == null || userIconElement == null) return
     if (userNameElement == null || userVerifiedTextElement == null) return
-    if (bestFriendContainer == null) return
+    if (bestFriendContainer == null || userStories == null) return
 
     currentUserProfile.classList.add("show")
 
@@ -48,6 +50,8 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
     const currentUsersBestFriend = await getCurrentUserBestFriend()
     if (currentUser == undefined) return
     if (!isUser(currentUser)) return
+
+    const currentUsersStories: any = await getUserStories(currentUser.userid)
 
     userIconElement.setAttribute("style", `--color: ${currentUser.usercolor}`)
     userDNameElement.innerHTML = currentUser.displayname
@@ -65,6 +69,16 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
         })
     })
 
+    userStories.innerHTML = ""
+    if (currentUsersStories.stories == undefined || currentUsersStories.stories.length < 1) {
+        userStories.innerHTML = "No Stories"
+    } else {
+        for (let i = currentUsersStories.stories.length-1; i >= 0; i--) {
+            const currentUserStory = currentUsersStories.stories[i];
+            userStories.innerHTML += storyComponent.my_story(web_wtime.format(Date.now()-currentUserStory.timeout), `stories/${currentUserStory.storyimage}`, currentUserStory.storyid)
+        }
+    }
+    
     if (typeof currentUsersBestFriend == "string") {
         bestFriendContainer.innerHTML = "You don't have a best friend"
     } else if (isUser(currentUsersBestFriend)) {
