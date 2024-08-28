@@ -79,22 +79,22 @@ const aUserProfileComponents = {
 
 const miniBioComponent = {
     load: (emoji: string, text: string, id: string) => {
-        let component = `<div class="tag" id="${id}">${emoji} ${text}</div>`
+        let component = `<div class="tag minibiotag" id="${id}">${emoji} ${text}</div>`
         return component
     }
 }
 
 let messageComponent = {
-    message: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean, continued: boolean) => {
-        // let reactionsHtml = ""
-        // if (reactions.length > 0) {
-        //     reactionsHtml = `<div class="reactions">`
-        //     for (let i = 0; i < reactions.length; i++) {
-        //         const reaction = reactions[i];
-        //         reactionsHtml += `<div class="reaction">${reaction}</div>`
-        //     }
-        //     reactionsHtml += `</div>`
-        // } else reactionsHtml = ""
+    message: (usercolor: string, username: string, msg: string, reactions: string[], messageid: string, saved: boolean, continued: boolean) => {
+        let reactionsHtml = ""
+        if (reactions.length > 0) {
+            reactionsHtml = `<div class="reactions">`
+            for (let i = 0; i < reactions.length; i++) {
+                const reaction = reactions[i];
+                reactionsHtml += `<div class="reaction">${reaction}</div>`
+            }
+            reactionsHtml += `</div>`
+        } else reactionsHtml = ""
 
         let component = (continued == false)
         ? `
@@ -102,14 +102,26 @@ let messageComponent = {
         <div class="user" style="--profcolor: ${usercolor};">${username}</div>
         <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'chat', ${(username == "me") ? true : false})">
             <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
+            ${reactionsHtml}
         </div>`
         : `
         <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'chat', ${(username == "me") ? true : false})">
             <div class="${(saved) ? 'saved' : ''}" onclick="toggleSaveMsg(this, '${messageid}')">${msg}</div>
+            ${reactionsHtml}
         </div>`;
         return component
     },
-    replyMessage: (usercolor: string, username: string, msg: string, messageid: string, saved: boolean, replyusername: string, replyusercolor: string, replymsg: string) => {
+    replyMessage: (usercolor: string, username: string, msg: string, reactions: string[], messageid: string, saved: boolean, replyusername: string, replyusercolor: string, replymsg: string) => {
+        let reactionsHtml = ""
+        if (reactions.length > 0) {
+            reactionsHtml = `<div class="reactions">`
+            for (let i = 0; i < reactions.length; i++) {
+                const reaction = reactions[i];
+                reactionsHtml += `<div class="reaction">${reaction}</div>`
+            }
+            reactionsHtml += `</div>`
+        } else reactionsHtml = ""
+
         let component = `
         <div class="msgspace"></div>
         <div class="user" style="--profcolor: ${usercolor};">${username}</div>
@@ -120,6 +132,7 @@ let messageComponent = {
                     <div class="msg">${replymsg}</div>
                 </div>
                 ${msg}
+                ${reactionsHtml}
             </div>
         </div>`;
         return component
@@ -128,7 +141,17 @@ let messageComponent = {
         let component = `<div class="deleted-msg">${username} deleted a message!</div>`
         return component
     },
-    snap: (newmsg: boolean, username: string, usercolor: string, messageid: string, opened: boolean, saved: boolean, snappath: string) => {
+    snap: (newmsg: boolean, username: string, usercolor: string, reactions: string[], messageid: string, opened: boolean, saved: boolean, snappath: string) => {
+        let reactionsHtml = ""
+        if (reactions.length > 0) {
+            reactionsHtml = `<div class="reactions">`
+            for (let i = 0; i < reactions.length; i++) {
+                const reaction = reactions[i];
+                reactionsHtml += `<div class="reaction">${reaction}</div>`
+            }
+            reactionsHtml += `</div>`
+        } else reactionsHtml = ""
+
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let msg = (opened)
         ? `<i class="fa-regular fa-square"></i> Opened`
@@ -140,6 +163,7 @@ let messageComponent = {
             ${user_c}
             <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})" spp="${snappath}">
                 <div class="snap" ${(!opened) ? `onclick="openSnap(this, '${messageid}')"` : ''}>${msg}</div>
+                ${reactionsHtml}
             </div>
         `
         : `
@@ -147,11 +171,22 @@ let messageComponent = {
             ${user_c}
             <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})">
                 <div class="saved" onclick="toggleSaveMsg(this, '${messageid}')"><img src="${snappath}" onclick="openSnapNormal('${snappath}','${username}','${usercolor}')"></div>
+                ${reactionsHtml}
             </div>
         `
         return component
     },
-    snapMine: (newmsg: boolean, username: string, usercolor: string, messageid: string, opened: boolean, saved: boolean, snappath: string) => {
+    snapMine: (newmsg: boolean, username: string, usercolor: string, reactions: string[], messageid: string, opened: boolean, saved: boolean, snappath: string) => {
+        let reactionsHtml = ""
+        if (reactions.length > 0) {
+            reactionsHtml = `<div class="reactions">`
+            for (let i = 0; i < reactions.length; i++) {
+                const reaction = reactions[i];
+                reactionsHtml += `<div class="reaction">${reaction}</div>`
+            }
+            reactionsHtml += `</div>`
+        } else reactionsHtml = ""
+
         let user_c = (newmsg == true) ? `<div class="user" style="--profcolor: ${usercolor};">${username}</div>`: ""
         let msg = (opened)
         ? `<i class="fa-regular fa-paper-plane"></i> Opened`
@@ -163,6 +198,7 @@ let messageComponent = {
             ${user_c}
             <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})" spp="${snappath}">
                 <div class="snap" ${(!opened) ? `onclick="openSnap(this, '${messageid}')"` : ''}>${msg}</div>
+                ${reactionsHtml}
             </div>
         `
         : `
@@ -170,6 +206,7 @@ let messageComponent = {
             ${user_c}
             <div class="chats" style="--profcolor: ${usercolor};" oncontextmenu="chatContextMenu(this, event, '${messageid}', 'snap', ${(username == "me") ? true : false})">
                 <div class="saved" onclick="toggleSaveMsg(this, '${messageid}')"><img src="${snappath}" onclick="openSnapNormal('${snappath}','${username}','${usercolor}')"></div>
+                ${reactionsHtml}
             </div>
         `
         return component

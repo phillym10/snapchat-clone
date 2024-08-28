@@ -29,6 +29,7 @@ function isFullUser(object: any): object is FullUser {
 
 
 async function allOnloadFunctions() {
+    await loadStories()
     await loadFriends()
     const numberoffrElement = document.querySelector<HTMLDivElement>("#number-offr")
     const userColorProfile = document.querySelector<HTMLDivElement>("#curretuser-openbtn")

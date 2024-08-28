@@ -37,8 +37,8 @@ async function renderMessage(chat_message: any, chat_message_owner: any, current
 
     if (chat_message.type == "snap") {
         const messageHTML: string = (chat_message.userid == currentUser.userid)
-        ? messageComponent.snapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid, chat_message.opened, chat_message.saved, chat_message.snap)
-        : messageComponent.snap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.messageid, chat_message.opened, chat_message.saved, chat_message.snap)
+        ? messageComponent.snapMine(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.reactions, chat_message.messageid, chat_message.opened, chat_message.saved, chat_message.snap)
+        : messageComponent.snap(true, chat_message_owner.displayname, chat_message_owner.usercolor, chat_message.reactions, chat_message.messageid, chat_message.opened, chat_message.saved, chat_message.snap)
 
         chatBox.innerHTML += messageHTML
     } else if (chat_message.type == "deleted") {
@@ -50,8 +50,8 @@ async function renderMessage(chat_message: any, chat_message_owner: any, current
         : (lastMessage.userid !== chat_message_owner.userid) ? false : true
 
         const messageHTML: string = (chat_message.replyto !== "")
-        ? messageComponent.replyMessage(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved, reply_message_owner.displayname, reply_message_owner.usercolor, reply_message.chat)
-        : messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.messageid, chat_message.saved, continueMessage)
+        ? messageComponent.replyMessage(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.reactions, chat_message.messageid, chat_message.saved, reply_message_owner.displayname, reply_message_owner.usercolor, reply_message.chat)
+        : messageComponent.message(chat_message_owner.usercolor, chat_message_owner.displayname, chat_message.chat, chat_message.reactions, chat_message.messageid, chat_message.saved, continueMessage)
 
         chatBox.innerHTML += messageHTML
     }
@@ -85,12 +85,13 @@ async function openChat(chatid: string, userid: string) {
     if (chatBox == null || chatSnapButton == null) return
     if (chatContainerCloseButton == null) return
 
+    chatContainer.animate([{ transform: "translateX(0)" }], { duration: 200, iterations: 1, fill: "forwards" })
+
     const chatUser: any = await getUser(userid)
     chatBox.innerHTML = ""
 
     chatUserName.innerHTML = chatUser.displayname
     chatUserIcon.setAttribute("style", `--color: ${chatUser.usercolor};`)
-    chatContainer.animate([{ transform: "translateX(0)" }], { duration: 200, iterations: 1, fill: "forwards" })
     messageInputBox.focus()
 
     await initialLoadingMessages(chatid)

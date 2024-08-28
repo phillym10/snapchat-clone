@@ -131,6 +131,33 @@ messagingRoute.post("/sendmsg", async (request, response) => {
     }
 })
 
+messagingRoute.post("/addreaction", async (request, response) => {
+    const chatid = request.body.chatid
+    const messageid = request.body.messageid
+    const reaction = request.body.reaction
+    const userAuthToken = token.auth(request)
+
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const currentUser: any = await token.getuser(userAuthToken)
+        messagesDb.findOne({ chatid: chatid, messageid: messageid }, (msgdata: Message, error: any) => {
+            if (error) return
+            let message_data = msgdata
+            if (message_data.reactions.length >= 5) {
+                response.send({ message: "full" })
+            } else {
+                message_data.reactions.push(reaction)
+                messagesDb.update(
+                    { chatid: chatid, messageid: messageid },
+                    { reactions: message_data.reactions }, false, (data: any, error1: any) => {
+                        if (error1) return
+                        response.send({ message: data })
+                    }
+                )
+            }
+        })
+    }
+})
+
 messagingRoute.post("/getmsg", (request, response) => {
     const messageid = request.body.messageid
     messagesDb.findOne({ messageid: messageid }, (message: Message,  error: any) => {

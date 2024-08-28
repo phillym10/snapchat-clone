@@ -22,7 +22,8 @@
     <script src="scripts/index/snaps.js" defer></script>
     <script src="scripts/index/contextmenu.js" defer></script>
     <script src="scripts/index/chatprofile.js" defer></script>
-    <script src="scripts/index/num_format.js"></script>
+    <script src="scripts/index/story.js" defer></script>
+    <script src="scripts/index/num_format.js" defer></script>
     <script src="scripts/index/index.js" defer></script>
 </head>
 <body>
@@ -62,7 +63,17 @@
                 <div id="send-snap-username">Drake</div>
             </div>
             <label for="send-snapfile">
-                <input type="file" name="send-snapfile" id="send-snapfile" accept="images/*">
+                <input type="file" name="send-snapfile" id="send-snapfile" accept="image/*">
+                <div class="snap-box">Tap or Click to add image</div>
+            </label>
+        </div>
+        <div class="send-snap" id="send-story">
+            <div class="close-btn" id="send-story-clsbtn"><i class="fa-solid fa-chevron-down"></i></div><br>
+            <div class="title">
+                <div>Add to Story</div>
+            </div>
+            <label for="send-storyfile">
+                <input type="file" name="send-storyfile" id="send-storyfile" accept="image/*">
                 <div class="snap-box">Tap or Click to add image</div>
             </label>
         </div>
@@ -146,11 +157,11 @@
         <div class="context-menu-modal" id="context-menu-modal">
             <div class="context-menu" id="context-menu">
                 <div class="optionreactions">
-                    <div class="opreact">🤣</div>
-                    <div class="opreact">😡</div>
-                    <div class="opreact">👍</div>
-                    <div class="opreact">👎</div>
-                    <div class="opreact">💀</div>
+                    <div class="opreact" id="ctxtmenu-laugh">🤣</div>
+                    <div class="opreact" id="ctxtmenu-angry">😡</div>
+                    <div class="opreact" id="ctxtmenu-thumb-up">👍</div>
+                    <div class="opreact" id="ctxtmenu-thumb-down">👎</div>
+                    <div class="opreact" id="ctxtmenu-skull">💀</div>
                 </div>
                 <div class="option" id="ctxtmenu-savebtn"><i class="fa-solid fa-bookmark"></i> Save</div>
                 <div class="option" id="ctxtmenu-copybtn"><i class="fa-regular fa-copy"></i> Copy</div>
@@ -169,7 +180,7 @@
         </div>
         <!-- Stories -->
         <div class="col2" id="stories">
-            <div class="story add">
+            <div class="story add" id="add-a-story-btn" onclick="hi()">
                 <div class="img"><i class="fa-solid fa-plus"></i></div>
                 <div class="span">Add to Story</div>
             </div>

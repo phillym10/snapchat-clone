@@ -174,6 +174,17 @@ async function getMessage(messageid: string) {
     })
 }
 
+async function addMessageReaction(chatid: string, messageid: string, reaction: string) {
+    return new Promise((resolve) => {
+        fetch("/msgs/addreaction", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatid: chatid, messageid: messageid, reaction: reaction })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
 async function editMessage(messageid: string, newMsg: string) {
     return new Promise((resolve) => {
         fetch("/msgs/editmsg", {
@@ -253,6 +264,16 @@ async function updateMiniBio(userid: string, emoji: string, text: string) {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userid: userid, emoji: emoji, text: text })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function loadFeedStories() {
+    return new Promise((resolve) => {
+        fetch(`/story/feedstories`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
         }).then((response) => { return response.json() })
         .then((data) => resolve(data.message))
     })

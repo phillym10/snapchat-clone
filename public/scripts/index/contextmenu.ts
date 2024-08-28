@@ -2,17 +2,37 @@ const contextmenumodal = document.querySelector<HTMLDivElement>("#context-menu-m
 const contextmenu = document.querySelector<HTMLDivElement>("#context-menu")
 
 type msgType = "chat" | "snap"
+
+function addReaction(element: HTMLElement, emoji: string) {
+    if (contextmenumodal == null) return
+    if (element == null || element.lastElementChild == null || element.lastElementChild.innerHTML == null) return
+    if (element.children.length < 2) {
+        element.innerHTML += `
+        <div class="reactions">
+            <div class="reaction">🤣</div>
+        </div>`
+    } else { element.lastElementChild.innerHTML += `<div class="reaction">🤣</div>` }
+    contextmenumodal.classList.remove("show")
+}
+
 function chatContextMenu(element: HTMLElement, event: Event, messageid: string, type: msgType, isUser: boolean) {
     if (contextmenumodal == null || contextmenu == null) return
     event.preventDefault()
     contextmenumodal.classList.add("show")
 
     const reactions = ['🤣', '😡', '👍', '👎', '💀']
+
     const saveInChatBtn = document.querySelector<HTMLDivElement>("#ctxtmenu-savebtn")
     const copyButton = document.querySelector<HTMLDivElement>("#ctxtmenu-copybtn")
     const editMessageBtn = document.querySelector<HTMLDivElement>("#ctxtmenu-editbtn")
     const replyButton = document.querySelector<HTMLDivElement>("#ctxtmenu-replybtn")
     const deleteChatButton = document.querySelector<HTMLDivElement>("#ctxtmenu-deletebtn")
+    
+    const laughingReaction = document.querySelector<HTMLDivElement>("#ctxtmenu-laugh")
+    const angryReaction = document.querySelector<HTMLDivElement>("#ctxtmenu-angry")
+    const thumbsUpReaction = document.querySelector<HTMLDivElement>("#ctxtmenu-thumb-up")
+    const thumbsDownReaction = document.querySelector<HTMLDivElement>("#ctxtmenu-thumb-down")
+    const skullReaction = document.querySelector<HTMLDivElement>("#ctxtmenu-skull")
 
     if (deleteChatButton == null || editMessageBtn == null || replyButton == null) return
     deleteChatButton.style.display = (isUser) ? "flex" : "none";
@@ -23,6 +43,7 @@ function chatContextMenu(element: HTMLElement, event: Event, messageid: string, 
         if (!contextmenu.contains(event.target)) contextmenumodal.classList.remove("show")
     })
 
+    // others
     saveInChatBtn?.addEventListener("click", () => {
         toggleSaveMsg(element.children[0], messageid)
         contextmenumodal.classList.remove("show")

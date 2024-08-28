@@ -29,15 +29,10 @@ export type Message = {
     snap?: string,
     opened?: true | false,
     time: number,
-    reactions: Reaction[],
+    reactions: string[],
     saved: true | false,
     replyto: string,
     chatid: string
-}
-
-export type Reaction = {
-    reaction: string,
-    animation: "throb" | "grow"
 }
 
 export type ChatLog = {
@@ -63,10 +58,15 @@ export type GroupChat = {
 
 export type Story = {
     storyid: string,
-    userid: string,
     storyimage: string,
     texts: string[],
     timeout: number
+}
+
+export type UserStory = {
+    userid: string,
+    stories: Story[],
+    watched: boolean
 }
 
 export type Streak = {

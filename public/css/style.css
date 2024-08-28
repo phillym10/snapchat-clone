@@ -577,9 +577,81 @@ input {
 }
 
 .slideui#chat .chatspace .chats > .reactions {
-    padding: 0 5px 5px 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding: 0 5px 5px 0px;
     font-size: 1.8rem;
 }
+
+@keyframes reaction_throb {
+    0% {
+        scale: 1;
+    }
+    50% {
+        scale: 1.4;
+    }
+    100% {
+        scale: 1;
+    }
+}
+
+@keyframes reaction_flip {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(180deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}
+
+@keyframes reaction_throbfade {
+    0% {
+        scale: 1;
+        opacity: 0.5;
+    }
+    50% {
+        scale: 1.4;
+        opacity: 1;
+    }
+    100% {
+        scale: 1;
+        opacity: 0.5;
+    }
+}
+
+@keyframes reaction_shine {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes reaction_jump {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.slideui#chat .chatspace .chats > .reactions .reaction.throb { animation: reaction_throb 1s infinite; }
+.slideui#chat .chatspace .chats > .reactions .reaction.flip { animation: reaction_flip 1s infinite; }
+.slideui#chat .chatspace .chats > .reactions .reaction.throbfade { animation: reaction_throbfade 1s infinite; }
+.slideui#chat .chatspace .chats > .reactions .reaction.shine { animation: reaction_shine 1s infinite; }
+.slideui#chat .chatspace .chats > .reactions .reaction.jump { animation: reaction_jump 1s infinite; }
 
 .slideui#chat .chatspace .chats > div .replied-msg {
     width: 95%;
@@ -743,6 +815,10 @@ input[type=file] { display: none; }
     border-radius: 20px;
     user-select: none;
     border: 1px solid #9b9b9b;
+}
+
+.currentuserprofile [class*="col-"] .tag.minibiotag {
+    cursor: pointer;
 }
 
 .currentuserprofile [class*="col-"] .bestfriend {
