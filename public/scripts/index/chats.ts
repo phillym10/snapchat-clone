@@ -24,6 +24,7 @@ async function loadChatMessages(chatid: string) {
     : lastMessagerReceived_Owner.displayname
     await renderMessage(lastMessagerReceived, lastMessagerReceived_Owner, currentUser)
     lastMessage = lastMessagerReceived
+    chatBox.scrollTop = chatBox.scrollHeight
 }
 
 async function renderMessage(chat_message: any, chat_message_owner: any, currentUser: any, firstmsg: boolean = false) {

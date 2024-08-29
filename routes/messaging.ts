@@ -255,7 +255,6 @@ messagingRoute.post("/deletemsg", (request, response) => {
     if (messageid == null) return
     messagesDb.findOne({ messageid: messageid }, async (messageData: Message, error: any) => {
         if (error) return
-        console.log(messageid)
         if (messageData.type == "chat") {
             await deleteMessage(messageData.chatid, messageData.messageid)
         } else if (messageData.type == "snap") {

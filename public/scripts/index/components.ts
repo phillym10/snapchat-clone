@@ -279,6 +279,7 @@ const storyViewerComponent = {
             viewSnapTabsContainer.innerHTML += `<div class="tab ${(i==0)?'sel':''}"></div>`
         }
 
+        switchFunction(storyids[currentImageIndex])
         viewSnapNavLeft.addEventListener("click", () => {
             if (currentImageIndex > 0) {
                 currentImageIndex--

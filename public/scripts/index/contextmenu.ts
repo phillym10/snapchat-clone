@@ -82,6 +82,11 @@ function chatContextMenu(element: HTMLElement, event: Event, messageid: string, 
 
         replyMessageBox.classList.add("show")
         contextmenumodal.classList.remove("show")
+
+        replyMessageBox.addEventListener("click", () => {
+            chatContainer.setAttribute("replyto", "")
+            replyMessageBox.classList.remove("show")
+        })
     })
 
     deleteChatButton?.addEventListener("click", async () => {

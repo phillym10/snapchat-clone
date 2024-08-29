@@ -24,12 +24,12 @@ async function saveStory (base64: string, storyid: string) {
     const filepath = path.join('public', 'stories', filename)
 
     // check if user already has a profile picture
-    const profilePictures = fs.readdirSync(path.join('public', 'stories'))
-    const existingUserProfilePicture = profilePictures.find(file => path.parse(file).name === storyid)
+    const storyImages = fs.readdirSync(path.join('public', 'stories'))
+    const existingUserstoryImages = storyImages.find(file => path.parse(file).name === storyid)
 
-    if (existingUserProfilePicture) {
-        const existingUserProfilePicturePath = path.join('public', 'stories', existingUserProfilePicture);
-        fs.unlinkSync(existingUserProfilePicturePath)
+    if (existingUserstoryImages) {
+        const existingUserStoryImagePath = path.join('public', 'stories', existingUserstoryImages);
+        fs.unlinkSync(existingUserstoryImages)
         fs.writeFileSync(filepath, buffer);
     } else fs.writeFileSync(filepath, buffer);
 

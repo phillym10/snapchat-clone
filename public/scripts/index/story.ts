@@ -1,12 +1,10 @@
-const addStoryButton = document.querySelector<HTMLButtonElement>("#add-a-story-btn")
 const sendStory = document.querySelector<HTMLDivElement>("#send-story")
 const sendStoryCloseButton = document.querySelector<HTMLButtonElement>("#send-story-clsbtn")
 const sendStoryFileInput = document.querySelector<HTMLInputElement>("#send-storyfile")
 
 const previewStory = document.querySelector<HTMLButtonElement>("#preview-send-story")
 const previewStoryCloseButton = document.querySelector<HTMLButtonElement>("#preview-send-story-closebtn")
-const previewStorySendButton1 = document.querySelector<HTMLInputElement>("#preview-send-story-send1")
-const previewStorySendButton2 = document.querySelector<HTMLInputElement>("#preview-send-story-send2")
+const previewStorySendButton = document.querySelector<HTMLInputElement>("#preview-send-story-send")
 const previewStoryImage = document.querySelector<HTMLImageElement>("#preview-send-story-image")
 
 const manageStory = document.querySelector<HTMLDivElement>("#manage-stories")
@@ -20,14 +18,18 @@ const storyContainer = document.querySelector<HTMLDivElement>("#stories")
 async function loadStories() {
     if (storyContainer == null) return
 
+    storyContainer.innerHTML = `
+    <div class="story add" id="add-a-story-btn" onclick="addStoryButtonFunc()">
+        <div class="img"><i class="fa-solid fa-plus"></i></div>
+        <div class="span">Add to Story</div>
+    </div>`;
+
     const feedStories: any = await loadFeedStories()
     if (!Array.isArray(feedStories)) return
 
     for (let i = 0; i < feedStories.length; i++) {
         const feedStory = feedStories[i];
         const feedStoryUser: any = await getUser(feedStory.userid)
-        const currentUserId: any = await ScCloneUser.getkey("userid")
-        console.log([feedStory, feedStoryUser])
 
         storyContainer.innerHTML += (feedStory.stories.length > 0)
         ? storyComponent.feed_story(feedStoryUser.userid, feedStoryUser.displayname, feedStoryUser.usercolor, `stories/${feedStory.stories[feedStory.stories.length-1].storyimage}`)
@@ -83,6 +85,34 @@ async function deleteAStory(storyid: string) {
     }
 }
 
+function addStoryButtonFunc() {
+    if (sendStory == null || sendStoryCloseButton == null) return
+    if (sendStoryFileInput == null) return
+    if (previewStory == null || previewStoryImage == null) return
+
+    sendStory.classList.add("show")
+    sendStoryFileInput.addEventListener("change", (event: any) => {
+        if (event == null || event.target == null) return
+        const file = event.target.files[0]
+
+        if (!file) return
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+            previewStoryImage.setAttribute("src", `${e.target.result}`)
+            previewStory.classList.add("show")
+        }
+        reader.readAsDataURL(file)
+    })
+
+}
+
+previewStorySendButton?.addEventListener("click", async () => { await addAStory() })
+sendStoryCloseButton?.addEventListener("click", () => {
+    if (sendStory == null) return
+    sendStory.classList.remove("show")
+})
+
 async function viewStory(userid: string) {
     const currentUser = await getCurrentUser()
     const storyOwner = await getUser(userid)
@@ -117,33 +147,6 @@ async function addAStory() {
 manageStoryCloseButton?.addEventListener("click", () => {
     if (manageStory == null) return
     manageStory.classList.remove("show")
-})
-
-addStoryButton?.addEventListener("click", () => {
-    if (sendStory == null || sendStoryCloseButton == null) return
-    if (sendStoryFileInput == null) return
-    if (previewStory == null || previewStoryImage == null) return
-
-    sendStory.classList.add("show")
-    sendStoryFileInput.addEventListener("change", (event: any) => {
-        if (event == null || event.target == null) return
-        const file = event.target.files[0]
-
-        if (!file) return
-        if (!file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-            previewStoryImage.setAttribute("src", `${e.target.result}`)
-            previewStory.classList.add("show")
-        }
-        reader.readAsDataURL(file)
-    })
-
-    previewStorySendButton1?.addEventListener("click", async () => { await addAStory() })
-    previewStorySendButton2?.addEventListener("click", async () => { await addAStory() })
-    sendStoryCloseButton.addEventListener("click", () => {
-        sendStory.classList.remove("show")
-    })
 })
 
 previewStoryCloseButton?.addEventListener("click", () => {

@@ -38,6 +38,13 @@ miscRoute.post("/gettags/:chatid/:userid", async (request, response) => {
     }
 })
 
+miscRoute.post("/getminibio", (request, response) => {
+    const userid = request.body.userid
+    minibioDb.findOne({ userid: userid }, (miniBioData: MiniBio, error: any) => {
+        if (error) response.send({ message: undefined }); else response.send({ message: miniBioData })
+    })
+})
+
 miscRoute.post("/makebsf/:userid", async (request, response) => {
     const userAuthToken = token.auth(request)
     if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {

@@ -51,6 +51,7 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
     if (currentUser == undefined) return
     if (!isUser(currentUser)) return
 
+    const currentUserMiniBio: any = await getMiniBio(currentUser.userid)
     const currentUsersStories: any = await getUserStories(currentUser.userid)
 
     userIconElement.setAttribute("style", `--color: ${currentUser.usercolor}`)
@@ -58,13 +59,16 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
     userNameElement.innerHTML = currentUser.username
     userVerifiedTextElement.innerHTML = (currentUser.verified) 
     ? "You are a verified user !" : "You are not a verified user !"
-
+    
     userTags.innerHTML = aUserProfileComponents.snapscoreTag(number$.format(currentUser.snapscore))
-    userTags.innerHTML += miniBioComponent.load("👋", "no mini bio yet", "minibio-c")
+    userTags.innerHTML += (typeof currentUserMiniBio == "object" && currentUserMiniBio !== undefined)
+    ? miniBioComponent.load(currentUserMiniBio.emoji, currentUserMiniBio.text, "minibio-c")
+    : miniBioComponent.load("👋", "no mini bio yet", "minibio-c")
 
     const miniBioContainer = document.querySelector<HTMLDivElement>("#minibio-c")
     miniBioContainer?.addEventListener("click", () => {
         ModalController.minibiomodal("Mini Bio", "Mini Bio Text", "", async (emoji: any, value: any) => {
+            miniBioContainer.innerHTML = `${emoji} ${value}`
             await updateMiniBio(currentUser.userid, emoji, value)
         })
     })

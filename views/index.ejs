@@ -80,7 +80,7 @@
             <div class="close-btn" id="send-snap-clsbtn"><i class="fa-solid fa-chevron-down"></i></div><br>
             <div class="title">
                 <div>Send to</div>
-                <div id="send-snap-username">Drake</div>
+                <div id="send-snap-username"></div>
             </div>
             <label for="send-snapfile">
                 <input type="file" name="send-snapfile" id="send-snapfile" accept="image/*">
@@ -102,7 +102,7 @@
                 <img src="imgs/logo.png" id="preview-send-story-image" alt="">
                 <div class="close" id="preview-send-story-closebtn"><i class="fa-solid fa-xmark"></i></div>
                 <div class="sendto">
-                    <span class="username" id="preview-send-story-send1">Add to Story</span><i class="fa-solid fa-play" id="preview-send-story-send2"></i>
+                    <span class="username" id="preview-send-story-send">Add to Story <i class="fa-solid fa-play" id="preview-send-story-send2"></i></span>
                 </div>
             </div>
         </div>
@@ -250,7 +250,7 @@
         </div>
         <!-- Stories -->
         <div class="col2" id="stories">
-            <div class="story add" id="add-a-story-btn">
+            <div class="story add" id="add-a-story-btn" onclick="addStoryButtonFunc()">
                 <div class="img"><i class="fa-solid fa-plus"></i></div>
                 <div class="span">Add to Story</div>
             </div>
