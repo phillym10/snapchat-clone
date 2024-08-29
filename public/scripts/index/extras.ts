@@ -248,6 +248,48 @@ async function removeBestFriend(userid: string) {
     })
 }
 
+async function removeFriend(userid: string, chatid: string) {
+    return new Promise((resolve) => {
+        fetch(`/misc/rmfr/${userid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatid: chatid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function blockFriend(userid: string, chatid: string) {
+    return new Promise((resolve) => {
+        fetch(`/misc/blockfr/${userid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatid: chatid })
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function getAllBlockedUsers() {
+    return new Promise((resolve) => {
+        fetch(`/misc/allblockedusers`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
+async function unblockUserReq(userid: string) {
+    return new Promise((resolve) => {
+        fetch(`/misc/unblockfr/${userid}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' }
+        }).then((response) => { return response.json() })
+        .then((data) => resolve(data.message))
+    })
+}
+
 async function getCurrentUserBestFriend() {
     return new Promise((resolve) => {
         fetch(`/misc/getbsf`, {

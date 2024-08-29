@@ -13,7 +13,7 @@ friendRequestsRoute.post("/searchusers/:q", (request, response) => {
     const query = request.params.q
     const userAuthToken = token.auth(request)
     if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/signup'); else {
-        usersDb.search({ username: query, displayname: query }, async (data: User[], error: any) => {
+        usersDb.search({ username: query }, async (data: User[], error: any) => {
             if (error || !data) return;
 
             const currentuser: User | any = await token.getuser(userAuthToken)
@@ -23,7 +23,8 @@ friendRequestsRoute.post("/searchusers/:q", (request, response) => {
             for (let i = 0; i < data.length; i++) {
                 const user = data[i];
                 const friendshipCheck = await friendship.check(user.userid, currentuser.userid)
-                if (user.userauthtoken !== userAuthToken && friendshipCheck == "false") { users.push(user) }
+                
+                if (user.userauthtoken !== userAuthToken && friendshipCheck == "false" && !currentuser.blockedUsers.includes(user.userid) && !user.blockedUsers.includes(currentuser.userid)) { users.push(user) }
             }
 
             response.send({ message: users })

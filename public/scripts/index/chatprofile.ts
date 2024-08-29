@@ -40,6 +40,22 @@ async function openUserProfile(userid: string, chatid: string) {
 
     userProfileContainer.classList.add("show")
 
+    removeFriendButton.addEventListener("click", async () => {
+        if (chatContainer == null) return
+        await removeFriend(userid, chatid)
+        userProfileContainer.classList.remove("show")
+        chatContainer.animate([{ transform: "translateX(-100%)" }], { duration: 200, iterations: 1, fill: "forwards" })
+        await allOnloadFunctions()
+    })
+    
+    blockFriendButton.addEventListener("click", async () => {
+        if (chatContainer == null) return
+        await blockFriend(userid, chatid)
+        userProfileContainer.classList.remove("show")
+        chatContainer.animate([{ transform: "translateX(-100%)" }], { duration: 200, iterations: 1, fill: "forwards" })
+        await allOnloadFunctions()
+    })
+
     makeBestFriendButton.addEventListener("click", async () => {
         if (chatTags[2] == true) {
             userProfileContainer.classList.remove("show")

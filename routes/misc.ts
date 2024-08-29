@@ -1,6 +1,7 @@
 import express from 'express'
 import { bsfsDb, chatsDb, messagesDb, minibioDb, streaksDb, usersDb } from '../include/dbcnf'
 import { Chat, Message, Streak, MiniBio, User } from '../types/types'
+import { isUser } from '../types/typechecker'
 import { keygen } from '../include/keygen'
 import { token } from '../include/token'
 import { anyuser } from '../include/users'
@@ -76,6 +77,137 @@ miscRoute.post("/rmbsf/:userid", async (request, response) => {
                 (data: any, err: any) => { response.send({ message: data }) }
             )
         })
+    }
+})
+
+miscRoute.post("/rmfr/:userid", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const userid = request.params.userid
+        const chatid = request.body.chatid
+        const currentUser: any = await token.getuser(userAuthToken)
+        if (!isUser(currentUser)) return
+
+        usersDb.findOne({ userid: currentUser.userid }, (data: User, error: any) => {
+            if (error) return
+            const newFriendsList = []
+
+            for (let i = 0; i < data.friends.length; i++) {
+                const friend = data.friends[i];
+                if (friend.userid !== userid) newFriendsList.push(friend)
+            }
+
+            usersDb.update(
+                { userid: currentUser.userid },
+                { friends: newFriendsList }, false, (data: any, error: any) => {
+                    if (error) return
+                    
+                    usersDb.findOne({ userid: userid }, (data1: User, error: any) => {
+                        if (error) return
+                        const newFriendsList1 = []
+            
+                        for (let i = 0; i < data1.friends.length; i++) {
+                            const friend = data1.friends[i];
+                            if (friend.userid !== currentUser.userid) newFriendsList1.push(friend)
+                        }
+            
+                        usersDb.update(
+                            { userid: userid },
+                            { friends: newFriendsList1 }, false, (data: any, error: any) => {}
+                        )
+            
+                        chatsDb.delete({ chatid: chatid }, (data: any, error: any) => {})
+                        
+                        response.send({ message: "done" })
+                    })
+                }
+            )
+        })
+    }
+})
+
+miscRoute.post("/blockfr/:userid", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const userid = request.params.userid
+        const chatid = request.body.chatid
+        const currentUser: any = await token.getuser(userAuthToken)
+        
+        usersDb.findOne({ userid: currentUser.userid }, (data: User, error: any) => {
+            if (error) return
+            const newFriendsList = []
+            const blockedList = data.blockedUsers
+            if (!data.blockedUsers.includes(userid)) blockedList.push(userid)
+
+            for (let i = 0; i < data.friends.length; i++) {
+                const friend = data.friends[i];
+                if (friend.userid !== userid) newFriendsList.push(friend)
+            }
+
+            usersDb.update(
+                { userid: currentUser.userid },
+                { friends: newFriendsList, blockedUsers: blockedList }, false, (data_r: any, error1: any) => {
+                    if (error1) return
+                    usersDb.findOne({ userid: userid }, (data1: User, error: any) => {
+                        if (error) return
+                        const newFriendsList1 = []
+            
+                        for (let i = 0; i < data1.friends.length; i++) {
+                            const friend = data1.friends[i];
+                            if (friend.userid !== currentUser.userid) newFriendsList1.push(friend)
+                        }
+            
+                        usersDb.update(
+                            { userid: userid },
+                            { friends: newFriendsList1 }, false, (data: any, error: any) => {}
+                        )
+
+                        chatsDb.delete({ chatid: chatid }, (data: any, error: any) => {})
+            
+                        response.send({ message: "done" })
+                    })
+                }
+            )
+        })
+    }
+})
+
+
+miscRoute.post("/allblockedusers", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const currentUser: any = await token.getuser(userAuthToken)
+        if (!isUser(currentUser)) return
+
+        const allBlockedUsers = []
+        for (let index = 0; index < currentUser.blockedUsers.length; index++) {
+            const blockedUserId = currentUser.blockedUsers[index];
+            const blockedUser: any = await anyuser.get(blockedUserId)
+            if (!isUser(blockedUser)) continue; else allBlockedUsers.push(blockedUser)
+        }
+
+        response.send({ message: allBlockedUsers })
+    }
+})
+
+miscRoute.post("/unblockfr/:userid", async (request, response) => {
+    const userAuthToken = token.auth(request)
+    if (userAuthToken == undefined || userAuthToken == "" || userAuthToken == null) response.redirect('/login'); else {
+        const userid = request.params.userid
+        const currentUser: any = await token.getuser(userAuthToken)
+        if (!isUser(currentUser)) return
+
+        const newBlockedUsers = []
+        for (let index = 0; index < currentUser.blockedUsers.length; index++) {
+            const blockedUser = currentUser.blockedUsers[index];
+            if (blockedUser !== userid) newBlockedUsers.push(blockedUser)
+        }
+        usersDb.update(
+            { userid: currentUser.userid },
+            { blockedUsers: newBlockedUsers }, false, (data: any, error: any) => {}
+        )
+
+        response.send({ message: "done" })
     }
 })
 

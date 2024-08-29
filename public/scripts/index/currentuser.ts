@@ -37,12 +37,14 @@ const miniBioText = document.querySelector<HTMLDivElement>("#cup-minibio-text")
 const userStories = document.querySelector<HTMLDivElement>("#stories-container")
 
 const bestFriendContainer = document.querySelector<HTMLDivElement>("#bsf-container")
+const blockedContainer = document.querySelector<HTMLDivElement>("#blocked-container")
 
 currentUserProfileOpenButton?.addEventListener("click", async () => {
     if (currentUserProfile == null || userTags == null) return
     if (userDNameElement == null || userIconElement == null) return
     if (userNameElement == null || userVerifiedTextElement == null) return
     if (bestFriendContainer == null || userStories == null) return
+    if (blockedContainer == null) return
 
     currentUserProfile.classList.add("show")
 
@@ -110,7 +112,31 @@ currentUserProfileOpenButton?.addEventListener("click", async () => {
         bestFriendEmojiAnimator.setAttribute("class", `emoji-animation ${randomAnimation}`)
         bestFriendEmojiAnimator.innerHTML = randomEmoji
     }
+
+    const allBlockedUsers: any = await getAllBlockedUsers()
+    blockedContainer.innerHTML = ""
+
+    if (allBlockedUsers == undefined || !Array.isArray(allBlockedUsers) || allBlockedUsers.length < 1) {
+        blockedContainer.innerHTML = "No Blocked Users"
+    } else {
+        for (let i = 0; i < allBlockedUsers.length; i++) {
+            const blockedUser = allBlockedUsers[i];
+            blockedContainer.innerHTML += `
+            <div class="bestfriend">
+                <div class="bsf-usericon" id="bsf-usricon" style="--color: ${blockedUser.usercolor}"><i class="fa-solid fa-user"></i></div>
+                <div class="bsf-profilename" id="bsf-profilename">${blockedUser.displayname}</div>
+                <button class="danger" onclick="unblck('${blockedUser.userid}')">Unblock</button>
+            </div>`
+        }
+    }
 })
+
+async function unblck(userid: string) {
+    if (currentUserProfile == null) return
+    currentUserProfile.classList.add("show")
+    await unblockUserReq(userid)
+    await allOnloadFunctions()
+}
 
 userDNameElement?.addEventListener("click", async () => {
     const currentUser = await getCurrentUser()
